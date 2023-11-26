@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:20:29 by bhamed            #+#    #+#             */
-/*   Updated: 2023/11/26 17:06:50 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/11/26 17:13:37 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@
 #include <termios.h>
 #include <unistd.h>
 
+/* data */
+
 struct termios	g_orig_termios;
+
+/* terminal */
 
 void	die(const char *str)
 {
@@ -47,6 +51,8 @@ void	enable_raw_mode(void)
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1)
 		die("tcsetattr");
 }
+
+/* init */
 
 int	main(void)
 {
