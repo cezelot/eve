@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:20:29 by bhamed            #+#    #+#             */
-/*   Updated: 2023/11/26 17:13:37 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/11/26 18:15:56 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,18 @@ void	disable_raw_mode(void)
 
 void	enable_raw_mode(void)
 {
-	struct termios	raw;
+	struct termios	s_raw;
 
 	if (tcgetattr(STDIN_FILENO, &g_orig_termios) == -1)
 		die("tcgetattr");
-	raw = g_orig_termios;
-	raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-	raw.c_oflag &= ~(OPOST);
-	raw.c_cflag |= (CS8);
-	raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-	raw.c_cc[VMIN] = 0;
-	raw.c_cc[VTIME] = 1;
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1)
+	s_raw = g_orig_termios;
+	s_raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+	s_raw.c_oflag &= ~(OPOST);
+	s_raw.c_cflag |= (CS8);
+	s_raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+	s_raw.c_cc[VMIN] = 0;
+	s_raw.c_cc[VTIME] = 1;
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &s_raw) == -1)
 		die("tcsetattr");
 }
 
