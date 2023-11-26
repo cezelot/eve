@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:20:29 by bhamed            #+#    #+#             */
-/*   Updated: 2023/11/26 12:28:03 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/11/26 12:29:53 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	main(void)
 {
 	char	c;
 
-	while (read(STDIN_FILENO, &c, 1) == 1)
+	while (read(STDIN_FILENO, &c, 1) == 1 && c != 'q')
 	{
 	}
 	return (0);
