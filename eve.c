@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:20:29 by bhamed            #+#    #+#             */
-/*   Updated: 2023/11/26 13:53:15 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/11/26 16:21:50 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	enable_raw_mode(void)
 
 	tcgetattr(STDIN_FILENO, &g_orig_termios);
 	raw = g_orig_termios;
-	raw.c_lflag &= ~(ECHO | ICANON);
+	raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+	raw.c_oflag &= ~(OPOST);
+	raw.c_cflag |= (CS8);
+	raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
 	tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
 
@@ -42,9 +45,9 @@ int	main(void)
 	while (read(STDIN_FILENO, &c, 1) == 1 && c != 'q')
 	{
 		if (iscntrl(c))
-			printf("%d\n", c);
+			printf("%d\r\n", c);
 		else
-			printf("%d (%c)\n", c, c);
+			printf("%d (%c)\r\n", c, c);
 	}
 	return (0);
 }
