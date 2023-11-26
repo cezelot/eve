@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:20:29 by bhamed            #+#    #+#             */
-/*   Updated: 2023/11/26 18:47:30 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/11/26 19:29:45 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	die(const char *str)
 void	disable_raw_mode(void)
 {
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &g_orig_termios) == -1)
-		die("tcsetattr");
+		die("tcsetattr g_orig_termios");
 }
 
 void	enable_raw_mode(void)
@@ -40,7 +40,7 @@ void	enable_raw_mode(void)
 	struct termios	s_raw;
 
 	if (tcgetattr(STDIN_FILENO, &g_orig_termios) == -1)
-		die("tcgetattr");
+		die("tcgetattr g_orig_termios");
 	s_raw = g_orig_termios;
 	s_raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
 	s_raw.c_oflag &= ~(OPOST);
@@ -49,7 +49,7 @@ void	enable_raw_mode(void)
 	s_raw.c_cc[VMIN] = 0;
 	s_raw.c_cc[VTIME] = 1;
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &s_raw) == -1)
-		die("tcsetattr");
+		die("tcsetattr s_raw");
 }
 
 /* init */
