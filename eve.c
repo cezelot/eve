@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:20:29 by bhamed            #+#    #+#             */
-/*   Updated: 2023/11/26 18:15:56 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/11/26 18:47:30 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	main(void)
 			printf("%d\r\n", c);
 		else
 			printf("%d (%c)\r\n", c, c);
-		if (c == 'q')
+		if (c == (('q') & 0x1f))
 			break ;
 	}
 	return (0);
