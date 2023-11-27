@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:20:29 by bhamed            #+#    #+#             */
-/*   Updated: 2023/11/26 19:29:45 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/11/27 14:26:27 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,35 @@ void	enable_raw_mode(void)
 		die("tcsetattr s_raw");
 }
 
-/* init */
+char	editor_read_key(void)
+{
+	int		nread;
+	char	c;
 
-int	main(void)
+	while ((nread = read(STDIN_FILENO, &c, 1)) != 1)
+		if (nread == -1 && errno != EAGAIN)
+			die("read");
+	return (c);
+}
+
+/* input */
+
+void	editor_process_keypress(void)
 {
 	char	c;
 
+	c = editor_read_key();
+	if (c == ('q' & 0x1f))
+		exit(0);
+}
+
+/* main */
+
+int	main(void)
+{
 	enable_raw_mode();
 	atexit(disable_raw_mode);
 	while (1)
-	{
-		c = '\0';
-		if (read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN)
-			die ("read");
-		if (iscntrl(c))
-			printf("%d\r\n", c);
-		else
-			printf("%d (%c)\r\n", c, c);
-		if (c == (('q') & 0x1f))
-			break ;
-	}
+		editor_process_keypress();
 	return (0);
 }
