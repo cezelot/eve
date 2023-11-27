@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   eve.c                                              :+:      :+:    :+:   */
+/*   terminal.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/26 12:20:29 by bhamed            #+#    #+#             */
-/*   Updated: 2023/11/27 14:26:27 by bhamed           ###   ########.fr       */
+/*   Created: 2023/11/27 18:25:14 by bhamed            #+#    #+#             */
+/*   Updated: 2023/11/27 18:50:46 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ctype.h>
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <termios.h>
-#include <unistd.h>
-
-/* data */
+#include "includes/header.h"
 
 struct termios	g_orig_termios;
-
-/* terminal */
 
 void	die(const char *str)
 {
@@ -61,26 +52,4 @@ char	editor_read_key(void)
 		if (nread == -1 && errno != EAGAIN)
 			die("read");
 	return (c);
-}
-
-/* input */
-
-void	editor_process_keypress(void)
-{
-	char	c;
-
-	c = editor_read_key();
-	if (c == ('q' & 0x1f))
-		exit(0);
-}
-
-/* main */
-
-int	main(void)
-{
-	enable_raw_mode();
-	atexit(disable_raw_mode);
-	while (1)
-		editor_process_keypress();
-	return (0);
 }
