@@ -6,19 +6,13 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:25:14 by bhamed            #+#    #+#             */
-/*   Updated: 2023/11/28 15:11:46 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/11/28 21:08:47 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/header.h"
+#include "../includes/eve.h"
 
 struct termios	g_orig_termios;
-
-void	die(const char *str)
-{
-	perror(str);
-	exit(1);
-}
 
 void	disable_raw_mode(void)
 {

@@ -1,23 +1,15 @@
-SRCS	= main.c terminal.c input.c
-
 NAME	= eve
 
-OBJS	= ${SRCS:.c=.o}
+CC	= gcc
 
-HEADERS	= includes/
+FLAGS	= -Wall -Werror -Wextra -pedantic -std=c99 -O2
 
-.c.o	:
-	gcc -Wall -Werror -Wextra -pedantic -std=c99 -g -I ${HEADERS} -c $< -o ${<:.c=.o}
+SOURCES	= sources/main.c sources/terminal.c sources/input.c
 
-${NAME}	: ${OBJS}
-	gcc -Wall -Werror -Wextra -pedantic -std=c99 -g -I ${HEADERS} ${OBJS} -o ${NAME}
-
-all : ${NAME}
-
-clean	:
-	rm -f ${OBJS}
+all	:
+	$(CC) $(FLAGS) $(SOURCES) -o $(NAME)
 
 fclean	:
-	rm -f ${NAME}
+	rm -f $(NAME)
 
-re : fclean all
+re	: fclean all
