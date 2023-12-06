@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:17:10 by bhamed            #+#    #+#             */
-/*   Updated: 2023/11/28 21:00:33 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/06 18:24:37 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 int		read_key(int *pi, char *pc);
 char	editor_read_key(void);
+void	editor_refresh_screen(void);
 void	die(const char *str);
 void	disable_raw_mode(void);
 void	enable_raw_mode(void);
