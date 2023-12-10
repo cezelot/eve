@@ -6,10 +6,9 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:17:10 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/06 18:24:37 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/10 23:58:02 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #ifndef EVE_H
 # define EVE_H
 
@@ -17,15 +16,23 @@
 # include <errno.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/ioctl.h>
 # include <termios.h>
 # include <unistd.h>
 
-int		read_key(int *pi, char *pc);
-char	editor_read_key(void);
-void	editor_refresh_screen(void);
+typedef struct s_editor_config
+{
+	int				screenrows;
+	int				screencols;
+}					t_env;
+
+void	editor_refresh_screen(t_env *env);
 void	die(const char *str);
 void	disable_raw_mode(void);
 void	enable_raw_mode(void);
 void	editor_process_keypress(void);
+char	editor_read_key(void);
+int		get_window_size(int *rows, int *cols);
+int		read_key(int *pi, char *pc);
 
 #endif

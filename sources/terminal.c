@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:25:14 by bhamed            #+#    #+#             */
-/*   Updated: 2023/11/28 21:08:47 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/10 23:58:27 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ struct termios	g_orig_termios;
 
 void	disable_raw_mode(void)
 {
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &g_orig_termios) == -1)
-		die("tcsetattr g_orig_termios");
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, \
+	&g_orig_termios) == -1)
+		die("tcsetattr s_orig_termios");
 }
 
 void	enable_raw_mode(void)
@@ -25,7 +26,7 @@ void	enable_raw_mode(void)
 	struct termios	s_raw;
 
 	if (tcgetattr(STDIN_FILENO, &g_orig_termios) == -1)
-		die("tcgetattr g_orig_termios");
+		die("tcgetattr s_orig_termios");
 	s_raw = g_orig_termios;
 	s_raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
 	s_raw.c_oflag &= ~(OPOST);
@@ -55,4 +56,19 @@ char	editor_read_key(void)
 		if (rread == -1 && errno != EAGAIN)
 			die("read");
 	return (c);
+}
+
+int	get_window_size(int *rows, int *cols)
+{
+	struct winsize	s_ws;
+
+	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &s_ws) == -1 \
+	|| s_ws.ws_col == 0)
+		return (-1);
+	else
+	{
+		*rows = s_ws.ws_row;
+		*cols = s_ws.ws_col;
+	}
+	return (0);
 }
