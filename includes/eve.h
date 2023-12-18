@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:17:10 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/18 19:07:53 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/18 20:09:57 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef EVE_H
@@ -19,6 +19,8 @@
 # include <sys/ioctl.h>
 # include <termios.h>
 # include <unistd.h>
+
+# define EVE_VERSION "0.0.1"
 
 typedef struct s_editor_config
 {
