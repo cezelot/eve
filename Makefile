@@ -4,7 +4,7 @@ CC	= gcc
 
 FLAGS	= -Wall -Werror -Wextra -pedantic -std=c99 -O2
 
-SOURCES	= sources/main.c sources/terminal.c sources/input.c sources/output.c
+SOURCES	= sources/main.c sources/terminal/*.c sources/input.c sources/output.c
 
 all	:
 	$(CC) $(FLAGS) $(SOURCES) -o $(NAME)

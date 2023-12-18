@@ -6,19 +6,11 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:20:29 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/10 23:58:22 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/18 10:52:18 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/eve.h"
-
-void	die(const char *str)
-{
-	write(STDOUT_FILENO, "\x1b[2J", 4);
-	write(STDOUT_FILENO, "\x1b[H", 3);
-	perror(str);
-	exit(1);
-}
 
 void	init_editor(t_env *env)
 {
