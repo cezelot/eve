@@ -2,9 +2,11 @@ NAME	= eve
 
 CC	= gcc
 
-FLAGS	= -Wall -Werror -Wextra -pedantic -std=c99 -O2
+FLAGS	= -Wall -Werror -Wextra -pedantic -std=c99
 
-SOURCES	= sources/main.c sources/terminal/*.c sources/input.c sources/output.c
+SOURCES	= ./sources/main.c ./sources/terminal/*.c \
+		  ./sources/append_buffer.c \
+		  ./sources/output.c sources/input.c
 
 all	:
 	$(CC) $(FLAGS) $(SOURCES) -o $(NAME)
