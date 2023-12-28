@@ -1,17 +1,29 @@
 NAME	= eve
 
-CC	= gcc
+CC		= gcc
 
-FLAGS	= -Wall -Werror -Wextra -pedantic -std=c99
+CFLAGS	= -Wall -Werror -Wextra -pedantic -std=c99
 
-SOURCES	= ./sources/main.c ./sources/terminal/*.c \
-		  ./sources/append_buffer.c \
+SRCS	= ./sources/main.c ./sources/terminal/terminal.c \
+		  ./sources/terminal/terminal_2.c ./sources/append_buffer.c \
 		  ./sources/output.c ./sources/input.c
 
-all	:
-	$(CC) $(FLAGS) $(SOURCES) -o $(NAME)
+OBJS	= $(SRCS:.c=.o)
 
-fclean	:
-	rm -f $(NAME)
+RM		= rm -f
 
-re	: fclean all
+all		: $(NAME)
+
+.c.o	:
+	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+
+$(NAME)	: $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+clean	:
+	$(RM) $(OBJS)
+
+fclean	: clean
+	$(RM) $(NAME)
+
+re		: fclean all
