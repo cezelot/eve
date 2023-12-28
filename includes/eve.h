@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:17:10 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/25 16:00:26 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/28 13:41:41 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,22 @@ typedef struct s_abuf
 	int		len;
 }			t_abuf;
 
+enum e_editor_key
+{
+	ARROW_LEFT = 1000,
+	ARROW_RIGHT,
+	ARROW_UP,
+	ARROW_DOWN
+};
+
 void	editor_refresh_screen(t_env *env);
 void	die(const char *str);
 void	disable_raw_mode(void);
 void	enable_raw_mode(void);
 void	editor_process_keypress(t_env *env);
-char	editor_read_key(void);
+int		editor_read_key(void);
 int		get_window_size(int *rows, int *cols);
+int		read_escape_sequences(void);
 int		read_key(int *pi, char *pc);
 
 #endif

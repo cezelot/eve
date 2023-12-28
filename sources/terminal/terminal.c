@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:25:14 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/18 14:30:59 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/28 13:35:44 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	read_key(int *pi, char *pc)
 	return (i);
 }
 
-char	editor_read_key(void)
+int	editor_read_key(void)
 {
 	int		rread;
 	char	c;
@@ -63,5 +63,8 @@ char	editor_read_key(void)
 	while (read_key(&rread, &c) != 1)
 		if (rread == -1 && errno != EAGAIN)
 			die("read_key");
-	return (c);
+	if (c == '\x1b')
+		return (read_escape_sequences());
+	else
+		return (c);
 }
