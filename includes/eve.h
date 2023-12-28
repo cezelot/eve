@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:17:10 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/28 13:41:41 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/28 14:15:15 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,16 @@
 
 # define EVE_VERSION "0.0.1"
 
+enum e_editor_key
+{
+	ARROW_LEFT = 1000,
+	ARROW_RIGHT,
+	ARROW_UP,
+	ARROW_DOWN,
+	PAGE_UP,
+	PAGE_DOWN
+};
+
 typedef struct s_editor_config
 {
 	int	cx;
@@ -37,14 +47,6 @@ typedef struct s_abuf
 	char	*buf;
 	int		len;
 }			t_abuf;
-
-enum e_editor_key
-{
-	ARROW_LEFT = 1000,
-	ARROW_RIGHT,
-	ARROW_UP,
-	ARROW_DOWN
-};
 
 void	editor_refresh_screen(t_env *env);
 void	die(const char *str);

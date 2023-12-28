@@ -6,33 +6,11 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 10:35:43 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/28 13:42:31 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/28 14:39:10 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eve.h"
-
-int	read_escape_sequences(void)
-{
-	char	seq[3];
-
-	if (read(STDIN_FILENO, &seq[0], 1) != 1)
-		return ('\x1b');
-	if (read(STDIN_FILENO, &seq[1], 1) != 1)
-		return ('\x1b');
-	if (seq[0] == '[')
-	{
-		if (seq[1] == 'A')
-			return (ARROW_UP);
-		else if (seq[1] == 'B')
-			return (ARROW_DOWN);
-		else if (seq[1] == 'C')
-			return (ARROW_RIGHT);
-		else if (seq[1] == 'D')
-			return (ARROW_LEFT);
-	}
-	return ('\x1b');
-}
 
 int	get_cursor_position(int *rows, int *cols)
 {

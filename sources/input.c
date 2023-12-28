@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:32:33 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/28 14:03:43 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/28 20:54:55 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,25 @@ void	editor_move_cursor(t_env *env, int key)
 void	editor_process_keypress(t_env *env)
 {
 	int	c;
+	int	times;
 
 	c = editor_read_key();
+	times = env->screenrows;
 	if (c == ('q' & 0x1f))
 	{
 		write(STDOUT_FILENO, "\x1b[2J", 4);
 		write(STDOUT_FILENO, "\x1b[H", 3);
 		exit(0);
+	}
+	else if ((c == PAGE_UP) || (c == PAGE_DOWN))
+	{
+		while (times--)
+		{
+			if (c == PAGE_UP)
+				editor_move_cursor(env, ARROW_UP);
+			else
+				editor_move_cursor(env, ARROW_DOWN);
+		}
 	}
 	else if ((c == ARROW_LEFT) || (c == ARROW_RIGHT) \
 			|| (c == ARROW_UP) || (c == ARROW_DOWN))
