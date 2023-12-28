@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:32:33 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/28 13:38:08 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/28 14:03:43 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,17 @@
 void	editor_move_cursor(t_env *env, int key)
 {
 	if (key == ARROW_LEFT)
-		env->cx--;
-	else if (key == ARROW_RIGHT)
-		env->cx++;
-	else if (key == ARROW_UP)
-		env->cy--;
-	else if (key == ARROW_DOWN)
-		env->cy++;
+		if (env->cx != 0)
+			env->cx--;
+	if (key == ARROW_RIGHT)
+		if (env->cx != env->screencols - 1)
+			env->cx++;
+	if (key == ARROW_UP)
+		if (env->cy != 0)
+			env->cy--;
+	if (key == ARROW_DOWN)
+		if (env->cy != env->screenrows - 1)
+			env->cy++;
 }
 
 void	editor_process_keypress(t_env *env)
