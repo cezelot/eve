@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 18:08:14 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/18 21:15:59 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/25 15:44:20 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,15 @@ void	editor_draw_rows(t_abuf *abuf, t_env *env)
 void	editor_refresh_screen(t_env *env)
 {
 	t_abuf	abuf;
+	char	buf[32];
 
 	abuf.buf = NULL;
 	abuf.len = 0;
 	abuf_append(&abuf, "\x1b[?25l", 6);
 	abuf_append(&abuf, "\x1b[H", 3);
 	editor_draw_rows(&abuf, env);
-	abuf_append(&abuf, "\x1b[H", 3);
+	snprintf(buf, sizeof(buf), "\x1b[%d;%dH", env->cy + 1, env->cx + 1);
+	abuf_append(&abuf, buf, strlen(buf));
 	abuf_append(&abuf, "\x1b[?25h", 6);
 	write(STDOUT_FILENO, abuf.buf, abuf.len);
 	abuf_free(&abuf);
