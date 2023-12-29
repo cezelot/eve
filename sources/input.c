@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:32:33 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/28 20:54:55 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/29 15:14:24 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,15 @@ void	editor_move_cursor(t_env *env, int key)
 			env->cy++;
 }
 
-void	editor_process_keypress(t_env *env)
+void	process_esc_seq_keys(int c, t_env *env)
 {
-	int	c;
 	int	times;
 
-	c = editor_read_key();
 	times = env->screenrows;
-	if (c == ('q' & 0x1f))
-	{
-		write(STDOUT_FILENO, "\x1b[2J", 4);
-		write(STDOUT_FILENO, "\x1b[H", 3);
-		exit(0);
-	}
+	if (c == HOME_KEY)
+		env->cx = 0;
+	else if (c == END_KEY)
+		env->cx = env->screencols - 1;
 	else if ((c == PAGE_UP) || (c == PAGE_DOWN))
 	{
 		while (times--)
@@ -54,4 +50,19 @@ void	editor_process_keypress(t_env *env)
 	else if ((c == ARROW_LEFT) || (c == ARROW_RIGHT) \
 			|| (c == ARROW_UP) || (c == ARROW_DOWN))
 		editor_move_cursor(env, c);
+}
+
+void	editor_process_keypress(t_env *env)
+{
+	int	c;
+
+	c = editor_read_key();
+	if (c == ('q' & 0x1f))
+	{
+		write(STDOUT_FILENO, "\x1b[2J", 4);
+		write(STDOUT_FILENO, "\x1b[H", 3);
+		exit(0);
+	}
+	else
+		process_esc_seq_keys(c, env);
 }

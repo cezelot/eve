@@ -6,13 +6,23 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 14:37:35 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/28 19:27:44 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/29 12:11:57 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eve.h"
 
-int	is_page_keys(char *seq)
+int	is_home_or_end_keys(char *seq)
+{
+	if (seq[1] == 'H')
+		return (HOME_KEY);
+	else if (seq[1] == 'F')
+		return (END_KEY);
+	else
+		return (0);
+}
+
+int	is_seq_keys_2(char *seq)
 {
 	if (seq[1] >= '0' && seq[1] <= '9')
 	{
@@ -20,16 +30,24 @@ int	is_page_keys(char *seq)
 			return ('\x1b');
 		if (seq[2] == '~')
 		{
-			if (seq[1] == '5')
+			if (seq[1] == '1')
+				return (HOME_KEY);
+			else if (seq[1] == '4')
+				return (END_KEY);
+			else if (seq[1] == '5')
 				return (PAGE_UP);
 			else if (seq[1] == '6')
 				return (PAGE_DOWN);
+			else if (seq[1] == '7')
+				return (HOME_KEY);
+			else if (seq[1] == '8')
+				return (END_KEY);
 		}
 	}
 	return (0);
 }
 
-int	is_arrow_keys(char *seq)
+int	is_seq_keys(char *seq)
 {
 	if (seq[1] == 'A')
 		return (ARROW_UP);
@@ -39,6 +57,10 @@ int	is_arrow_keys(char *seq)
 		return (ARROW_RIGHT);
 	else if (seq[1] == 'D')
 		return (ARROW_LEFT);
+	else if (seq[1] == 'H')
+		return (HOME_KEY);
+	else if (seq[1] == 'F')
+		return (END_KEY);
 	else
 		return (0);
 }
@@ -54,15 +76,17 @@ int	read_escape_sequences(void)
 		return ('\x1b');
 	if (seq[0] == '[')
 	{
-		key = is_page_keys(seq);
+		key = is_seq_keys_2(seq);
 		if (key)
 			return (key);
 		else
 		{
-			key = is_arrow_keys(seq);
+			key = is_seq_keys(seq);
 			if (key)
 				return (key);
 		}
 	}
+	else if (seq[0] == 'O')
+		return (is_home_or_end_keys(seq));
 	return ('\x1b');
 }

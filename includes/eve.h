@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:17:10 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/28 14:15:15 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/29 11:07:05 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ enum e_editor_key
 	ARROW_RIGHT,
 	ARROW_UP,
 	ARROW_DOWN,
+	HOME_KEY,
+	END_KEY,
 	PAGE_UP,
 	PAGE_DOWN
 };
