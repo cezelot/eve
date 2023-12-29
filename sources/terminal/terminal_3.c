@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/28 14:37:35 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/29 12:11:57 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/29 15:25:53 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	is_seq_keys_2(char *seq)
 		{
 			if (seq[1] == '1')
 				return (HOME_KEY);
+			else if (seq[1] == '3')
+				return (DEL_KEY);
 			else if (seq[1] == '4')
 				return (END_KEY);
 			else if (seq[1] == '5')
