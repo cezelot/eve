@@ -6,12 +6,15 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:17:10 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/29 15:22:45 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/29 17:21:15 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EVE_H
 # define EVE_H
+
+# define EVE_VERSION "0.0.1"
+# define _DEFAULT_SOURCE
 
 # include <ctype.h>
 # include <errno.h>
@@ -21,8 +24,6 @@
 # include <sys/ioctl.h>
 # include <termios.h>
 # include <unistd.h>
-
-# define EVE_VERSION "0.0.1"
 
 enum e_editor_key
 {
@@ -37,13 +38,21 @@ enum e_editor_key
 	PAGE_DOWN
 };
 
+typedef struct s_erow
+{
+	int		size;
+	char	*chars;
+}			t_erow;
+
 typedef struct s_editor_config
 {
-	int	cx;
-	int	cy;
-	int	screenrows;
-	int	screencols;
-}		t_env;
+	int		cx;
+	int		cy;
+	int		screenrows;
+	int		screencols;
+	int		numrows;
+	t_erow	row;
+}			t_env;
 
 typedef struct s_abuf
 {
@@ -51,6 +60,7 @@ typedef struct s_abuf
 	int		len;
 }			t_abuf;
 
+void	editor_open(t_env *env, char *filename);
 void	editor_refresh_screen(t_env *env);
 void	die(const char *str);
 void	disable_raw_mode(void);
