@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 18:08:14 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/29 16:20:59 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/30 09:58:52 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,17 @@
 void	abuf_append(t_abuf *abuf, const char *str, int len);
 void	abuf_free(t_abuf *abuf);
 
-void	draw_welcome_message(t_abuf *abuf, t_env *env)
+void	display_text_buffer(t_abuf *abuf, t_env *env)
+{
+	int	len;
+
+	len = env->row.size;
+	if (len > env->screencols)
+		len = env->screencols;
+	abuf_append(abuf, env->row.chars, len);
+}
+
+void	display_welcome_message(t_abuf *abuf, t_env *env)
 {
 	char	welcome[80];
 	int		welcomelen;
@@ -39,25 +49,22 @@ void	draw_welcome_message(t_abuf *abuf, t_env *env)
 void	editor_draw_rows(t_abuf *abuf, t_env *env)
 {
 	int	n;
-	int	len;
 
 	n = 0;
 	while (n < env->screenrows)
 	{
 		if (n >= env->numrows)
 		{
-			if (n == env->screenrows / 3)
-				draw_welcome_message(abuf, env);
+			if (env->numrows == 0 && n == env->screenrows / 3)
+			{
+				if (n == env->screenrows / 3)
+					display_welcome_message(abuf, env);
+			}
 			else
 				abuf_append(abuf, "~", 1);
 		}
 		else
-		{
-			len = env->row.size;
-			if (len > env->screencols)
-				len = env->screencols;
-			abuf_append(abuf, env->row.chars, len);
-		}
+			display_text_buffer(abuf, env);
 		abuf_append(abuf, "\x1b[K", 3);
 		if (n++ < env->screenrows - 1)
 			abuf_append(abuf, "\r\n", 2);
