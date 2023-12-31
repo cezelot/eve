@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 18:08:14 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/30 09:58:52 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/31 18:56:28 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 void	abuf_append(t_abuf *abuf, const char *str, int len);
 void	abuf_free(t_abuf *abuf);
 
-void	display_text_buffer(t_abuf *abuf, t_env *env)
+void	display_text_buffer(t_abuf *abuf, t_env *env, int n)
 {
 	int	len;
 
-	len = env->row.size;
+	len = env->row[n].size;
 	if (len > env->screencols)
 		len = env->screencols;
-	abuf_append(abuf, env->row.chars, len);
+	abuf_append(abuf, env->row[n].chars, len);
 }
 
 void	display_welcome_message(t_abuf *abuf, t_env *env)
@@ -64,7 +64,7 @@ void	editor_draw_rows(t_abuf *abuf, t_env *env)
 				abuf_append(abuf, "~", 1);
 		}
 		else
-			display_text_buffer(abuf, env);
+			display_text_buffer(abuf, env, n);
 		abuf_append(abuf, "\x1b[K", 3);
 		if (n++ < env->screenrows - 1)
 			abuf_append(abuf, "\r\n", 2);

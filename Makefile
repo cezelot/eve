@@ -8,7 +8,8 @@ SRCS	= ./sources/main.c ./sources/terminal/terminal.c \
 		  ./sources/terminal/terminal_2.c \
 		  ./sources/terminal/terminal_3.c \
 		  ./sources/append_buffer.c ./sources/file_io.c \
-		  ./sources/output.c ./sources/input.c
+		  ./sources/row_operations.c ./sources/output.c \
+		  ./sources/input.c
 
 OBJS	= $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:17:10 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/29 17:21:15 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/31 19:00:11 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_editor_config
 	int		screenrows;
 	int		screencols;
 	int		numrows;
-	t_erow	row;
+	t_erow	*row;
 }			t_env;
 
 typedef struct s_abuf
@@ -60,12 +60,13 @@ typedef struct s_abuf
 	int		len;
 }			t_abuf;
 
+void	editor_append_row(t_env *env, char *str, size_t len);
 void	editor_open(t_env *env, char *filename);
+void	editor_process_keypress(t_env *env);
 void	editor_refresh_screen(t_env *env);
+void	enable_raw_mode(void);
 void	die(const char *str);
 void	disable_raw_mode(void);
-void	enable_raw_mode(void);
-void	editor_process_keypress(t_env *env);
 int		editor_read_key(void);
 int		get_window_size(int *rows, int *cols);
 int		read_escape_sequences(void);

@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:20:29 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/29 16:45:36 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/31 17:57:34 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	init_editor(t_env *env)
 	env->cx = 0;
 	env->cy = 0;
 	env->numrows = 0;
+	env->row = NULL;
 	if (get_window_size(&env->screenrows, \
 	&env->screencols) == -1)
 		die("get_window_size screensize");
