@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 17:17:10 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/31 19:00:11 by bhamed           ###   ########.fr       */
+/*   Updated: 2023/12/31 20:49:33 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_editor_config
 {
 	int		cx;
 	int		cy;
+	int		rowoff;
 	int		screenrows;
 	int		screencols;
 	int		numrows;
@@ -60,6 +61,8 @@ typedef struct s_abuf
 	int		len;
 }			t_abuf;
 
+void	abuf_append(t_abuf *abuf, const char *str, int len);
+void	abuf_free(t_abuf *abuf);
 void	editor_append_row(t_env *env, char *str, size_t len);
 void	editor_open(t_env *env, char *filename);
 void	editor_process_keypress(t_env *env);

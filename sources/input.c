@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:32:33 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/29 15:14:24 by bhamed           ###   ########.fr       */
+/*   Updated: 2024/01/01 19:14:26 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	editor_move_cursor(t_env *env, int key)
 		if (env->cy != 0)
 			env->cy--;
 	if (key == ARROW_DOWN)
-		if (env->cy != env->screenrows - 1)
+		if (env->cy < env->numrows)
 			env->cy++;
 }
 
