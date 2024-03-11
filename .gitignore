@@ -1,6 +1,5 @@
 # Temporary files
 *.swp
-*.md
 
 # Object file
 *.o
