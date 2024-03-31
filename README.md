@@ -1,4 +1,5 @@
-# eve
+eve
+===
 
 A terminal-based text editor.
 
@@ -12,13 +13,12 @@ make
 ./eve <filename>
 # Ctrl+Q to exit
 ```
-I will add other features over time.
 
 ### Reference
 
-[Build Your Own Text Editor](https://viewsourcecode.org/snaptoken/kilo)
+[Build Your Own Text Editor](https://viewsourcecode.org/snaptoken/kilo).
 
 ### Your help is welcome
 
-If you found any bug, please create an "Issue" here on Github.
-If you want to contribute, Feel free to do pull requests.
+If you found any bug, please [open an issue](https://github.com/cezelot/eve/issues/new).
+If you want to contribute, feel free to do pull requests.
