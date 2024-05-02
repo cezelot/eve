@@ -6,7 +6,7 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 10:35:43 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/28 14:39:10 by bhamed           ###   ########.fr       */
+/*   Updated: 2024/05/02 19:55:00 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ int	get_cursor_position(int *rows, int *cols)
 
 int	get_window_size(int *rows, int *cols)
 {
-	struct winsize	s_ws;
+	struct winsize	ws;
 
-	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &s_ws) == -1 \
-	|| s_ws.ws_col == 0)
+	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 \
+	|| ws.ws_col == 0)
 	{
 		if (write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12)
 			return (-1);
@@ -49,8 +49,8 @@ int	get_window_size(int *rows, int *cols)
 	}
 	else
 	{
-		*rows = s_ws.ws_row;
-		*cols = s_ws.ws_col;
+		*rows = ws.ws_row;
+		*cols = ws.ws_col;
 		return (0);
 	}
 }
