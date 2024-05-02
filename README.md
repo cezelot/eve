@@ -8,11 +8,25 @@ A terminal-based text editor.
 This project was created as part of my learning of the C programming language.
 The goal is to create a text editor from scratch. For now the program can only
 display a text file with:
-```shell
-make
+```bash
+$ make
 ./eve <filename>
 # Ctrl+Q to exit
 ```
+
+### To-Do
+
+ - [x] Display text files
+ - [ ] Edit text files
+ - [ ] Search feature
+ - [ ] Syntax highlighting and filetype detection
+ - [ ] Line number
+ - [ ] Soft indent
+ - [ ] Auto indent
+ - [ ] Hard-wrap lines
+ - [ ] Soft-wrap lines
+ - [ ] Copy and paste
+ - [ ] Config file
 
 ### Reference
 
