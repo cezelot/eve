@@ -1,32 +1,40 @@
-NAME	= eve
+NAME      = eve
 
-CC		= gcc
+CC        = gcc
+FLAGS     = -Wall -Werror -Wextra -pedantic -std=c99
 
-CFLAGS	= -Wall -Werror -Wextra -pedantic -std=c99
+SRC_DIR   = ./sources
 
-SRCS	= ./sources/main.c ./sources/terminal/terminal.c \
-		  ./sources/terminal/terminal_2.c \
-		  ./sources/terminal/terminal_3.c \
-		  ./sources/append_buffer.c ./sources/file_io.c \
-		  ./sources/row_operations.c ./sources/output.c \
-		  ./sources/input.c
+SRC_FILES = main.c \
+          terminal/terminal.c \
+          terminal/terminal_2.c \
+          terminal/terminal_3.c \
+          append_buffer.c \
+          file_io.c \
+          row_operations.c \
+          output.c \
+          input.c
 
-OBJS	= $(SRCS:.c=.o)
+OBJ_DIR   = ./objects
 
-RM		= rm -f
+OBJS      = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
-all		: $(NAME)
+all: $(NAME)
 
-.c.o	:
-	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+$(NAME): $(OBJS)
+	@ echo
+	$(CC) $(FLAGS) -o $@ $^
 
-$(NAME)	: $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@ mkdir -p `dirname $@`
+	$(CC) $(FLAGS) -c $< -o $@
 
-clean	:
-	$(RM) $(OBJS)
+clean:
+	rm -Rf $(OBJ_DIR)/
 
-fclean	: clean
-	$(RM) $(NAME)
+fclean: clean
+	rm -f $(NAME)
 
-re		: fclean all
+re: fclean all
+
+.PHONY: all clean fclean
