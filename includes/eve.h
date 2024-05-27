@@ -1,12 +1,10 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   eve.h                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/27 17:17:10 by bhamed            #+#    #+#             */
-/*   Updated: 2023/12/31 20:49:33 by bhamed           ###   ########.fr       */
+/*   eve.h                                                          .a888b    */
+/*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
+/*                                                                d8P         */
+/*   Created: 2023/11/27 17:17:10 by cezelot                     d8P.a8P      */
+/*   Updated: 2023/12/31 20:49:33 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +38,8 @@ enum e_editor_key
 
 typedef struct s_erow
 {
-	int		size;
 	char	*chars;
+	int		size;
 }			t_erow;
 
 typedef struct s_editor_config
