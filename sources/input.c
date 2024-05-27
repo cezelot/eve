@@ -6,19 +6,41 @@
 /*   By: bhamed <bhamed@student.42antananarivo.mg>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 18:32:33 by bhamed            #+#    #+#             */
-/*   Updated: 2024/01/01 19:14:26 by bhamed           ###   ########.fr       */
+/*   Updated: 2024/05/27 14:21:22 by bhamed           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/eve.h"
 
-void	editor_move_cursor(t_env *env, int key)
+static void	snap_cursor_to_end_of_line(t_env *env, t_erow *row, int rowlen)
 {
+	if (env->cy >= env->numrows)
+		row = NULL;
+	else
+		row = &env->row[env->cy];
+	if (row)
+		rowlen = row->size;
+	else
+		row = 0;
+	if (env->cx > rowlen)
+		env->cx = rowlen;
+}
+
+static void	editor_move_cursor(t_env *env, int key)
+{
+	t_erow	*row;
+	int		rowlen;
+
+	rowlen = 0;
+	if (env->cy >= env->numrows)
+		row = NULL;
+	else
+		row = &env->row[env->cy];
 	if (key == ARROW_LEFT)
 		if (env->cx != 0)
 			env->cx--;
 	if (key == ARROW_RIGHT)
-		if (env->cx != env->screencols - 1)
+		if (row && env->cx < row->size)
 			env->cx++;
 	if (key == ARROW_UP)
 		if (env->cy != 0)
@@ -26,9 +48,10 @@ void	editor_move_cursor(t_env *env, int key)
 	if (key == ARROW_DOWN)
 		if (env->cy < env->numrows)
 			env->cy++;
+	snap_cursor_to_end_of_line(env, row, rowlen);
 }
 
-void	process_esc_seq_keys(int c, t_env *env)
+static void	process_esc_seq_keys(int c, t_env *env)
 {
 	int	times;
 

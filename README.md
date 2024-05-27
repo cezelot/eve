@@ -28,10 +28,6 @@ $ make
  - [ ] Copy and paste
  - [ ] Config file
 
-### Reference
-
-[Build Your Own Text Editor](https://viewsourcecode.org/snaptoken/kilo).
-
 ### Your help is welcome
 
 If you found any bug, please [open an issue](https://github.com/cezelot/eve/issues/new).
