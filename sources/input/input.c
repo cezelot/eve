@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 18:32:33 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/28 16:33:09 by cezelot                     d888P'       */
+/*   Updated: 2024/05/28 16:45:46 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ static void	process_esc_seq_keys(int c, t_env *env)
 	if (c == HOME_KEY)
 		env->cx = 0;
 	else if (c == END_KEY)
-		env->cx = env->screencols - 1;
+	{
+		if (env->cy < env->numrows)
+			env->cx = env->row[env->cy].size;
+	}
 	else if ((c == PAGE_UP) || (c == PAGE_DOWN))
 		process_page_keys(env, c);
 	else if ((c == ARROW_LEFT) || (c == ARROW_RIGHT) \
