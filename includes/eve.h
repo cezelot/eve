@@ -4,15 +4,16 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 17:17:10 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/28 11:01:37 by cezelot                     d888P'       */
+/*   Updated: 2024/05/28 12:51:09 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EVE_H
 # define EVE_H
 
-# define EVE_VERSION "0.0.1"
 # define _DEFAULT_SOURCE
+# define EVE_VERSION "0.0.1"
+# define EVE_TAB_STOP 4
 
 # include <ctype.h>
 # include <errno.h>
@@ -39,7 +40,9 @@ enum e_editor_key
 typedef struct s_erow
 {
 	char	*chars;
+	char	*render;
 	int		size;
+	int		rsize;
 }			t_erow;
 
 typedef struct s_editor_config
@@ -47,6 +50,7 @@ typedef struct s_editor_config
 	int		cx;
 	int		cy;
 	int		rowoff;
+	int		coloff;
 	int		screenrows;
 	int		screencols;
 	int		numrows;

@@ -4,15 +4,49 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/12/31 18:08:27 by cezelot                     d8P.a8P      */
-/*   Updated: 2023/12/31 19:11:30 by cezelot                     d888P'       */
+/*   Updated: 2024/05/28 12:48:04 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/eve.h"
 
+static void	render_tab(char *render, int *index)
+{
+	render[(*index)++] = ' ';
+	while (*index % EVE_TAB_STOP)
+		render[(*index)++] = ' ';
+}
+
+static void	editor_update_row(t_erow *row)
+{
+	int	i;
+	int	n;
+	int	tabs;
+
+	i = 0;
+	n = 0;
+	tabs = 0;
+	while (n < row->size)
+		if (row->chars[n++] == '\t')
+			++tabs;
+	free(row->render);
+	row->render = malloc(row->size + tabs * (EVE_TAB_STOP - 1) + 1);
+	n = 0;
+	while (n < row->size)
+	{
+		if (row->chars[n] == '\t')
+			render_tab(row->render, &i);
+		else
+			row->render[i++] = row->chars[n];
+		++n;
+	}
+	row->render[i] = '\0';
+	row->rsize = i;
+}
+
 void	editor_append_row(t_env *env, char *str, size_t len)
 {
-	int	at;
+	size_t	at;
 
 	env->row = realloc(env->row, sizeof(t_erow) * (env->numrows + 1));
 	at = env->numrows;
@@ -20,5 +54,8 @@ void	editor_append_row(t_env *env, char *str, size_t len)
 	env->row[at].chars = malloc(len + 1);
 	memcpy(env->row[at].chars, str, len);
 	env->row[at].chars[len] = '\0';
+	env->row[at].rsize = 0;
+	env->row[at].render = NULL;
+	editor_update_row(&env->row[at]);
 	env->numrows++;
 }

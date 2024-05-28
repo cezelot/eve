@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/12/06 18:08:14 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/01/01 19:19:27 by cezelot                     d888P'       */
+/*   Updated: 2024/05/28 12:08:39 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,22 @@ static void	editor_scroll(t_env *env)
 		env->rowoff = env->cy;
 	if (env->cy >= env->rowoff + env->screenrows)
 		env->rowoff = env->cy - env->screenrows + 1;
+	if (env->cx < env->coloff)
+		env->coloff = env->cx;
+	if (env->cx >= env->coloff + env->screencols)
+		env->coloff = env->cx - env->screencols + 1;
 }
 
 static void	display_text_buffer(t_abuf *abuf, t_env *env, int filerow)
 {
 	int	len;
 
-	len = env->row[filerow].size;
+	len = env->row[filerow].rsize - env->coloff;
+	if (len < 0)
+		len = 0;
 	if (len > env->screencols)
 		len = env->screencols;
-	abuf_append(abuf, env->row[filerow].chars, len);
+	abuf_append(abuf, &env->row[filerow].render[env->coloff], len);
 }
 
 static void	display_welcome_message(t_abuf *abuf, t_env *env)

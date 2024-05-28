@@ -1,14 +1,11 @@
-# Temporary files
-*.swp
-
-# Object file
 *.o
-
-# Executables
-eve
-*.exe
-*.out
 *.app
-*.i*86
-*.x86_64
+*.exe
 *.hex
+*.i*86
+*.out
+*.swp
+*.txt
+*.x86_64
+eve
+core
