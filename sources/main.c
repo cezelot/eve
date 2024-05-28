@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/26 12:20:29 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/28 11:59:26 by cezelot                     d888P'       */
+/*   Updated: 2024/05/28 15:34:32 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@ static void	init_editor(t_env *env)
 {
 	env->cx = 0;
 	env->cy = 0;
+	env->rx = 0;
 	env->rowoff = 0;
 	env->coloff = 0;
 	env->numrows = 0;

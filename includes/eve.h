@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 17:17:10 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/28 12:51:09 by cezelot                     d888P'       */
+/*   Updated: 2024/05/28 15:53:28 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_editor_config
 {
 	int		cx;
 	int		cy;
+	int		rx;
 	int		rowoff;
 	int		coloff;
 	int		screenrows;
@@ -89,5 +90,6 @@ void	abuf_free(t_abuf *abuf);
 void	editor_open(t_env *env, char *filename);
 // --------------------------------------------------------- row_operations.c --
 void	editor_append_row(t_env *env, char *str, size_t len);
+int		editor_row_cx_to_rx(t_erow *row, int cx);
 
 #endif

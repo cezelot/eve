@@ -4,11 +4,27 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/12/31 18:08:27 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/28 12:48:04 by cezelot                     d888P'       */
+/*   Updated: 2024/05/28 15:53:04 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/eve.h"
+
+int	editor_row_cx_to_rx(t_erow *row, int cx)
+{
+	int	rx;
+	int	i;
+
+	rx = 0;
+	i = 0;
+	while (i < cx)
+	{
+		if (row->chars[i++] == '\t')
+			rx += (EVE_TAB_STOP - 1) - (rx % EVE_TAB_STOP);
+		++rx;
+	}
+	return (rx);
+}
 
 static void	render_tab(char *render, int *index)
 {
