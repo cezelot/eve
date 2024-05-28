@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   terminal_3.c                                                   .a888b    */
+/*   terminal_utils.c                                               .a888b    */
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
-/*   Created: 2023/12/28 14:37:35 by cezelot                     d8P.a8P      */
-/*   Updated: 2023/12/29 15:25:53 by cezelot                     d888P'       */
+/*   Created: 2023/12/18 10:35:43 by cezelot                     d8P.a8P      */
+/*   Updated: 2024/05/02 19:55:00 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eve.h"
 
-int	is_home_or_end_keys(char *seq)
+static int	is_home_or_end_keys(char *seq)
 {
 	if (seq[1] == 'H')
 		return (HOME_KEY);
@@ -20,7 +20,7 @@ int	is_home_or_end_keys(char *seq)
 		return (0);
 }
 
-int	is_seq_keys_2(char *seq)
+static int	is_seq_keys_2(char *seq)
 {
 	if (seq[1] >= '0' && seq[1] <= '9')
 	{
@@ -47,7 +47,7 @@ int	is_seq_keys_2(char *seq)
 	return (0);
 }
 
-int	is_seq_keys(char *seq)
+static int	is_seq_keys(char *seq)
 {
 	if (seq[1] == 'A')
 		return (ARROW_UP);
@@ -89,4 +89,28 @@ int	read_escape_sequences(void)
 	else if (seq[0] == 'O')
 		return (is_home_or_end_keys(seq));
 	return ('\x1b');
+}
+
+int	get_cursor_position(int *rows, int *cols)
+{
+	char			buf[32];
+	unsigned int	i;
+
+	i = 0;
+	if (write(STDOUT_FILENO, "\x1b[6n", 4) != 4)
+		return (-1);
+	while (i < sizeof(buf) - 1)
+	{
+		if (read(STDIN_FILENO, &buf[i], 1) != 1)
+			break ;
+		if (buf[i] == 'R')
+			break ;
+		i++;
+	}
+	buf[i] = '\0';
+	if (buf[0] != '\x1b' || buf[1] != '[')
+		return (-1);
+	if (sscanf(&buf[2], "%d;%d", rows, cols) != 2)
+		return (-1);
+	return (0);
 }

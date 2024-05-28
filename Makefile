@@ -7,13 +7,13 @@ SRC_DIR   = ./sources
 
 SRC_FILES = main.c \
           terminal/terminal.c \
-          terminal/terminal_2.c \
-          terminal/terminal_3.c \
+          terminal/terminal_utils.c \
           append_buffer.c \
           file_io.c \
           row_operations.c \
           output.c \
-          input.c
+          input/input.c \
+          input/input_utils.c
 
 OBJ_DIR   = ./objects
 

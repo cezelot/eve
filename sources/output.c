@@ -10,7 +10,7 @@
 
 #include "../includes/eve.h"
 
-void	editor_scroll(t_env *env)
+static void	editor_scroll(t_env *env)
 {
 	if (env->cy < env->rowoff)
 		env->rowoff = env->cy;
@@ -18,7 +18,7 @@ void	editor_scroll(t_env *env)
 		env->rowoff = env->cy - env->screenrows + 1;
 }
 
-void	display_text_buffer(t_abuf *abuf, t_env *env, int filerow)
+static void	display_text_buffer(t_abuf *abuf, t_env *env, int filerow)
 {
 	int	len;
 
@@ -28,7 +28,7 @@ void	display_text_buffer(t_abuf *abuf, t_env *env, int filerow)
 	abuf_append(abuf, env->row[filerow].chars, len);
 }
 
-void	display_welcome_message(t_abuf *abuf, t_env *env)
+static void	display_welcome_message(t_abuf *abuf, t_env *env)
 {
 	char	welcome[80];
 	int		welcomelen;
@@ -49,7 +49,7 @@ void	display_welcome_message(t_abuf *abuf, t_env *env)
 	abuf_append(abuf, welcome, welcomelen);
 }
 
-void	editor_draw_rows(t_abuf *abuf, t_env *env)
+static void	editor_draw_rows(t_abuf *abuf, t_env *env)
 {
 	int	n;
 	int	filerow;

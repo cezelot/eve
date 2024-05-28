@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 17:17:10 by cezelot                     d8P.a8P      */
-/*   Updated: 2023/12/31 20:49:33 by cezelot                     d888P'       */
+/*   Updated: 2024/05/28 11:01:37 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,18 +59,31 @@ typedef struct s_abuf
 	int		len;
 }			t_abuf;
 
-void	abuf_append(t_abuf *abuf, const char *str, int len);
-void	abuf_free(t_abuf *abuf);
-void	editor_append_row(t_env *env, char *str, size_t len);
-void	editor_open(t_env *env, char *filename);
+// ------------------------------------------------------------------ input.c --
 void	editor_process_keypress(t_env *env);
-void	editor_refresh_screen(t_env *env);
-void	enable_raw_mode(void);
+// ------------------------------------------------------------ input_utils.c --
+void	move_cursor_down(t_env *env);
+void	move_cursor_left(t_env *env);
+void	move_cursor_right(t_env *env, t_erow *row);
+void	move_cursor_up(t_env *env);
+void	snap_cursor_to_end_of_line(t_env *env, t_erow *row, int rowlen);
+// --------------------------------------------------------------- terminal.c --
 void	die(const char *str);
+void	enable_raw_mode(void);
 void	disable_raw_mode(void);
 int		editor_read_key(void);
+// --------------------------------------------------------- terminal_utils.c --
+int		get_cursor_position(int *rows, int *cols);
 int		get_window_size(int *rows, int *cols);
 int		read_escape_sequences(void);
-int		read_key(int *pi, char *pc);
+// ----------------------------------------------------------------- output.c --
+void	editor_refresh_screen(t_env *env);
+// ---------------------------------------------------------- append_buffer.c --
+void	abuf_append(t_abuf *abuf, const char *str, int len);
+void	abuf_free(t_abuf *abuf);
+// ---------------------------------------------------------------- file_io.c --
+void	editor_open(t_env *env, char *filename);
+// --------------------------------------------------------- row_operations.c --
+void	editor_append_row(t_env *env, char *str, size_t len);
 
 #endif

@@ -10,7 +10,7 @@
 
 #include "../includes/eve.h"
 
-void	init_editor(t_env *env)
+static void	init_editor(t_env *env)
 {
 	env->cx = 0;
 	env->cy = 0;

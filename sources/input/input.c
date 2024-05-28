@@ -4,25 +4,11 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 18:32:33 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/27 14:21:22 by cezelot                     d888P'       */
+/*   Updated: 2024/05/28 10:30:17 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eve.h"
-
-static void	snap_cursor_to_end_of_line(t_env *env, t_erow *row, int rowlen)
-{
-	if (env->cy >= env->numrows)
-		row = NULL;
-	else
-		row = &env->row[env->cy];
-	if (row)
-		rowlen = row->size;
-	else
-		row = 0;
-	if (env->cx > rowlen)
-		env->cx = rowlen;
-}
+#include "../../includes/eve.h"
 
 static void	editor_move_cursor(t_env *env, int key)
 {
@@ -35,17 +21,13 @@ static void	editor_move_cursor(t_env *env, int key)
 	else
 		row = &env->row[env->cy];
 	if (key == ARROW_LEFT)
-		if (env->cx != 0)
-			env->cx--;
+		move_cursor_left(env);
 	if (key == ARROW_RIGHT)
-		if (row && env->cx < row->size)
-			env->cx++;
+		move_cursor_right(env, row);
 	if (key == ARROW_UP)
-		if (env->cy != 0)
-			env->cy--;
+		move_cursor_up(env);
 	if (key == ARROW_DOWN)
-		if (env->cy < env->numrows)
-			env->cy++;
+		move_cursor_down(env);
 	snap_cursor_to_end_of_line(env, row, rowlen);
 }
 
