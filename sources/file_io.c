@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/12/29 16:01:01 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/03/15 09:19:42 by cezelot                     d888P'       */
+/*   Updated: 2024/05/29 10:02:55 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	editor_open(t_env *env, char *filename)
 	size_t	linecap;
 	ssize_t	linelen;
 
+	free(env->filename);
+	env->filename = strdup(filename);
 	fp = fopen(filename, "r");
 	if (!fp)
 		die("fopen");

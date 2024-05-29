@@ -11,7 +11,8 @@ SRC_FILES = main.c \
           append_buffer.c \
           file_io.c \
           row_operations.c \
-          output.c \
+          output/output.c \
+          output/output_utils.c \
           input/input.c \
           input/input_utils.c
 

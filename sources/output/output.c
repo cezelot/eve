@@ -4,11 +4,11 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/12/06 18:08:14 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/28 15:56:42 by cezelot                     d888P'       */
+/*   Updated: 2024/05/29 12:06:53 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eve.h"
+#include "../../includes/eve.h"
 
 static void	editor_scroll(t_env *env)
 {
@@ -25,40 +25,39 @@ static void	editor_scroll(t_env *env)
 		env->coloff = env->rx - env->screencols + 1;
 }
 
-static void	display_text_buffer(t_abuf *abuf, t_env *env, int filerow)
+static void	editor_draw_status_bar(t_env *env, t_abuf *abuf)
 {
-	int	len;
+	char	status[80];
+	char	rstatus[80];
+	int		len;
+	int		rlen;
 
-	len = env->row[filerow].rsize - env->coloff;
-	if (len < 0)
-		len = 0;
+	if (env->filename)
+		len = snprintf(status, sizeof(status), "%.20s - %d lines", \
+		env->filename, env->numrows);
+	else
+		len = snprintf(status, sizeof(status), "%.20s - %d lines", \
+		"[No Name]", env->numrows);
+	rlen = snprintf(rstatus, sizeof(rstatus), "%d/%d", env->cy + 1, \
+	env->numrows);
+	abuf_append(abuf, "\x1b[7m", 4);
 	if (len > env->screencols)
 		len = env->screencols;
-	abuf_append(abuf, &env->row[filerow].render[env->coloff], len);
-}
-
-static void	display_welcome_message(t_abuf *abuf, t_env *env)
-{
-	char	welcome[80];
-	int		welcomelen;
-	int		padding;
-
-	welcomelen = snprintf(welcome, sizeof(welcome), \
-		"eve editor -- version %s", EVE_VERSION);
-	if (welcomelen > env->screencols)
-		welcomelen = env->screencols;
-	padding = (env->screencols - welcomelen) / 2;
-	if (padding)
+	abuf_append(abuf, status, len);
+	while (len++ < env->screencols)
 	{
-		abuf_append(abuf, "~", 1);
-		padding--;
+		if (env->screencols - len == rlen)
+		{
+			abuf_append(abuf, rstatus, rlen);
+			break ;
+		}
+		else
+			abuf_append(abuf, " ", 1);
 	}
-	while (padding--)
-		abuf_append(abuf, " ", 1);
-	abuf_append(abuf, welcome, welcomelen);
+	abuf_append(abuf, "\x1b[m", 3);
 }
 
-static void	editor_draw_rows(t_abuf *abuf, t_env *env)
+static void	editor_draw_rows(t_env *env, t_abuf *abuf)
 {
 	int	n;
 	int	filerow;
@@ -72,16 +71,16 @@ static void	editor_draw_rows(t_abuf *abuf, t_env *env)
 			if (env->numrows == 0 && n == env->screenrows / 3)
 			{
 				if (n == env->screenrows / 3)
-					display_welcome_message(abuf, env);
+					display_welcome_message(env, abuf);
 			}
 			else
 				abuf_append(abuf, "~", 1);
 		}
 		else
-			display_text_buffer(abuf, env, filerow);
+			display_text_buffer(env, abuf, filerow);
 		abuf_append(abuf, "\x1b[K", 3);
-		if (n++ < env->screenrows - 1)
-			abuf_append(abuf, "\r\n", 2);
+		abuf_append(abuf, "\r\n", 2);
+		++n;
 	}
 }
 
@@ -95,7 +94,8 @@ void	editor_refresh_screen(t_env *env)
 	editor_scroll(env);
 	abuf_append(&abuf, "\x1b[?25l", 6);
 	abuf_append(&abuf, "\x1b[H", 3);
-	editor_draw_rows(&abuf, env);
+	editor_draw_rows(env, &abuf);
+	editor_draw_status_bar(env, &abuf);
 	snprintf(buf, sizeof(buf), "\x1b[%d;%dH", \
 		(env->cy - env->rowoff) + 1, (env->rx - env->coloff) + 1);
 	abuf_append(&abuf, buf, strlen(buf));

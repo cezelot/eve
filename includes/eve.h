@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 17:17:10 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/28 15:53:28 by cezelot                     d888P'       */
+/*   Updated: 2024/05/29 12:16:03 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_editor_config
 	int		screencols;
 	int		numrows;
 	t_erow	*row;
+	char	*filename;
 }			t_env;
 
 typedef struct s_abuf
@@ -83,6 +84,9 @@ int		get_window_size(int *rows, int *cols);
 int		read_escape_sequences(void);
 // ----------------------------------------------------------------- output.c --
 void	editor_refresh_screen(t_env *env);
+// ----------------------------------------------------------- output_utils.c --
+void	display_text_buffer(t_env *env, t_abuf *abuf, int filerow);
+void	display_welcome_message(t_env *env, t_abuf *abuf);
 // ---------------------------------------------------------- append_buffer.c --
 void	abuf_append(t_abuf *abuf, const char *str, int len);
 void	abuf_free(t_abuf *abuf);
