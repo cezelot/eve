@@ -11,7 +11,6 @@ display a text file with:
 ```bash
 $ make
 ./eve <filename>
-# Ctrl+Q to exit
 ```
 
 ### To-Do

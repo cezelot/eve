@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/12/06 18:08:14 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/29 12:06:53 by cezelot                     d888P'       */
+/*   Updated: 2024/05/29 12:50:52 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,18 @@ static void	editor_scroll(t_env *env)
 		env->coloff = env->rx;
 	if (env->rx >= env->coloff + env->screencols)
 		env->coloff = env->rx - env->screencols + 1;
+}
+
+void	editor_draw_message_bar(t_env *env, t_abuf *abuf)
+{
+	int	msglen;
+
+	abuf_append(abuf, "\x1b[K", 3);
+	msglen = strlen(env->statusmsg);
+	if (msglen > env->screencols)
+		msglen = env->screencols;
+	if (msglen && time(NULL) - env->statusmsg_time < 5)
+		abuf_append(abuf, env->statusmsg, msglen);
 }
 
 static void	editor_draw_status_bar(t_env *env, t_abuf *abuf)
@@ -55,6 +67,7 @@ static void	editor_draw_status_bar(t_env *env, t_abuf *abuf)
 			abuf_append(abuf, " ", 1);
 	}
 	abuf_append(abuf, "\x1b[m", 3);
+	abuf_append(abuf, "\r\n", 2);
 }
 
 static void	editor_draw_rows(t_env *env, t_abuf *abuf)
@@ -96,6 +109,7 @@ void	editor_refresh_screen(t_env *env)
 	abuf_append(&abuf, "\x1b[H", 3);
 	editor_draw_rows(env, &abuf);
 	editor_draw_status_bar(env, &abuf);
+	editor_draw_message_bar(env, &abuf);
 	snprintf(buf, sizeof(buf), "\x1b[%d;%dH", \
 		(env->cy - env->rowoff) + 1, (env->rx - env->coloff) + 1);
 	abuf_append(&abuf, buf, strlen(buf));

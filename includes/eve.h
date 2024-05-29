@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 17:17:10 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/29 12:16:03 by cezelot                     d888P'       */
+/*   Updated: 2024/05/29 12:53:12 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -12,16 +12,18 @@
 # define EVE_H
 
 # define _DEFAULT_SOURCE
-# define EVE_VERSION "0.0.1"
+# define EVE_VERSION "0.1.0"
 # define EVE_TAB_STOP 4
 
 # include <ctype.h>
 # include <errno.h>
+# include <stdarg.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/ioctl.h>
 # include <termios.h>
+# include <time.h>
 # include <unistd.h>
 
 enum e_editor_key
@@ -57,6 +59,8 @@ typedef struct s_editor_config
 	int		numrows;
 	t_erow	*row;
 	char	*filename;
+	char	statusmsg[80];
+	time_t	statusmsg_time;
 }			t_env;
 
 typedef struct s_abuf
@@ -83,10 +87,12 @@ int		get_cursor_position(int *rows, int *cols);
 int		get_window_size(int *rows, int *cols);
 int		read_escape_sequences(void);
 // ----------------------------------------------------------------- output.c --
+void	editor_draw_message_bar(t_env *env, t_abuf *abuf);
 void	editor_refresh_screen(t_env *env);
 // ----------------------------------------------------------- output_utils.c --
 void	display_text_buffer(t_env *env, t_abuf *abuf, int filerow);
 void	display_welcome_message(t_env *env, t_abuf *abuf);
+void	editor_set_status_message(t_env *env, const char *format, ...);
 // ---------------------------------------------------------- append_buffer.c --
 void	abuf_append(t_abuf *abuf, const char *str, int len);
 void	abuf_free(t_abuf *abuf);

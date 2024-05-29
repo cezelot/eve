@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/26 12:20:29 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/29 10:03:12 by cezelot                     d888P'       */
+/*   Updated: 2024/05/29 12:42:42 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ static void	init_editor(t_env *env)
 	env->numrows = 0;
 	env->row = NULL;
 	env->filename = NULL;
+	env->statusmsg[0] = '\0';
+	env->statusmsg_time = 0;
 	if (get_window_size(&env->screenrows, \
 	&env->screencols) == -1)
 		die("get_window_size screensize");
-	--env->screenrows;
+	env->screenrows -= 2;
 }
 
 int	main(int ac, char **av)
@@ -35,6 +37,7 @@ int	main(int ac, char **av)
 	init_editor(&env);
 	if (ac >= 2)
 		editor_open(&env, av[1]);
+	editor_set_status_message(&env, "Help: Ctrl-Q = quit");
 	while (1)
 	{
 		editor_refresh_screen(&env);

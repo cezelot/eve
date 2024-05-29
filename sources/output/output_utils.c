@@ -4,11 +4,21 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2024/05/29 10:19:15 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/29 11:34:07 by cezelot                     d888P'       */
+/*   Updated: 2024/05/29 12:47:57 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eve.h"
+
+void	editor_set_status_message(t_env *env, const char *format, ...)
+{
+	va_list	ap;
+
+	va_start(ap, format);
+	vsnprintf(env->statusmsg, sizeof(env->statusmsg), format, ap);
+	va_end(ap);
+	env->statusmsg_time = time(NULL);
+}
 
 void	display_text_buffer(t_env *env, t_abuf *abuf, int filerow)
 {
