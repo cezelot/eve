@@ -10,7 +10,7 @@ The goal is to create a text editor from scratch. For now the program can only
 display a text file with:
 ```bash
 $ make
-./eve <filename>
+$ ./eve <file>
 ```
 
 ### To-Do

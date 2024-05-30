@@ -4,11 +4,25 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/26 12:20:29 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/29 12:42:42 by cezelot                     d888P'       */
+/*   Updated: 2024/05/30 20:52:25 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/eve.h"
+
+void	close_editor(t_env *env)
+{
+	int	i;
+
+	i = 0;
+	free(env->filename);
+	while (i < env->numrows)
+	{
+		free(env->row[i].chars);
+		free(env->row[i++].render);
+	}
+	free(env->row);
+}
 
 static void	init_editor(t_env *env)
 {

@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 17:17:10 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/29 12:53:12 by cezelot                     d888P'       */
+/*   Updated: 2024/05/30 21:00:56 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,20 @@ typedef struct s_abuf
 	int		len;
 }			t_abuf;
 
+// ------------------------------------------------------------------- main.c --
+void	close_editor(t_env *env);
 // ------------------------------------------------------------------ input.c --
+void	editor_move_cursor(t_env *env, int key);
 void	editor_process_keypress(t_env *env);
 // ------------------------------------------------------------ input_utils.c --
 void	move_cursor_down(t_env *env);
 void	move_cursor_left(t_env *env);
 void	move_cursor_right(t_env *env, t_erow *row);
 void	move_cursor_up(t_env *env);
-void	snap_cursor_to_end_of_line(t_env *env, t_erow *row, int rowlen);
+void	snap_cursor_to_end_line(t_env *env, t_erow *row, int rowlen);
+// ---------------------------------------------------------- input_utils_2.c --
+void	change_page(t_env *env, int c);
+void	move_cursor_to_end_line(t_env *env);
 // --------------------------------------------------------------- terminal.c --
 void	die(const char *str);
 void	enable_raw_mode(void);
@@ -91,6 +97,7 @@ void	editor_draw_message_bar(t_env *env, t_abuf *abuf);
 void	editor_refresh_screen(t_env *env);
 // ----------------------------------------------------------- output_utils.c --
 void	display_text_buffer(t_env *env, t_abuf *abuf, int filerow);
+void	display_tilde(t_env *env, t_abuf *abuf, int n);
 void	display_welcome_message(t_env *env, t_abuf *abuf);
 void	editor_set_status_message(t_env *env, const char *format, ...);
 // ---------------------------------------------------------- append_buffer.c --

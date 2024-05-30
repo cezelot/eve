@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/12/06 18:08:14 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/29 12:50:52 by cezelot                     d888P'       */
+/*   Updated: 2024/05/30 18:24:46 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,7 @@ static void	editor_draw_rows(t_env *env, t_abuf *abuf)
 	{
 		filerow = n + env->rowoff;
 		if (filerow >= env->numrows)
-		{
-			if (env->numrows == 0 && n == env->screenrows / 3)
-			{
-				if (n == env->screenrows / 3)
-					display_welcome_message(env, abuf);
-			}
-			else
-				abuf_append(abuf, "~", 1);
-		}
+			display_tilde(env, abuf, n);
 		else
 			display_text_buffer(env, abuf, filerow);
 		abuf_append(abuf, "\x1b[K", 3);

@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2024/05/29 10:19:15 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/29 12:47:57 by cezelot                     d888P'       */
+/*   Updated: 2024/05/30 18:25:02 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,15 @@ void	display_welcome_message(t_env *env, t_abuf *abuf)
 	while (padding--)
 		abuf_append(abuf, " ", 1);
 	abuf_append(abuf, welcome, welcomelen);
+}
+
+void	display_tilde(t_env *env, t_abuf *abuf, int n)
+{
+	if (env->numrows == 0 && n == env->screenrows / 3)
+	{
+		if (n == env->screenrows / 3)
+			display_welcome_message(env, abuf);
+	}
+	else
+		abuf_append(abuf, "~", 1);
 }

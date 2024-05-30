@@ -4,13 +4,13 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2024/05/28 10:13:12 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/28 10:29:47 by cezelot                     d888P'       */
+/*   Updated: 2024/05/30 21:00:44 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/eve.h"
 
-void	snap_cursor_to_end_of_line(t_env *env, t_erow *row, int rowlen)
+void	snap_cursor_to_end_line(t_env *env, t_erow *row, int rowlen)
 {
 	if (env->cy >= env->numrows)
 		row = NULL;
