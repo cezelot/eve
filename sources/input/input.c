@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 18:32:33 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/30 21:00:17 by cezelot                     d888P'       */
+/*   Updated: 2024/05/31 10:56:01 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,9 @@ static void	process_esc_seq_keys(int c, t_env *env)
 		env->cx = 0;
 	else if (c == END_KEY)
 		move_cursor_to_end_line(env);
-	else if ((c == PAGE_UP) || (c == PAGE_DOWN))
+	else if (is_page_keys(c))
 		process_page_keys(env, c);
-	else if ((c == ARROW_LEFT) || (c == ARROW_RIGHT) \
-			|| (c == ARROW_UP) || (c == ARROW_DOWN))
+	else if (is_arrow_keys(c))
 		editor_move_cursor(env, c);
 }
 

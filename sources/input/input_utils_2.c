@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2024/05/30 17:10:05 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/30 21:00:32 by cezelot                     d888P'       */
+/*   Updated: 2024/05/31 10:53:08 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,19 @@ void	move_cursor_to_end_line(t_env *env)
 {
 	if (env->cy < env->numrows)
 		env->cx = env->row[env->cy].size;
+}
+
+int	is_arrow_keys(int c)
+{
+	if ((c == ARROW_LEFT) || (c == ARROW_RIGHT) \
+		|| (c == ARROW_UP) || (c == ARROW_DOWN))
+		return (1);
+	return (0);
+}
+
+int	is_page_keys(int c)
+{
+	if ((c == PAGE_UP) || (c == PAGE_DOWN))
+		return (1);
+	return (0);
 }

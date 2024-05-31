@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 17:17:10 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/30 21:00:56 by cezelot                     d888P'       */
+/*   Updated: 2024/05/31 10:54:48 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ void	move_cursor_up(t_env *env);
 void	snap_cursor_to_end_line(t_env *env, t_erow *row, int rowlen);
 // ---------------------------------------------------------- input_utils_2.c --
 void	change_page(t_env *env, int c);
+int		is_arrow_keys(int c);
+int		is_page_keys(int c);
 void	move_cursor_to_end_line(t_env *env);
 // --------------------------------------------------------------- terminal.c --
 void	die(const char *str);
