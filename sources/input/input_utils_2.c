@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2024/05/30 17:10:05 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/31 10:53:08 by cezelot                     d888P'       */
+/*   Updated: 2024/05/31 12:15:27 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ void	move_cursor_to_end_line(t_env *env)
 
 int	is_arrow_keys(int c)
 {
-	if ((c == ARROW_LEFT) || (c == ARROW_RIGHT) \
-		|| (c == ARROW_UP) || (c == ARROW_DOWN))
+	if ((c == ARROW_LEFT) || (c == ARROW_RIGHT))
+		return (1);
+	else if ((c == ARROW_UP) || (c == ARROW_DOWN))
 		return (1);
 	return (0);
 }

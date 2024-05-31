@@ -4,11 +4,18 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/12/29 16:01:01 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/29 10:02:55 by cezelot                     d888P'       */
+/*   Updated: 2024/05/31 14:24:42 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/eve.h"
+
+static int	has_newline_or_carriage_return(char *line, ssize_t linelen)
+{
+	if (line[linelen - 1] == '\n' || line[linelen - 1] == '\r')
+		return (1);
+	return (0);
+}
 
 void	editor_open(t_env *env, char *filename)
 {
@@ -29,8 +36,7 @@ void	editor_open(t_env *env, char *filename)
 		linelen = getline(&line, &linecap, fp);
 		if (linelen == -1)
 			break ;
-		while (linelen > 0 && (line[linelen - 1] == '\n' || \
-								line[linelen - 1] == '\r'))
+		while (linelen > 0 && has_newline_or_carriage_return(line, linelen))
 			--linelen;
 		editor_append_row(env, line, linelen);
 	}

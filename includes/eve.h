@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 17:17:10 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/31 10:54:48 by cezelot                     d888P'       */
+/*   Updated: 2024/05/31 13:35:33 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int		editor_read_key(void);
 int		get_cursor_position(int *rows, int *cols);
 int		get_window_size(int *rows, int *cols);
 int		read_escape_sequences(void);
+// ------------------------------------------------------- terminal_utils_2.c --
+int		get_nav_key(char *seq);
 // ----------------------------------------------------------------- output.c --
 void	editor_draw_message_bar(t_env *env, t_abuf *abuf);
 void	editor_refresh_screen(t_env *env);

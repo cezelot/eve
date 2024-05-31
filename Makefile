@@ -6,16 +6,17 @@ FLAGS     = -Wall -Werror -Wextra -pedantic -std=c99
 SRC_DIR   = ./sources
 
 SRC_FILES = main.c \
-            terminal/terminal.c \
-            terminal/terminal_utils.c \
             append_buffer.c \
             file_io.c \
             row_operations.c \
-            output/output.c \
-            output/output_utils.c \
+            terminal/terminal.c \
+            terminal/terminal_utils.c \
+            terminal/terminal_utils_2.c \
             input/input.c \
             input/input_utils.c \
-            input/input_utils_2.c
+            input/input_utils_2.c \
+            output/output.c \
+            output/output_utils.c
 
 OBJ_DIR   = ./objects
 
