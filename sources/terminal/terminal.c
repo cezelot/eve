@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 18:25:14 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/06/23 20:02:34 by cezelot                     d888P'       */
+/*   Updated: 2024/06/23 21:44:40 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -12,11 +12,14 @@
 
 struct termios	g_orig_termios;
 
-void	die(const char *str)
+void	die(const char *file, int line, const char *message)
 {
+	int	errnum;
+
+	errnum = errno;
 	write(STDOUT_FILENO, "\x1b[2J", 4);
 	write(STDOUT_FILENO, "\x1b[H", 3);
-	perror(str);
+	fprintf(stderr, "%s:%d: %s: %s", file, line, message, strerror(errnum));
 	exit(1);
 }
 
@@ -42,7 +45,8 @@ int	get_window_size(int *rows, int *cols)
 static void	disable_raw_mode(void)
 {
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &g_orig_termios) == -1)
-		die("Failed to restore terminal’s original attributes");
+		die(__FILE__, __LINE__, \
+		"failed to restore terminal’s original attributes");
 }
 
 void	enable_raw_mode(void)
@@ -50,7 +54,7 @@ void	enable_raw_mode(void)
 	struct termios	s_raw;
 
 	if (tcgetattr(STDIN_FILENO, &g_orig_termios) == -1)
-		die("Failed to get terminal attributes");
+		die(__FILE__, __LINE__, "failed to get terminal attributes");
 	atexit(disable_raw_mode);
 	s_raw = g_orig_termios;
 	s_raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
@@ -60,7 +64,7 @@ void	enable_raw_mode(void)
 	s_raw.c_cc[VMIN] = 0;
 	s_raw.c_cc[VTIME] = 1;
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &s_raw) == -1)
-		die("Failed to set terminal attributes");
+		die(__FILE__, __LINE__, "failed to set terminal attributes");
 }
 
 int	editor_read_key(void)
@@ -74,7 +78,7 @@ int	editor_read_key(void)
 		if (nbytes_read == 1)
 			break ;
 		if (nbytes_read == -1 && errno != EAGAIN)
-			die("Failed to read the key pressed");
+			die(__FILE__, __LINE__, "failed to read the key pressed");
 	}
 	if (c == '\x1b')
 		return (read_escape_sequences());

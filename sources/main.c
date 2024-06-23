@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/26 12:20:29 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/06/23 20:04:56 by cezelot                     d888P'       */
+/*   Updated: 2024/06/23 21:24:11 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	init_editor(t_env *env)
 	env->statusmsg_time = 0;
 	if (get_window_size(&env->screenrows, \
 	&env->screencols) == -1)
-		die("Failed to get terminal size");
+		die(__FILE__, __LINE__, "failed to get terminal size");
 	env->screenrows -= 2;
 }
 

@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/12/29 16:01:01 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/06/23 20:03:32 by cezelot                     d888P'       */
+/*   Updated: 2024/06/23 21:29:50 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ void	editor_open(t_env *env, char *filename)
 	env->filename = strdup(filename);
 	fp = fopen(filename, "r");
 	if (!fp)
-		die("Cannot open the file");
+	{
+		free(env->filename);
+		die(__FILE__, __LINE__, "cannot open the file");
+	}
 	line = NULL;
 	linecap = 0;
 	while (1)
