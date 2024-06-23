@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/12/18 14:16:44 by cezelot                     d8P.a8P      */
-/*   Updated: 2023/12/25 15:28:48 by cezelot                     d888P'       */
+/*   Updated: 2024/06/20 11:02:16 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -12,13 +12,13 @@
 
 void	abuf_append(t_abuf *abuf, const char *str, int len)
 {
-	char	*new;
+	char	*new_buf;
 
-	new = realloc(abuf->buf, abuf->len + len);
-	if (new == NULL)
+	new_buf = realloc(abuf->buf, abuf->len + len);
+	if (new_buf == NULL)
 		return ;
-	memcpy(&new[abuf->len], str, len);
-	abuf->buf = new;
+	memcpy(&new_buf[abuf->len], str, len);
+	abuf->buf = new_buf;
 	abuf->len += len;
 }
 

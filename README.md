@@ -13,6 +13,15 @@ $ make
 $ ./eve <file>
 ```
 
+### Make rules
+
+Command       |  Description
+:-------------|:-------------
+`make`        | Compile the program.
+`make clean`  | Remove objects files.
+`make fclean` | Remove objects files and the program.
+`make re`     | Re-compile the program.
+
 ### To-Do
 
  - [x] Display text files
@@ -30,4 +39,3 @@ $ ./eve <file>
 ### Your help is welcome
 
 If you found any bug, please [open an issue](https://github.com/cezelot/eve/issues/new).
-If you want to contribute, feel free to do pull requests.

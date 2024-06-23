@@ -1,26 +1,26 @@
-NAME      = eve
+NAME      := eve
 
-CC        = gcc
-FLAGS     = -Wall -Werror -Wextra -pedantic -std=c99
+CC        := gcc
+FLAGS     := -Wall -Werror -Wextra -pedantic -std=c99
 
-SRC_DIR   = ./sources
+SRC_DIR   := ./sources
 
-SRC_FILES = main.c \
-            append_buffer.c \
-            file_io.c \
-            row_operations.c \
-            terminal/terminal.c \
-            terminal/terminal_utils.c \
-            terminal/terminal_utils_2.c \
-            input/input.c \
-            input/input_utils.c \
-            input/input_utils_2.c \
-            output/output.c \
-            output/output_utils.c
+SRC_FILES := main.c \
+             append_buffer.c \
+             file_io.c \
+             row_operations.c \
+             terminal/terminal.c \
+             terminal/terminal_utils.c \
+             terminal/terminal_utils_2.c \
+             input/input.c \
+             input/input_utils.c \
+             input/input_utils_2.c \
+             output/output.c \
+             output/output_utils.c
 
-OBJ_DIR   = ./objects
+OBJ_DIR   := ./objects
 
-OBJS      = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
+OBJS      := $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
 all: $(NAME)
 
@@ -40,4 +40,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean
+.PHONY: all clean fclean re

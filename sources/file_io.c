@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/12/29 16:01:01 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/31 14:24:42 by cezelot                     d888P'       */
+/*   Updated: 2024/06/23 20:03:32 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -12,9 +12,7 @@
 
 static int	has_newline_or_carriage_return(char *line, ssize_t linelen)
 {
-	if (line[linelen - 1] == '\n' || line[linelen - 1] == '\r')
-		return (1);
-	return (0);
+	return (line[linelen - 1] == '\n' || line[linelen - 1] == '\r');
 }
 
 void	editor_open(t_env *env, char *filename)
@@ -28,7 +26,7 @@ void	editor_open(t_env *env, char *filename)
 	env->filename = strdup(filename);
 	fp = fopen(filename, "r");
 	if (!fp)
-		die("fopen");
+		die("Cannot open the file");
 	line = NULL;
 	linecap = 0;
 	while (1)

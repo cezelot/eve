@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 18:25:14 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/03/25 19:45:04 by cezelot                     d888P'       */
+/*   Updated: 2024/06/23 20:02:34 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,10 @@ int	get_window_size(int *rows, int *cols)
 	}
 }
 
-void	disable_raw_mode(void)
+static void	disable_raw_mode(void)
 {
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, \
-	&g_orig_termios) == -1)
-		die("tcsetattr g_orig_termios");
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &g_orig_termios) == -1)
+		die("Failed to restore terminal’s original attributes");
 }
 
 void	enable_raw_mode(void)
@@ -51,7 +50,8 @@ void	enable_raw_mode(void)
 	struct termios	s_raw;
 
 	if (tcgetattr(STDIN_FILENO, &g_orig_termios) == -1)
-		die("tcgetattr g_orig_termios");
+		die("Failed to get terminal attributes");
+	atexit(disable_raw_mode);
 	s_raw = g_orig_termios;
 	s_raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
 	s_raw.c_oflag &= ~(OPOST);
@@ -60,7 +60,7 @@ void	enable_raw_mode(void)
 	s_raw.c_cc[VMIN] = 0;
 	s_raw.c_cc[VTIME] = 1;
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &s_raw) == -1)
-		die("tcsetattr s_raw");
+		die("Failed to set terminal attributes");
 }
 
 int	editor_read_key(void)
@@ -74,7 +74,7 @@ int	editor_read_key(void)
 		if (nbytes_read == 1)
 			break ;
 		if (nbytes_read == -1 && errno != EAGAIN)
-			die("editor_read_key nbytes_read");
+			die("Failed to read the key pressed");
 	}
 	if (c == '\x1b')
 		return (read_escape_sequences());

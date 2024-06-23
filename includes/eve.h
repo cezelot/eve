@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/11/27 17:17:10 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/31 13:35:33 by cezelot                     d888P'       */
+/*   Updated: 2024/06/23 11:36:14 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void	move_cursor_to_end_line(t_env *env);
 // --------------------------------------------------------------- terminal.c --
 void	die(const char *str);
 void	enable_raw_mode(void);
-void	disable_raw_mode(void);
 int		editor_read_key(void);
 // --------------------------------------------------------- terminal_utils.c --
 int		get_cursor_position(int *rows, int *cols);

@@ -4,7 +4,7 @@
 /*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
 /*                                                                d8P         */
 /*   Created: 2023/12/31 18:08:27 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/28 15:53:04 by cezelot                     d888P'       */
+/*   Updated: 2024/06/18 19:23:27 by cezelot                     d888P'       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	editor_row_cx_to_rx(t_erow *row, int cx)
 	return (rx);
 }
 
-static void	render_tab(char *render, int *index)
+static void	editor_render_tab(char *render, int *index)
 {
 	render[(*index)++] = ' ';
 	while (*index % EVE_TAB_STOP)
@@ -51,7 +51,7 @@ static void	editor_update_row(t_erow *row)
 	while (n < row->size)
 	{
 		if (row->chars[n] == '\t')
-			render_tab(row->render, &i);
+			editor_render_tab(row->render, &i);
 		else
 			row->render[i++] = row->chars[n];
 		++n;
