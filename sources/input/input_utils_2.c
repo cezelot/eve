@@ -1,10 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   input_utils_2.c                                                .a888b    */
-/*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
-/*                                                                d8P         */
-/*   Created: 2024/05/30 17:10:05 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/05/31 20:26:10 by cezelot                     d888P'       */
+/*   input_utils_2.c                                                          */
+/*                                                                            */
+/*   Created: 2024/05/30 17:10:05 by cezelot.                                 */
+/*   Updated: 2024/05/31 20:26:10 by cezelot.                                 */
+/*                                                                            */
+/*   Copyright 2024 cezelot.                                                  */
+/*                                                                            */
+/*   This file is part of eve.                                                */
+/*                                                                            */
+/*   eve is free software: you can redistribute it and/or modify              */
+/*   it under the terms of the GNU General Public License as published by     */
+/*   the Free Software Foundation, either version 3 of the License, or        */
+/*   (at your option) any later version.                                      */
+/*                                                                            */
+/*   eve is distributed in the hope that it will be useful,                   */
+/*   but WITHOUT ANY WARRANTY; without even the implied warranty of           */
+/*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            */
+/*   GNU General Public License for more details.                             */
+/*                                                                            */
+/*   You should have received a copy of the GNU General Public License        */
+/*   along with eve.  If not, see <https://www.gnu.org/licenses/>.            */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +48,7 @@ void	move_cursor_to_end_line(t_env *env)
 
 int	is_arrow_keys(int c)
 {
-	return ((c == ARROW_LEFT) || (c == ARROW_RIGHT) ||\
+	return ((c == ARROW_LEFT) || (c == ARROW_RIGHT) || \
 	(c == ARROW_UP) || (c == ARROW_DOWN));
 }
 

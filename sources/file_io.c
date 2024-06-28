@@ -1,10 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   file_io.c                                                      .a888b    */
-/*   by: cezelot <cezelot@proton.me>                               d8P'88P    */
-/*                                                                d8P         */
-/*   Created: 2023/12/29 16:01:01 by cezelot                     d8P.a8P      */
-/*   Updated: 2024/06/23 21:29:50 by cezelot                     d888P'       */
+/*   file_io.c                                                                */
+/*                                                                            */
+/*   Created: 2023/12/29 16:01:01 by cezelot.                                 */
+/*   Updated: 2024/06/23 21:29:50 by cezelot.                                 */
+/*                                                                            */
+/*   Copyright 2024 cezelot.                                                  */
+/*                                                                            */
+/*   This file is part of eve.                                                */
+/*                                                                            */
+/*   eve is free software: you can redistribute it and/or modify              */
+/*   it under the terms of the GNU General Public License as published by     */
+/*   the Free Software Foundation, either version 3 of the License, or        */
+/*   (at your option) any later version.                                      */
+/*                                                                            */
+/*   eve is distributed in the hope that it will be useful,                   */
+/*   but WITHOUT ANY WARRANTY; without even the implied warranty of           */
+/*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            */
+/*   GNU General Public License for more details.                             */
+/*                                                                            */
+/*   You should have received a copy of the GNU General Public License        */
+/*   along with eve.  If not, see <https://www.gnu.org/licenses/>.            */
 /*                                                                            */
 /* ************************************************************************** */
 
