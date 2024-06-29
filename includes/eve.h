@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot.                                 */
-/*   Updated: 2024/06/23 21:35:17 by cezelot.                                 */
+/*   Updated: 2024/06/29 19:51:19 by cezelot.                                 */
 /*                                                                            */
 /*   Copyright 2024 cezelot.                                                  */
 /*                                                                            */
@@ -28,11 +28,13 @@
 # define EVE_H
 
 # define _DEFAULT_SOURCE
-# define EVE_VERSION "0.1.0"
 # define EVE_TAB_STOP 4
+# define EVE_VERSION "0.1.0"
+# define PROGRAM_NAME "eve"
 
 # include <ctype.h>
 # include <errno.h>
+# include <getopt.h>
 # include <stdarg.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -87,6 +89,8 @@ typedef struct s_abuf
 
 // ------------------------------------------------------------------- main.c --
 void	close_editor(t_env *env);
+// ---------------------------------------------------------------- options.c --
+void	parse_options(int ac, char **av, int *option_index);
 // ------------------------------------------------------------------ input.c --
 void	editor_move_cursor(t_env *env, int key);
 void	editor_process_keypress(t_env *env);

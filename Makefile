@@ -23,6 +23,7 @@ FLAGS     := -Wall -Werror -Wextra -pedantic -std=c99
 SRC_DIR   := ./sources
 
 SRC_FILES := main.c \
+             options.c \
              append_buffer.c \
              file_io.c \
              row_operations.c \
@@ -42,11 +43,11 @@ OBJS      := $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@ echo
+	@echo
 	$(CC) $(FLAGS) -o $@ $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@ mkdir -p `dirname $@`
+	@mkdir -p `dirname $@`
 	$(CC) $(FLAGS) -c $< -o $@
 
 clean:

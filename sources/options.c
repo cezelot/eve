@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   main.c                        eve - simple terminal-based text editor.   */
+/*   options.c                                                                */
 /*                                                                            */
-/*   Created: 2023/11/26 12:20:29 by cezelot.                                 */
-/*   Updated: 2024/06/29 19:48:33 by cezelot.                                 */
+/*   Created: 2024/06/29 14:34:26 by cezelot.                                 */
+/*   Updated: 2024/06/29 19:50:56 by cezelot.                                 */
 /*                                                                            */
 /*   Copyright 2024 cezelot.                                                  */
 /*                                                                            */
@@ -26,54 +26,60 @@
 
 #include "../includes/eve.h"
 
-void	close_editor(t_env *env)
+static void	show_help(void)
 {
-	int	i;
+	printf("Usage: %s [options] [file]\n", PROGRAM_NAME);
+	puts("\nOptions:\n"
+		"  -h, --help                 display this help and exit\n"
+		"  -v, --version              output version information and exit");
+}
 
-	i = 0;
-	free(env->filename);
-	while (i < env->numrows)
+static void	show_version(void)
+{
+	printf("%s %s\n", PROGRAM_NAME, EVE_VERSION);
+	puts("Copyright (C) 2024 cezelot.");
+	puts("License GPLv3+: GNU GPL version 3 or later "
+		"<https://gnu.org/licenses/gpl.html>\n"
+		"This is free software: you are free to change and redistribute it.\n"
+		"There is NO WARRANTY, to the extent permitted by law.");
+}
+
+static void	scan_option(int c)
+{
+	if (c == 'h')
 	{
-		free(env->row[i].chars);
-		free(env->row[i++].render);
+		show_help();
+		exit(0);
 	}
-	free(env->row);
+	else if (c == 'v')
+	{
+		show_version();
+		exit(0);
+	}
+	else if (c == '?')
+	{
+		printf("Try '%s --help' for more information.\n", PROGRAM_NAME);
+		exit(1);
+	}
 }
 
-static void	init_editor(t_env *env)
+void	parse_options(int ac, char **av, int *option_index)
 {
-	env->cx = 0;
-	env->cy = 0;
-	env->rx = 0;
-	env->rowoff = 0;
-	env->coloff = 0;
-	env->numrows = 0;
-	env->row = NULL;
-	env->filename = NULL;
-	env->statusmsg[0] = '\0';
-	env->statusmsg_time = 0;
-	if (get_window_size(&env->screenrows, \
-	&env->screencols) == -1)
-		die(__FILE__, __LINE__, "failed to get terminal size");
-	env->screenrows -= 2;
-}
+	int						c;
+	static struct option	long_options[] = {
+	{"help", no_argument, 0, 'h'},
+	{"version", no_argument, 0, 'v'},
+	{0, 0, 0, 0}
+	};
 
-int	main(int ac, char **av)
-{
-	t_env	env;
-	int		option_index;
-
-	option_index = 0;
-	parse_options(ac, av, &option_index);
-	enable_raw_mode();
-	init_editor(&env);
-	if (option_index < ac)
-		editor_open(&env, av[option_index]);
-	editor_set_status_message(&env, "Help: Ctrl-Q = quit");
+	c = '\0';
 	while (1)
 	{
-		editor_refresh_screen(&env);
-		editor_process_keypress(&env);
+		*option_index = 0;
+		c = getopt_long(ac, av, "hv", long_options, option_index);
+		if (c == -1)
+			break ;
+		scan_option(c);
 	}
-	return (0);
+	*option_index = optind;
 }
