@@ -3,7 +3,7 @@
 /*   output.c                                                                 */
 /*                                                                            */
 /*   Created: 2023/12/06 18:08:14 by cezelot.                                 */
-/*   Updated: 2024/05/30 18:24:46 by cezelot.                                 */
+/*   Updated: 2024/06/30 09:01:50 by cezelot.                                 */
 /*                                                                            */
 /*   Copyright 2024 cezelot.                                                  */
 /*                                                                            */
@@ -62,12 +62,12 @@ static void	editor_draw_status_bar(t_env *env, t_abuf *abuf)
 
 	if (env->filename)
 		len = snprintf(status, sizeof(status), "%.20s - %d lines", \
-		env->filename, env->numrows);
+						env->filename, env->numrows);
 	else
 		len = snprintf(status, sizeof(status), "%.20s - %d lines", \
-		"[No Name]", env->numrows);
-	rlen = snprintf(rstatus, sizeof(rstatus), "%d/%d", env->cy + 1, \
-	env->numrows);
+						"[No Name]", env->numrows);
+	rlen = snprintf(rstatus, sizeof(rstatus), "%d,%d", env->cy + 1, \
+					env->cx + 1);
 	abuf_append(abuf, "\x1b[7m", 4);
 	if (len > env->screencols)
 		len = env->screencols;
@@ -119,7 +119,7 @@ void	editor_refresh_screen(t_env *env)
 	editor_draw_status_bar(env, &abuf);
 	editor_draw_message_bar(env, &abuf);
 	snprintf(buf, sizeof(buf), "\x1b[%d;%dH", \
-		(env->cy - env->rowoff) + 1, (env->rx - env->coloff) + 1);
+			(env->cy - env->rowoff) + 1, (env->rx - env->coloff) + 1);
 	abuf_append(&abuf, buf, strlen(buf));
 	abuf_append(&abuf, "\x1b[?25h", 6);
 	write(STDOUT_FILENO, abuf.buf, abuf.len);
