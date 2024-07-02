@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot.                                 */
-/*   Updated: 2024/06/29 19:51:19 by cezelot.                                 */
+/*   Updated: 2024/07/02 12:10:46 by cezelot.                                 */
 /*                                                                            */
 /*   Copyright 2024 cezelot.                                                  */
 /*                                                                            */
@@ -89,6 +89,7 @@ typedef struct s_abuf
 
 // ------------------------------------------------------------------- main.c --
 void	close_editor(t_env *env);
+void	die(const char *format, ...);
 // ---------------------------------------------------------------- options.c --
 void	parse_options(int ac, char **av, int *option_index);
 // ------------------------------------------------------------------ input.c --
@@ -106,7 +107,6 @@ int		is_arrow_keys(int c);
 int		is_page_keys(int c);
 void	move_cursor_to_end_line(t_env *env);
 // --------------------------------------------------------------- terminal.c --
-void	die(const char *file, int line, const char *message);
 void	enable_raw_mode(void);
 int		editor_read_key(void);
 // --------------------------------------------------------- terminal_utils.c --

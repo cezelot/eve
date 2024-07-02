@@ -3,7 +3,7 @@
 /*   main.c                        eve - simple terminal-based text editor.   */
 /*                                                                            */
 /*   Created: 2023/11/26 12:20:29 by cezelot.                                 */
-/*   Updated: 2024/06/29 19:48:33 by cezelot.                                 */
+/*   Updated: 2024/07/02 12:23:30 by cezelot.                                 */
 /*                                                                            */
 /*   Copyright 2024 cezelot.                                                  */
 /*                                                                            */
@@ -25,6 +25,18 @@
 /* ************************************************************************** */
 
 #include "../includes/eve.h"
+
+void	die(const char *format, ...)
+{
+	va_list	ap;
+
+	write(STDOUT_FILENO, "\x1b[2J", 4);
+	write(STDOUT_FILENO, "\x1b[H", 3);
+	va_start(ap, format);
+	vfprintf(stderr, format, ap);
+	va_end(ap);
+	exit(1);
+}
 
 void	close_editor(t_env *env)
 {
@@ -54,7 +66,8 @@ static void	init_editor(t_env *env)
 	env->statusmsg_time = 0;
 	if (get_window_size(&env->screenrows, \
 	&env->screencols) == -1)
-		die(__FILE__, __LINE__, "failed to get terminal size");
+		die("%s:%d: unable to get terminal size: %s", \
+			__FILE__, __LINE__, strerror(errno));
 	env->screenrows -= 2;
 }
 

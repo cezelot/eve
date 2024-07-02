@@ -3,7 +3,7 @@
 /*   terminal.c                                                               */
 /*                                                                            */
 /*   Created: 2023/11/27 18:25:14 by cezelot.                                 */
-/*   Updated: 2024/06/23 21:44:40 by cezelot.                                 */
+/*   Updated: 2024/07/02 12:23:09 by cezelot.                                 */
 /*                                                                            */
 /*   Copyright 2024 cezelot.                                                  */
 /*                                                                            */
@@ -28,17 +28,6 @@
 
 struct termios	g_orig_termios;
 
-void	die(const char *file, int line, const char *message)
-{
-	int	errnum;
-
-	errnum = errno;
-	write(STDOUT_FILENO, "\x1b[2J", 4);
-	write(STDOUT_FILENO, "\x1b[H", 3);
-	fprintf(stderr, "%s:%d: %s: %s", file, line, message, strerror(errnum));
-	exit(1);
-}
-
 int	get_window_size(int *rows, int *cols)
 {
 	struct winsize	ws;
@@ -61,8 +50,8 @@ int	get_window_size(int *rows, int *cols)
 static void	disable_raw_mode(void)
 {
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &g_orig_termios) == -1)
-		die(__FILE__, __LINE__, \
-		"failed to restore terminal’s original attributes");
+		die("%s:%d: unable to restore terminal’s original attributes: %s", \
+			__FILE__, __LINE__, strerror(errno));
 }
 
 void	enable_raw_mode(void)
@@ -70,7 +59,8 @@ void	enable_raw_mode(void)
 	struct termios	s_raw;
 
 	if (tcgetattr(STDIN_FILENO, &g_orig_termios) == -1)
-		die(__FILE__, __LINE__, "failed to get terminal attributes");
+		die("%s:%d: unable to get terminal attributes: %s", \
+			__FILE__, __LINE__, strerror(errno));
 	atexit(disable_raw_mode);
 	s_raw = g_orig_termios;
 	s_raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
@@ -80,7 +70,8 @@ void	enable_raw_mode(void)
 	s_raw.c_cc[VMIN] = 0;
 	s_raw.c_cc[VTIME] = 1;
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &s_raw) == -1)
-		die(__FILE__, __LINE__, "failed to set terminal attributes");
+		die("%s:%d: unable to set terminal attributes: %s", \
+			__FILE__, __LINE__, strerror(errno));
 }
 
 int	editor_read_key(void)
@@ -94,7 +85,8 @@ int	editor_read_key(void)
 		if (nbytes_read == 1)
 			break ;
 		if (nbytes_read == -1 && errno != EAGAIN)
-			die(__FILE__, __LINE__, "failed to read the key pressed");
+			die("%s:%d: unable to read key pressed: %s", \
+				__FILE__, __LINE__, strerror(errno));
 	}
 	if (c == '\x1b')
 		return (read_escape_sequences());

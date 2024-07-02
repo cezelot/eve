@@ -3,7 +3,7 @@
 /*   file_io.c                                                                */
 /*                                                                            */
 /*   Created: 2023/12/29 16:01:01 by cezelot.                                 */
-/*   Updated: 2024/06/23 21:29:50 by cezelot.                                 */
+/*   Updated: 2024/07/02 12:25:10 by cezelot.                                 */
 /*                                                                            */
 /*   Copyright 2024 cezelot.                                                  */
 /*                                                                            */
@@ -44,7 +44,8 @@ void	editor_open(t_env *env, char *filename)
 	if (!fp)
 	{
 		free(env->filename);
-		die(__FILE__, __LINE__, "cannot open the file");
+		die("%s:%d: unable to open file %s: %s", \
+			__FILE__, __LINE__, filename, strerror(errno));
 	}
 	line = NULL;
 	linecap = 0;
