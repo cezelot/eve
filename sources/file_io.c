@@ -2,10 +2,10 @@
 /*                                                                            */
 /*   file_io.c                                                                */
 /*                                                                            */
-/*   Created: 2023/12/29 16:01:01 by cezelot.                                 */
-/*   Updated: 2024/07/02 12:25:10 by cezelot.                                 */
+/*   Created: 2023/12/29 16:01:01 by cezelot                                  */
+/*   Updated: 2024/07/02 12:25:10 by cezelot                                  */
 /*                                                                            */
-/*   Copyright 2024 cezelot.                                                  */
+/*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */

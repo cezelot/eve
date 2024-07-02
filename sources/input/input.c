@@ -2,10 +2,10 @@
 /*                                                                            */
 /*   input.c                                                                  */
 /*                                                                            */
-/*   Created: 2023/11/27 18:32:33 by cezelot.                                 */
-/*   Updated: 2024/05/31 10:56:01 by cezelot.                                 */
+/*   Created: 2023/11/27 18:32:33 by cezelot                                  */
+/*   Updated: 2024/05/31 10:56:01 by cezelot                                  */
 /*                                                                            */
-/*   Copyright 2024 cezelot.                                                  */
+/*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */

@@ -2,10 +2,10 @@
 /*                                                                            */
 /*   terminal.c                                                               */
 /*                                                                            */
-/*   Created: 2023/11/27 18:25:14 by cezelot.                                 */
-/*   Updated: 2024/07/02 12:23:09 by cezelot.                                 */
+/*   Created: 2023/11/27 18:25:14 by cezelot                                  */
+/*   Updated: 2024/07/02 12:23:09 by cezelot                                  */
 /*                                                                            */
-/*   Copyright 2024 cezelot.                                                  */
+/*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */

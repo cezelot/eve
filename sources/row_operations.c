@@ -2,10 +2,10 @@
 /*                                                                            */
 /*   row_operations.c                                                         */
 /*                                                                            */
-/*   Created: 2023/12/31 18:08:27 by cezelot.                                 */
-/*   Updated: 2024/06/18 19:23:27 by cezelot.                                 */
+/*   Created: 2023/12/31 18:08:27 by cezelot                                  */
+/*   Updated: 2024/06/18 19:23:27 by cezelot                                  */
 /*                                                                            */
-/*   Copyright 2024 cezelot.                                                  */
+/*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */

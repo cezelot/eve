@@ -2,10 +2,10 @@
 /*                                                                            */
 /*   main.c                        eve - simple terminal-based text editor.   */
 /*                                                                            */
-/*   Created: 2023/11/26 12:20:29 by cezelot.                                 */
-/*   Updated: 2024/07/02 12:23:30 by cezelot.                                 */
+/*   Created: 2023/11/26 12:20:29 by cezelot                                  */
+/*   Updated: 2024/07/02 12:23:30 by cezelot                                  */
 /*                                                                            */
-/*   Copyright 2024 cezelot.                                                  */
+/*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */

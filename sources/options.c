@@ -2,10 +2,10 @@
 /*                                                                            */
 /*   options.c                                                                */
 /*                                                                            */
-/*   Created: 2024/06/29 14:34:26 by cezelot.                                 */
-/*   Updated: 2024/06/29 19:50:56 by cezelot.                                 */
+/*   Created: 2024/06/29 14:34:26 by cezelot                                  */
+/*   Updated: 2024/07/02 18:33:47 by cezelot                                  */
 /*                                                                            */
-/*   Copyright 2024 cezelot.                                                  */
+/*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -37,7 +37,7 @@ static void	show_help(void)
 static void	show_version(void)
 {
 	printf("%s %s\n", PROGRAM_NAME, EVE_VERSION);
-	puts("Copyright (C) 2024 cezelot.");
+	puts("Copyright (C) 2024 Ismael B. Hamed");
 	puts("License GPLv3+: GNU GPL version 3 or later "
 		"<https://gnu.org/licenses/gpl.html>\n"
 		"This is free software: you are free to change and redistribute it.\n"

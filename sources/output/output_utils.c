@@ -2,10 +2,10 @@
 /*                                                                            */
 /*   output_utils.c                                                           */
 /*                                                                            */
-/*   Created: 2024/05/29 10:19:15 by cezelot.                                 */
-/*   Updated: 2024/05/30 18:25:02 by cezelot.                                 */
+/*   Created: 2024/05/29 10:19:15 by cezelot                                  */
+/*   Updated: 2024/05/30 18:25:02 by cezelot                                  */
 /*                                                                            */
-/*   Copyright 2024 cezelot.                                                  */
+/*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
