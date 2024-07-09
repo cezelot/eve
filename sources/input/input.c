@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   input.c                                                                  */
+/*   input.c - map keypresses to editor functions                             */
 /*                                                                            */
 /*   Created: 2023/11/27 18:32:33 by cezelot                                  */
 /*   Updated: 2024/05/31 10:56:01 by cezelot                                  */
@@ -26,6 +26,7 @@
 
 #include "../../includes/eve.h"
 
+/* Move the cursor according to the given key.  */
 void	editor_move_cursor(t_env *env, int key)
 {
 	t_erow	*row;
@@ -72,6 +73,7 @@ static void	process_esc_seq_keys(int c, t_env *env)
 		editor_move_cursor(env, c);
 }
 
+/* Wait for a keypress, then handle it.  */
 void	editor_process_keypress(t_env *env)
 {
 	int	c;

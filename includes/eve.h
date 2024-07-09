@@ -28,6 +28,10 @@
 # define EVE_H
 
 # define _DEFAULT_SOURCE
+# ifndef _GNU_SOURCE
+#  define _GNU_SOURCE
+# endif
+
 # define EVE_TAB_STOP 4
 # define EVE_VERSION "0.1.0"
 # define PROGRAM_NAME "eve"
@@ -57,7 +61,7 @@ enum e_editor_key
 	PAGE_DOWN
 };
 
-typedef struct s_erow
+typedef struct s_editor_row
 {
 	char	*chars;
 	char	*render;
@@ -81,7 +85,7 @@ typedef struct s_editor_config
 	time_t	statusmsg_time;
 }			t_env;
 
-typedef struct s_abuf
+typedef struct s_append_buffer
 {
 	char	*buf;
 	int		len;
@@ -132,4 +136,4 @@ void	editor_open(t_env *env, char *filename);
 void	editor_append_row(t_env *env, char *str, size_t len);
 int		editor_row_cx_to_rx(t_erow *row, int cx);
 
-#endif
+#endif /* EVE_H */

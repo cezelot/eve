@@ -26,6 +26,8 @@
 
 #include "../includes/eve.h"
 
+/* Converts a chars index into a render index,
+   and return the render index.  */
 int	editor_row_cx_to_rx(t_erow *row, int cx)
 {
 	int	rx;
@@ -42,6 +44,7 @@ int	editor_row_cx_to_rx(t_erow *row, int cx)
 	return (rx);
 }
 
+/* Replace a tab by EVE_TAB_STOP spaces characters.  */
 static void	editor_render_tab(char *render, int *index)
 {
 	render[(*index)++] = ' ';
@@ -49,6 +52,7 @@ static void	editor_render_tab(char *render, int *index)
 		render[(*index)++] = ' ';
 }
 
+/* Update RENDER and RSIZE according to CHARS.  */
 static void	editor_update_row(t_erow *row)
 {
 	int	i;
@@ -76,6 +80,8 @@ static void	editor_update_row(t_erow *row)
 	row->rsize = i;
 }
 
+/* Add STR to the contents of a new editor row,
+   and add the new erow after the last erow.  */
 void	editor_append_row(t_env *env, char *str, size_t len)
 {
 	size_t	at;

@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   output.c                                                                 */
+/*   output.c - standard output routines                                      */
 /*                                                                            */
 /*   Created: 2023/12/06 18:08:14 by cezelot                                  */
 /*   Updated: 2024/06/30 09:01:50 by cezelot                                  */
@@ -26,6 +26,7 @@
 
 #include "../../includes/eve.h"
 
+/* Scroll the file if the cursor has moved outside of the visible window.  */
 static void	editor_scroll(t_env *env)
 {
 	env->rx = 0;
@@ -86,6 +87,9 @@ static void	editor_draw_status_bar(t_env *env, t_abuf *abuf)
 	abuf_append(abuf, "\r\n", 2);
 }
 
+/* If the the program was run without a file, draw a column of tildes
+   on the left hand side of the screen.  Otherwise, draw a tilde at
+   the beginning of any lines that come after the end of the file.  */
 static void	editor_draw_rows(t_env *env, t_abuf *abuf)
 {
 	int	n;

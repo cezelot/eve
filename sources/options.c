@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   options.c                                                                */
+/*   options.c - parse command-line options                                   */
 /*                                                                            */
 /*   Created: 2024/06/29 14:34:26 by cezelot                                  */
 /*   Updated: 2024/07/02 18:33:47 by cezelot                                  */
@@ -26,6 +26,7 @@
 
 #include "../includes/eve.h"
 
+/* Display usage information.  */
 static void	show_help(void)
 {
 	printf("Usage: %s [options] [file]\n", PROGRAM_NAME);
@@ -34,6 +35,7 @@ static void	show_help(void)
 		"  -v, --version              output version information and exit");
 }
 
+/* Display the version and license.  */
 static void	show_version(void)
 {
 	printf("%s %s\n", PROGRAM_NAME, EVE_VERSION);
@@ -44,6 +46,7 @@ static void	show_version(void)
 		"There is NO WARRANTY, to the extent permitted by law.");
 }
 
+/* Map the command-line option C and exit.  */
 static void	scan_option(int c)
 {
 	if (c == 'h')

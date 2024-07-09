@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   append_buffer.c                                                          */
+/*   append_buffer.c - dynamic string routines                                */
 /*                                                                            */
 /*   Created: 2023/12/18 14:16:44 by cezelot                                  */
 /*   Updated: 2024/06/20 11:02:16 by cezelot                                  */
@@ -26,6 +26,7 @@
 
 #include "../includes/eve.h"
 
+/* Add STR to the content of the dynamic string ABUF.  */
 void	abuf_append(t_abuf *abuf, const char *str, int len)
 {
 	char	*new_buf;

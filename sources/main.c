@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   main.c                        eve - simple terminal-based text editor.   */
+/*   eve - simple terminal-based text editor                                  */
 /*                                                                            */
 /*   Created: 2023/11/26 12:20:29 by cezelot                                  */
 /*   Updated: 2024/07/02 12:23:30 by cezelot                                  */
@@ -26,6 +26,7 @@
 
 #include "../includes/eve.h"
 
+/* Report an error and exit.  */
 void	die(const char *format, ...)
 {
 	va_list	ap;
@@ -38,6 +39,7 @@ void	die(const char *format, ...)
 	exit(1);
 }
 
+/* Deallocate memories in the editor state.  */
 void	close_editor(t_env *env)
 {
 	int	i;
@@ -52,6 +54,7 @@ void	close_editor(t_env *env)
 	free(env->row);
 }
 
+/* Initialize the variables in the editor state.  */
 static void	init_editor(t_env *env)
 {
 	env->cx = 0;

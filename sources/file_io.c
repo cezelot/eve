@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   file_io.c                                                                */
+/*   file_io.c - file input/output routines                                   */
 /*                                                                            */
 /*   Created: 2023/12/29 16:01:01 by cezelot                                  */
 /*   Updated: 2024/07/02 12:25:10 by cezelot                                  */
@@ -26,11 +26,14 @@
 
 #include "../includes/eve.h"
 
+/* Return true if LINE has a newline or a carriage return,
+   otherwise return false.  */
 static int	has_newline_or_carriage_return(char *line, ssize_t linelen)
 {
 	return (line[linelen - 1] == '\n' || line[linelen - 1] == '\r');
 }
 
+/* Open and read FILENAME.  */
 void	editor_open(t_env *env, char *filename)
 {
 	FILE	*fp;
