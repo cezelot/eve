@@ -3,7 +3,7 @@
 /*   row_operations.c                                                         */
 /*                                                                            */
 /*   Created: 2023/12/31 18:08:27 by cezelot                                  */
-/*   Updated: 2024/06/18 19:23:27 by cezelot                                  */
+/*   Updated: 2024/07/11 16:54:55 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -78,6 +78,19 @@ static void	editor_update_row(t_erow *row)
 	}
 	row->render[i] = '\0';
 	row->rsize = i;
+}
+
+/* Insert the character C into CHARS, at position INDEX,
+   and update the other variables in row.  */
+void	editor_row_insert_char(t_erow *row, int c, int index)
+{
+	if (index < 0 || index > row->size)
+		index = row->size;
+	row->chars = realloc(row->chars, row->size + 2);
+	memmove(&row->chars[index + 1], &row->chars[index], row->size - index + 1);
+	row->size++;
+	row->chars[index] = c;
+	editor_update_row(row);
 }
 
 /* Add STR to the contents of a new editor row,

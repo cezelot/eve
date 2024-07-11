@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/07/02 12:10:46 by cezelot                                  */
+/*   Updated: 2024/07/11 17:38:58 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -110,6 +110,8 @@ void	change_page(t_env *env, int c);
 int		is_arrow_keys(int c);
 int		is_page_keys(int c);
 void	move_cursor_to_end_line(t_env *env);
+// ---------------------------------------------------------- input_utils_3.c --
+void	editor_insert_char(t_env *env, int c);
 // --------------------------------------------------------------- terminal.c --
 void	enable_raw_mode(void);
 int		editor_read_key(void);
@@ -135,5 +137,6 @@ void	editor_open(t_env *env, char *filename);
 // --------------------------------------------------------- row_operations.c --
 void	editor_append_row(t_env *env, char *str, size_t len);
 int		editor_row_cx_to_rx(t_erow *row, int cx);
+void	editor_row_insert_char(t_erow *row, int c, int index);
 
 #endif /* EVE_H */

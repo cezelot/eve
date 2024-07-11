@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   input.c - map keypresses to editor functions                             */
+/*   input_utils_3.c - functions called from editor_process_keypress()        */
 /*                                                                            */
-/*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/07/11 17:18:41 by cezelot                                  */
+/*   Created: 2024/07/11 16:56:07 by cezelot                                  */
+/*   Updated: 2024/07/11 17:21:02 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -26,68 +26,12 @@
 
 #include "../../includes/eve.h"
 
-/* Move the cursor according to the given key.  */
-void	editor_move_cursor(t_env *env, int key)
+/* Insert the character C at the current position of the cursor,
+   then move the cursor forward.  */
+void	editor_insert_char(t_env *env, int c)
 {
-	t_erow	*row;
-	int		rowlen;
-
-	rowlen = 0;
-	if (env->cy >= env->numrows)
-		row = NULL;
-	else
-		row = &env->row[env->cy];
-	if (key == ARROW_LEFT)
-		move_cursor_left(env);
-	if (key == ARROW_RIGHT)
-		move_cursor_right(env, row);
-	if (key == ARROW_UP)
-		move_cursor_up(env);
-	if (key == ARROW_DOWN)
-		move_cursor_down(env);
-	snap_cursor_to_end_line(env, row, rowlen);
-}
-
-static void	process_page_keys(t_env *env, int c)
-{
-	if (c == PAGE_UP)
-		env->cy = env->rowoff;
-	else
-	{
-		env->cy = env->rowoff + env->screenrows - 1;
-		if (env->cy > env->numrows)
-			env->cy = env->numrows;
-	}
-	change_page(env, c);
-}
-
-static void	process_esc_seq_keys(t_env *env, int c)
-{
-	if (c == HOME_KEY)
-		env->cx = 0;
-	else if (c == END_KEY)
-		move_cursor_to_end_line(env);
-	else if (is_page_keys(c))
-		process_page_keys(env, c);
-	else if (is_arrow_keys(c))
-		editor_move_cursor(env, c);
-	else
-		editor_insert_char(env, c);
-}
-
-/* Wait for a keypress, then handle it.  */
-void	editor_process_keypress(t_env *env)
-{
-	int	c;
-
-	c = editor_read_key();
-	if (c == ('q' & 0x1f))
-	{
-		write(STDOUT_FILENO, "\x1b[2J", 4);
-		write(STDOUT_FILENO, "\x1b[H", 3);
-		close_editor(env);
-		exit(0);
-	}
-	else
-		process_esc_seq_keys(env, c);
+	if (env->cy == env->numrows)
+		editor_append_row(env, "", 0);
+	editor_row_insert_char(&env->row[env->cy], c, env->cx);
+	env->cx++;
 }
