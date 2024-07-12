@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/07/11 17:38:58 by cezelot                                  */
+/*   Updated: 2024/07/12 19:01:29 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -33,7 +33,7 @@
 # endif
 
 # define EVE_TAB_STOP 4
-# define EVE_VERSION "0.1.0"
+# define EVE_VERSION "0.2.0"
 # define PROGRAM_NAME "eve"
 
 # include <ctype.h>
@@ -50,6 +50,7 @@
 
 enum e_editor_key
 {
+	BACKSPACE = 127,
 	ARROW_LEFT = 1000,
 	ARROW_RIGHT,
 	ARROW_UP,

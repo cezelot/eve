@@ -3,7 +3,7 @@
 /*   input.c - map keypresses to editor functions                             */
 /*                                                                            */
 /*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/07/11 17:18:41 by cezelot                                  */
+/*   Updated: 2024/07/12 19:27:44 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -67,10 +67,15 @@ static void	process_esc_seq_keys(t_env *env, int c)
 		env->cx = 0;
 	else if (c == END_KEY)
 		move_cursor_to_end_line(env);
+	else if (c == BACKSPACE || c == ('h' & 0x1f) || c == DEL_KEY)
+		/* To-Do */
+		return ;
 	else if (is_page_keys(c))
 		process_page_keys(env, c);
 	else if (is_arrow_keys(c))
 		editor_move_cursor(env, c);
+	else if (c == ('l' & 0x1f) || c == '\x1b')
+		return ;
 	else
 		editor_insert_char(env, c);
 }
@@ -81,6 +86,9 @@ void	editor_process_keypress(t_env *env)
 	int	c;
 
 	c = editor_read_key();
+	if (c == '\r')
+		/* To-Do */
+		return ;
 	if (c == ('q' & 0x1f))
 	{
 		write(STDOUT_FILENO, "\x1b[2J", 4);
