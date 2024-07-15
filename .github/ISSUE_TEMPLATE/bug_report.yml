@@ -1,5 +1,5 @@
 name: 🐛 Bug Report
-description: File a bug.
+description: Create a bug report to help us improve eve.
 title: "[Bug] <title>"
 labels: ["bug", "triage"]
 body:
