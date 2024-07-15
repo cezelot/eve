@@ -1,7 +1,7 @@
 eve
 ===
 
-> An user-friendly command-line text editor.
+> A user-friendly command-line text editor.
 
 eve is a lightweight, user-friendly text editor for the terminal that aims to be simple and intuitive,
 while also taking advantage of the capabilities of advanced text editor like Vim or Emacs.
@@ -24,7 +24,7 @@ from the command-line.
 You can install all the required tools on Linux with this command:
 
 ```bash
-$ sudo apt install make gcc
+sudo apt install make gcc
 ```
 
 ### Compiling
@@ -32,15 +32,15 @@ $ sudo apt install make gcc
 If you haven't already clone the repository:
 
 ```bash
-$ sudo apt install git
-$ git clone https://github.com/cezelot/eve.git
+sudo apt install git
+git clone https://github.com/cezelot/eve.git
 ```
 
-Go to the directory and run `make`:
+Navigate to the repo directory and run `make`:
 
 ```bash
-$ cd eve
-$ make
+cd eve
+make
 ```
 
 It'll build a binary named `eve`.
@@ -48,13 +48,13 @@ It'll build a binary named `eve`.
 If you want to install `eve`, copy the compiled binary into `~/.local/bin`:
 
 ```bash
-$ cp eve ~/.local/bin
+cp eve ~/.local/bin
 ```
 
 Or into `/usr/local/bin`, note that you must have adequate privileges:
 
 ```bash
-$ sudo cp eve /usr/local/bin
+sudo cp eve /usr/local/bin
 ```
 
 #### Make rules
@@ -71,7 +71,7 @@ Command       |  Description
 To open and edit a file, remove `./` if you have installed the binary:
 
 ```bash
-$ ./eve <filename>
+./eve <filename>
 ```
 
 ## Roadmap
@@ -95,11 +95,11 @@ List of features planned for version 1.0.0:
 
 ## Your help is welcome
 
-If you found any bug or have suggestions, please [open an issue](https://github.com/cezelot/eve/issues/new).
+If you found any bug or have suggestions, please [open an issue](https://github.com/cezelot/eve/issues/new/choose).
 
 ## Contact
 
-Ismael Benjara - [@cezelot](https://x.com/count_ezelot) - [email](mailto:cezelot@proton.me)
+**Ismael Benjara** - [@cezelot](https://x.com/count_ezelot) - [email](mailto:cezelot@proton.me)
 
 ## License
 
