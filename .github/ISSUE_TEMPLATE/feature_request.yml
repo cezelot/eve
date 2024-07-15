@@ -1,0 +1,27 @@
+name: ✨ Feature Request
+description: Suggest an enhancement for eve.
+title: "[Feature] <title>"
+labels: ["enhancement", "triage"]
+body:
+- type: textarea
+  id: related-to
+  attributes:
+    label: Is your feature request related to a problem?
+    description: A clear and concise description of what the problem is.
+    placeholder: Ex. I have an issue when [...]
+  validations:
+    required: true
+- type: textarea
+  id: solution
+  attributes:
+    label: Describe the solution you'd like.
+    description: A clear and concise description of what you want to happen. Add any considered drawbacks.
+  validations:
+    required: true
+- type: textarea
+  id: alternative
+  attributes:
+    label: Describe alternatives you've considered.
+    description: A clear and concise description of any alternative solutions or features you've considered.
+  validations:
+    required: false
