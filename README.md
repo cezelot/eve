@@ -93,11 +93,14 @@ List of features planned for version 1.0.0:
  - [ ] Modal editing
  - [ ] Undo/Redo
 
-## Your help is welcome
+## Contributing
 
-If you found any bug or have suggestions, please [open an issue](https://github.com/cezelot/eve/issues/new/choose).
+Pull requests are welcome. For reporting a bug or suggesting an enhancement,
+feel free to open an issue.
 
-## Contact
+Please make sure to read the [contributing guidelines](CONTRIBUTING.md) before.
+
+## Author
 
 **Ismael Benjara** - [@cezelot](https://x.com/count_ezelot) - [email](mailto:cezelot@proton.me)
 
