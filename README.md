@@ -3,6 +3,11 @@ eve
 
 > A user-friendly command-line text editor.
 
+![CodeQL](https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql/badge.svg?event=push)
+![CodeScene Code Health](https://codescene.io/projects/51883/status-badges/code-health)
+![Code Size](https://img.shields.io/github/languages/code-size/cezelot/eve)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg?style=flat-square)](https://makeapullrequest.com)
+
 eve is a lightweight, user-friendly text editor for the terminal that aims to be simple and intuitive,
 while also taking advantage of the capabilities of advanced text editor like Vim or Emacs.
 
