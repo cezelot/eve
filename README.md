@@ -1,12 +1,12 @@
 eve
 ===
 
-> A user-friendly command-line text editor.
-
 ![CodeQL](https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql/badge.svg?event=push)
 ![CodeScene Code Health](https://codescene.io/projects/51883/status-badges/code-health)
 ![Code Size](https://img.shields.io/github/languages/code-size/cezelot/eve)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg?style=flat-square)](https://makeapullrequest.com)
+
+> A user-friendly command-line text editor.
 
 eve is a lightweight, user-friendly text editor for the terminal that aims to be simple and intuitive,
 while also taking advantage of the capabilities of advanced text editor like Vim or Emacs.
@@ -103,12 +103,12 @@ List of features planned for version 1.0.0:
 Pull requests are welcome. For reporting a bug or suggesting an enhancement,
 feel free to open an issue.
 
-Please make sure to read the [contributing guidelines](CONTRIBUTING.md) before.
+Please make sure to read the [contributing guidelines](docs/CONTRIBUTING.md) before.
 
-## Author
+## Authors
 
 **Ismael Benjara** - [@cezelot](https://x.com/count_ezelot) - [email](mailto:cezelot@proton.me)
 
 ## License
 
-eve is free software distributed under the GNU Public License (see [COPYING](COPYING)).
+eve is free software distributed under the GNU Public License (see [COPYING](docs/COPYING)).

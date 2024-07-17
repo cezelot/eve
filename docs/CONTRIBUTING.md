@@ -4,10 +4,13 @@ Contribution is welcome, encouraged, and appreciated. There are many ways to con
 from improving the documentation, submitting bug reports and feature requests or writing code
 which can be incorporated into eve itself.
 
-Here are some guidelines for contributing back to this project:
+Here are some guidelines for contributing back to this project.
 
- - [Code of Conduct](#Code of Conduct)
+**Table of Content:**
+ - [Code of Conduct](#code-of-conduct)
  - [Reporting Issues](#reporting-issues)
+   - [Bug Report](#bug-report)
+   - [Feature Request](#feature-request)
  - [Submitting Pull Requests](#submitting-pull-requests)
    - [Getting started](#getting-started)
    - [Coding Style Guidelines](#coding-style-guidelines)
@@ -20,18 +23,31 @@ First, please take a moment to review our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Reporting Issues
 
-If you have a bug or a suggestion, please be so kind as to search
-for any open issue already covering your problem or suggestion.
+### Bug Report
 
-If you find one, comment on it, so we know more people are experiencing/supporting it.
+If you have a bug, please be so kind as to search for any open issue already covering your problem.
 
-If not, you can go ahead and [open an issue](https://github.com/cezelot/eve/issues/new/choose) with as much detail as you can provide.
+If you find one, comment on it, so we know more people are experiencing it.
+
+If not, you can go ahead and [create a bug report](https://github.com/cezelot/eve/issues/new?assignees=&labels=bug%2Ctriage&projects=&template=bug_report.yml&title=%5BBug%5D+%3Ctitle%3E)
+with as much detail as you can provide.
+
+### Feature Request
+
+Please be so kind as to search for any open issue already covering your enhancement.
+
+If you find one, comment on it, so we know more people are supporting it.
+
+If not, you can go ahead and [create a feature request](https://github.com/cezelot/eve/issues/new?assignees=&labels=enhancement%2Ctriage&projects=&template=feature_request.yml&title=%5BFeature%5D+%3Ctitle%3E).
+Or you can [start a new discussion](https://github.com/cezelot/eve/discussions/new?category=ideas)
+in the Ideas category of [eve Discussions](https://github.com/cezelot/eve/discussions).
 
 ## Submitting Pull Requests
 
-### Getting started
+### Getting Started
 
-**Working on your first Pull Request?** You can learn how from this *free* series [How to Contribute to an Open Source Project on GitHub](https://kcd.im/pull-request).
+**Working on your first Pull Request?** You can learn how from this *free* series
+[How to Contribute to an Open Source Project on GitHub](https://kcd.im/pull-request).
 See also [First Timers Only](http://www.firsttimersonly.com).
 
 Search for any open or closed PR that relates to your submission.
@@ -49,15 +65,14 @@ If you don't find one:
 
 ### Coding Style Guidelines
 
-eve follows the C coding standard at 42 School.
-See the [Norm](https://github.com/42School/norminette/blob/master/pdf/en.norm.pdf) for details.
+See the file [STANDARD.md](STANDARD.md) for details on the coding standard
+used by this project.
 
-Please follow this style to make eve easy to maintain and develop.
+Please follow this style to make eve easy to read, maintain and develop.
 
-But do not follow it rigidly, you should implement an outside standard’s specifications
-when that makes eve better overall in an objective sense. When it doesn’t, you shouldn’t.
-
-Also be so kind as to put a license notice in each new file (*.c or *.h) you create.
+These coding rules are open for discussion, if you think another standard’s specifications
+makes eve better overall in an objective sense or anything else,
+please feel free to [start a new discussion](https://github.com/cezelot/eve/discussions/new?category=standard).
 
 ### Commit Message Guidelines
 
@@ -74,7 +89,7 @@ _"Fixes #1337"_ for issue number 1337.
 
 ### Versioning Guidelines
 
-This project uses [SemVer]((https://semver.org/spec/v2.0.0.html) for versioning.
+This project uses [SemVer](https://semver.org/spec/v2.0.0.html) for versioning.
 
 Please increase the version number of `EVE_VERSION` in `includes/eve.h` to the new version
 that your Pull Request would represent.
