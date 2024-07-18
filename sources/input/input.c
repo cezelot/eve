@@ -3,13 +3,13 @@
 /*   input.c - map keypresses to editor functions                             */
 /*                                                                            */
 /*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/07/12 19:27:44 by cezelot                                  */
+/*   Updated: 2024/07/17 23:32:46 by alberrod                                 */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed                                       */
+/*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
-/*   This file is part of eve.                                                */
 /*                                                                            */
-/*   eve is free software: you can redistribute it and/or modify              */
+/* ************************************************************************** */
+
 /*   it under the terms of the GNU General Public License as published by     */
 /*   the Free Software Foundation, either version 3 of the License, or        */
 /*   (at your option) any later version.                                      */
@@ -61,23 +61,62 @@ static void	process_page_keys(t_env *env, int c)
 	change_page(env, c);
 }
 
+static inline int handle_special_keys(t_env *env, int c)
+{
+	switch (c) {
+		case HOME_KEY:
+			env->cx = 0;
+			return 1;
+		case END_KEY:
+			move_cursor_to_end_line(env);
+			return 1;
+		case BACKSPACE:
+		case ('h' & 0x1f):
+		case DEL_KEY:
+			/* To-Do */
+			return 1;
+		case ('l' & 0x1f):
+		case '\x1b':
+			return 1;
+		default:
+			return 0;
+	}
+}
+
+static inline int handle_page_keys(t_env *env, int c)
+{
+	if (is_page_keys(c)) {
+		process_page_keys(env, c);
+		return 1;
+	}
+	return 0;
+}
+
+static inline int handle_movement_keys(t_env *env, int c)
+{
+	if (is_arrow_keys(c)) {
+		editor_move_cursor(env, c);
+		return 1;
+	}
+	return 0;
+}
+
+static inline int handle_navigation_keys(t_env *env, int c)
+{
+	if (handle_page_keys(env, c))
+		return 1;
+	if (handle_movement_keys(env, c))
+		return 1;
+	return 0;
+}
+
 static void	process_esc_seq_keys(t_env *env, int c)
 {
-	if (c == HOME_KEY)
-		env->cx = 0;
-	else if (c == END_KEY)
-		move_cursor_to_end_line(env);
-	else if (c == BACKSPACE || c == ('h' & 0x1f) || c == DEL_KEY)
-		/* To-Do */
+	if (handle_special_keys(env, c))
 		return ;
-	else if (is_page_keys(c))
-		process_page_keys(env, c);
-	else if (is_arrow_keys(c))
-		editor_move_cursor(env, c);
-	else if (c == ('l' & 0x1f) || c == '\x1b')
+	if (handle_navigation_keys(env, c))
 		return ;
-	else
-		editor_insert_char(env, c);
+	editor_insert_char(env, c);
 }
 
 /* Wait for a keypress, then handle it.  */
