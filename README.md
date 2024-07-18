@@ -1,7 +1,7 @@
 eve
 ===
 
-[![CodeQL](https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql/badge.svg?branch=main&event=push)](https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql)
+[![CodeQL](https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql)
 ![CodeScene Code Health](https://codescene.io/projects/51883/status-badges/code-health)
 ![Code Size](https://img.shields.io/github/languages/code-size/cezelot/eve)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg?style=flat-square)](https://makeapullrequest.com)
@@ -108,6 +108,9 @@ Please make sure to read the [contributing guidelines](docs/CONTRIBUTING.md) bef
 ## Authors
 
 **Ismael Benjara** - [@cezelot](https://x.com/count_ezelot) - [email](mailto:cezelot@proton.me)
+
+See also the list of [contributors](https://github.com/cezelot/eve/graphs/contributors)
+who participated in this project.
 
 ## License
 

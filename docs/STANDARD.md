@@ -203,8 +203,6 @@ void    die(const char *format, ...);
 
  - You’re not allowed to use:
    - `do...while`
-   - `switch`
-   - `case`
    - `goto`
  - Ternary operators such as ‘?’.
  - VLAs - Variable Length Arrays.
@@ -235,4 +233,3 @@ void    func(int nodenum)
 ## Files
 
  - You cannot include a .c file.
- - You cannot have more than 5 function-definitions in a .c file.
