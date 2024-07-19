@@ -7,16 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
-
- - Fix `Complex Method` issue in input.c (#1).
-
 ### Added
 
  - Recommended community standards:
    - Code of Conduct
    - Security policy
    - Contributing Guidelines
+ - Use `Ctrl-S` to write the current buffer to disk.
+
+### Fixed
+
+ - Fix `Complex Method` issue in input.c (#1).
 
 ## [0.2.0] - 2024-07-12
 

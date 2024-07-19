@@ -3,7 +3,7 @@
 /*   file_io.c - file input/output routines                                   */
 /*                                                                            */
 /*   Created: 2023/12/29 16:01:01 by cezelot                                  */
-/*   Updated: 2024/07/02 12:25:10 by cezelot                                  */
+/*   Updated: 2024/07/18 01:48:44 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -25,6 +25,53 @@
 /* ************************************************************************** */
 
 #include "../includes/eve.h"
+
+/* Convert ROW structs into a single string.
+   Its length will be assigned to BUFLEN.
+   Return the string.  */
+static char	*editor_rows_to_string(t_env *env, int *buflen)
+{
+	char	*buf;
+	char	*p;
+	int		len;
+	int		i;
+
+	len = 0;
+	i = 0;
+	while (i < env->numrows)
+		len += env->row[i++].size + 1;
+	*buflen = len;
+	buf = malloc(len * sizeof(*buf));
+	if (buf == NULL)
+		die("%s:%d: %s", __FILE__, __LINE__, strerror(errno));
+	p = buf;
+	i = 0;
+	while (i < env->numrows)
+	{
+		memcpy(p, env->row[i].chars, env->row[i].size);
+		p += env->row[i++].size;
+		*p++ = '\n';
+	}
+	return (buf);
+}
+
+/* Write the current buffer to disk.  */
+void	editor_save(t_env *env)
+{
+	char	*buf;
+	int		len;
+	int		fd;
+
+	if (env->filename == NULL)
+		return ;
+	len = 0;
+	buf = editor_rows_to_string(env, &len);
+	fd = open(env->filename, O_RDWR | O_CREAT, 0644);
+	ftruncate(fd, len);
+	write(fd, buf, len);
+	close(fd);
+	free(buf);
+}
 
 /* Return true if LINE has a newline or a carriage return,
    otherwise return false.  */

@@ -3,7 +3,7 @@
 /*   input.c - map keypresses to editor functions                             */
 /*                                                                            */
 /*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/07/17 23:32:46 by alberrod                                 */
+/*   Updated: 2024/07/19 14:38:11 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
@@ -135,6 +135,8 @@ void	editor_process_keypress(t_env *env)
 		close_editor(env);
 		exit(0);
 	}
+	if (c == ('s' & 0x1f))
+		editor_save(env);
 	else
 		process_esc_seq_keys(env, c);
 }

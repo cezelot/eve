@@ -1,6 +1,7 @@
 eve
 ===
 
+[![Build Status](https://github.com/cezelot/eve/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/cezelot/eve/actions/workflows/build.yml)
 [![CodeQL](https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql)
 ![CodeScene Code Health](https://codescene.io/projects/51883/status-badges/code-health)
 ![Code Size](https://img.shields.io/github/languages/code-size/cezelot/eve)

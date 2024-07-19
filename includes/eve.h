@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/07/12 19:01:29 by cezelot                                  */
+/*   Updated: 2024/07/18 00:59:41 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -38,6 +38,7 @@
 
 # include <ctype.h>
 # include <errno.h>
+# include <fcntl.h>
 # include <getopt.h>
 # include <stdarg.h>
 # include <stdio.h>
@@ -135,6 +136,7 @@ void	abuf_append(t_abuf *abuf, const char *str, int len);
 void	abuf_free(t_abuf *abuf);
 // ---------------------------------------------------------------- file_io.c --
 void	editor_open(t_env *env, char *filename);
+void	editor_save(t_env *env);
 // --------------------------------------------------------- row_operations.c --
 void	editor_append_row(t_env *env, char *str, size_t len);
 int		editor_row_cx_to_rx(t_erow *row, int cx);
