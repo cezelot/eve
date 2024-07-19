@@ -78,12 +78,25 @@ or you can [start a new discussion](https://github.com/cezelot/eve/discussions/n
 eve uses the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 specification.
 
+```
+<type>[optional scope]: <description>
+[BLANK LINE]
+[optional body]
+[BLANK LINE]
+[optional footer(s)]
+```
+
+For consistency, please write in lowercase the first commit line, excluding
+proper names (GitHub, ...) and file names (README.md, ...).
+
 Try to keep the first commit line short. It's harder to do using this commit style but try to be
 concise, and if you need more space, you can use the commit body. Try to make sure that the commit
 subject is clear and precise enough that we will know what changed by just looking at the commit logs.
 
-Also be so kind as to reference any issue that would be solved in the PR description body,
-[for instance](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue)
-_"Fixes #1337"_ for issue number 1337.
+The commit subject may contain formatted inline code by using backticks:
+
+ ```
+ feat: add `--version` command-line option
+ ```
 
 That's it! Thank you for your contribution!
