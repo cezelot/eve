@@ -3,7 +3,7 @@
 /*   file_io.c - file input/output routines                                   */
 /*                                                                            */
 /*   Created: 2023/12/29 16:01:01 by cezelot                                  */
-/*   Updated: 2024/07/18 01:48:44 by cezelot                                  */
+/*   Updated: 2024/07/20 12:00:27 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -67,9 +67,12 @@ void	editor_save(t_env *env)
 	len = 0;
 	buf = editor_rows_to_string(env, &len);
 	fd = open(env->filename, O_RDWR | O_CREAT, 0644);
-	ftruncate(fd, len);
-	write(fd, buf, len);
-	close(fd);
+	if (fd != -1)
+	{
+		if (ftruncate(fd, len) != -1)
+			write(fd, buf, len);
+		close(fd);
+	}
 	free(buf);
 }
 
