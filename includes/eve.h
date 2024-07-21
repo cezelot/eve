@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/07/18 00:59:41 by cezelot                                  */
+/*   Updated: 2024/07/21 17:02:19 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -99,6 +99,7 @@ void	die(const char *format, ...);
 // ---------------------------------------------------------------- options.c --
 void	parse_options(int ac, char **av, int *option_index);
 // ------------------------------------------------------------------ input.c --
+void	editor_insert_char(t_env *env, int c);
 void	editor_move_cursor(t_env *env, int key);
 void	editor_process_keypress(t_env *env);
 // ------------------------------------------------------------ input_utils.c --
@@ -108,12 +109,12 @@ void	move_cursor_right(t_env *env, t_erow *row);
 void	move_cursor_up(t_env *env);
 void	snap_cursor_to_end_line(t_env *env, t_erow *row, int rowlen);
 // ---------------------------------------------------------- input_utils_2.c --
-void	change_page(t_env *env, int c);
+void	process_esc_seq_keys(t_env *env, int key);
+// ---------------------------------------------------------- input_utils_3.c --
 int		is_arrow_keys(int c);
 int		is_page_keys(int c);
 void	move_cursor_to_end_line(t_env *env);
-// ---------------------------------------------------------- input_utils_3.c --
-void	editor_insert_char(t_env *env, int c);
+void	process_page_keys(t_env *env, int key);
 // --------------------------------------------------------------- terminal.c --
 void	enable_raw_mode(void);
 int		editor_read_key(void);

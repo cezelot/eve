@@ -3,9 +3,9 @@
 /*   input.c - map keypresses to editor functions                             */
 /*                                                                            */
 /*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/07/19 14:38:11 by cezelot                                  */
+/*   Updated: 2024/07/21 17:16:34 by cezelot                                  */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
+/*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -25,6 +25,16 @@
 /* ************************************************************************** */
 
 #include "../../includes/eve.h"
+
+/* Insert the character C at the current position of the cursor,
+   then move the cursor forward.  */
+void	editor_insert_char(t_env *env, int c)
+{
+	if (env->cy == env->numrows)
+		editor_append_row(env, "", 0);
+	editor_row_insert_char(&env->row[env->cy], c, env->cx);
+	env->cx++;
+}
 
 /* Move the cursor according to the given key.  */
 void	editor_move_cursor(t_env *env, int key)
@@ -48,95 +58,24 @@ void	editor_move_cursor(t_env *env, int key)
 	snap_cursor_to_end_line(env, row, rowlen);
 }
 
-static void	process_page_keys(t_env *env, int c)
-{
-	if (c == PAGE_UP)
-		env->cy = env->rowoff;
-	else
-	{
-		env->cy = env->rowoff + env->screenrows - 1;
-		if (env->cy > env->numrows)
-			env->cy = env->numrows;
-	}
-	change_page(env, c);
-}
-
-static inline int handle_special_keys(t_env *env, int c)
-{
-	switch (c) {
-		case HOME_KEY:
-			env->cx = 0;
-			return 1;
-		case END_KEY:
-			move_cursor_to_end_line(env);
-			return 1;
-		case BACKSPACE:
-		case ('h' & 0x1f):
-		case DEL_KEY:
-			/* To-Do */
-			return 1;
-		case ('l' & 0x1f):
-		case '\x1b':
-			return 1;
-		default:
-			return 0;
-	}
-}
-
-static inline int handle_page_keys(t_env *env, int c)
-{
-	if (is_page_keys(c)) {
-		process_page_keys(env, c);
-		return 1;
-	}
-	return 0;
-}
-
-static inline int handle_movement_keys(t_env *env, int c)
-{
-	if (is_arrow_keys(c)) {
-		editor_move_cursor(env, c);
-		return 1;
-	}
-	return 0;
-}
-
-static inline int handle_navigation_keys(t_env *env, int c)
-{
-	if (handle_page_keys(env, c))
-		return 1;
-	if (handle_movement_keys(env, c))
-		return 1;
-	return 0;
-}
-
-static void	process_esc_seq_keys(t_env *env, int c)
-{
-	if (handle_special_keys(env, c))
-		return ;
-	if (handle_navigation_keys(env, c))
-		return ;
-	editor_insert_char(env, c);
-}
-
 /* Wait for a keypress, then handle it.  */
 void	editor_process_keypress(t_env *env)
 {
-	int	c;
+	int	key;
 
-	c = editor_read_key();
-	if (c == '\r')
+	key = editor_read_key();
+	if (key == '\r')
 		/* To-Do */
 		return ;
-	if (c == ('q' & 0x1f))
+	if (key == ('q' & 0x1f))
 	{
 		write(STDOUT_FILENO, "\x1b[2J", 4);
 		write(STDOUT_FILENO, "\x1b[H", 3);
 		close_editor(env);
 		exit(0);
 	}
-	if (c == ('s' & 0x1f))
+	if (key == ('s' & 0x1f))
 		editor_save(env);
 	else
-		process_esc_seq_keys(env, c);
+		process_esc_seq_keys(env, key);
 }

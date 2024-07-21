@@ -3,7 +3,7 @@
 /*   input_utils_3.c - functions called from editor_process_keypress()        */
 /*                                                                            */
 /*   Created: 2024/07/11 16:56:07 by cezelot                                  */
-/*   Updated: 2024/07/11 17:21:02 by cezelot                                  */
+/*   Updated: 2024/07/21 16:50:15 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -26,12 +26,46 @@
 
 #include "../../includes/eve.h"
 
-/* Insert the character C at the current position of the cursor,
-   then move the cursor forward.  */
-void	editor_insert_char(t_env *env, int c)
+void	move_cursor_to_end_line(t_env *env)
 {
-	if (env->cy == env->numrows)
-		editor_append_row(env, "", 0);
-	editor_row_insert_char(&env->row[env->cy], c, env->cx);
-	env->cx++;
+	if (env->cy < env->numrows)
+		env->cx = env->row[env->cy].size;
+}
+
+int	is_arrow_keys(int key)
+{
+	return ((key == ARROW_LEFT) || (key == ARROW_RIGHT) \
+			|| (key == ARROW_UP) || (key == ARROW_DOWN));
+}
+
+int	is_page_keys(int key)
+{
+	return ((key == PAGE_UP) || (key == PAGE_DOWN));
+}
+
+static void	change_page(t_env *env, int key)
+{
+	int	times;
+
+	times = env->screenrows;
+	while (times--)
+	{
+		if (key == PAGE_UP)
+			editor_move_cursor(env, ARROW_UP);
+		else
+			editor_move_cursor(env, ARROW_DOWN);
+	}
+}
+
+void	process_page_keys(t_env *env, int key)
+{
+	if (key == PAGE_UP)
+		env->cy = env->rowoff;
+	else
+	{
+		env->cy = env->rowoff + env->screenrows - 1;
+		if (env->cy > env->numrows)
+			env->cy = env->numrows;
+	}
+	change_page(env, key);
 }

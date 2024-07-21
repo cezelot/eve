@@ -3,9 +3,9 @@
 /*   input_utils_2.c                                                          */
 /*                                                                            */
 /*   Created: 2024/05/30 17:10:05 by cezelot                                  */
-/*   Updated: 2024/05/31 20:26:10 by cezelot                                  */
+/*   Updated: 2024/07/21 17:16:36 by cezelot                                  */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed                                       */
+/*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -26,33 +26,63 @@
 
 #include "../../includes/eve.h"
 
-void	change_page(t_env *env, int c)
+static inline int	handle_special_keys(t_env *env, int key)
 {
-	int	times;
-
-	times = env->screenrows;
-	while (times--)
+	switch (key)
 	{
-		if (c == PAGE_UP)
-			editor_move_cursor(env, ARROW_UP);
-		else
-			editor_move_cursor(env, ARROW_DOWN);
+		case HOME_KEY:
+			env->cx = 0;
+			return (1);
+		case END_KEY:
+			move_cursor_to_end_line(env);
+			return (1);
+		case BACKSPACE:
+		case ('h' & 0x1f):
+		case DEL_KEY:
+			/* To-Do */
+			return (1);
+		case ('l' & 0x1f):
+		case '\x1b':
+			return (1);
+		default:
+			return (0);
 	}
 }
 
-void	move_cursor_to_end_line(t_env *env)
+static inline int	handle_page_keys(t_env *env, int key)
 {
-	if (env->cy < env->numrows)
-		env->cx = env->row[env->cy].size;
+	if (is_page_keys(key))
+	{
+		process_page_keys(env, key);
+		return (1);
+	}
+	return (0);
 }
 
-int	is_arrow_keys(int c)
+static inline int	handle_movement_keys(t_env *env, int key)
 {
-	return ((c == ARROW_LEFT) || (c == ARROW_RIGHT) || \
-	(c == ARROW_UP) || (c == ARROW_DOWN));
+	if (is_arrow_keys(key))
+	{
+		editor_move_cursor(env, key);
+		return (1);
+	}
+	return (0);
 }
 
-int	is_page_keys(int c)
+static inline int	handle_navigation_keys(t_env *env, int key)
 {
-	return ((c == PAGE_UP) || (c == PAGE_DOWN));
+	if (handle_page_keys(env, key))
+		return (1);
+	if (handle_movement_keys(env, key))
+		return (1);
+	return (0);
+}
+
+void	process_esc_seq_keys(t_env *env, int key)
+{
+	if (handle_special_keys(env, key))
+		return ;
+	if (handle_navigation_keys(env, key))
+		return ;
+	editor_insert_char(env, key);
 }
