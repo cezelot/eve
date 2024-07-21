@@ -3,7 +3,7 @@
 /*   file_io.c - file input/output routines                                   */
 /*                                                                            */
 /*   Created: 2023/12/29 16:01:01 by cezelot                                  */
-/*   Updated: 2024/07/20 12:00:27 by cezelot                                  */
+/*   Updated: 2024/07/20 14:34:53 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -70,10 +70,19 @@ void	editor_save(t_env *env)
 	if (fd != -1)
 	{
 		if (ftruncate(fd, len) != -1)
-			write(fd, buf, len);
+		{
+			if (write(fd, buf, len) == len)
+			{
+				close(fd);
+				free(buf);
+				editor_set_status_message(env, "%d bytes written", len);
+				return ;
+			}
+		}
 		close(fd);
 	}
 	free(buf);
+	editor_set_status_message(env, "Unable to save: %s", strerror(errno));
 }
 
 /* Return true if LINE has a newline or a carriage return,

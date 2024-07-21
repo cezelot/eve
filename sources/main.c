@@ -3,7 +3,7 @@
 /*   eve - simple terminal-based text editor                                  */
 /*                                                                            */
 /*   Created: 2023/11/26 12:20:29 by cezelot                                  */
-/*   Updated: 2024/07/02 12:23:30 by cezelot                                  */
+/*   Updated: 2024/07/20 14:21:17 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -85,7 +85,7 @@ int	main(int ac, char **av)
 	init_editor(&env);
 	if (option_index < ac)
 		editor_open(&env, av[option_index]);
-	editor_set_status_message(&env, "Help: Ctrl-Q = quit");
+	editor_set_status_message(&env, "Help: Ctrl-S = save | Ctrl-Q = quit");
 	while (1)
 	{
 		editor_refresh_screen(&env);
