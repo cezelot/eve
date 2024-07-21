@@ -3,7 +3,7 @@
 /*   row_operations.c                                                         */
 /*                                                                            */
 /*   Created: 2023/12/31 18:08:27 by cezelot                                  */
-/*   Updated: 2024/07/11 16:54:55 by cezelot                                  */
+/*   Updated: 2024/07/21 19:54:52 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -109,4 +109,5 @@ void	editor_append_row(t_env *env, char *str, size_t len)
 	env->row[at].render = NULL;
 	editor_update_row(&env->row[at]);
 	env->numrows++;
+	env->dirty++;
 }

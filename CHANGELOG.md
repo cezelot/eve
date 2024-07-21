@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2024-07-21
+
 ### Added
 
  - Recommended community standards:
@@ -14,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    - Security policy
    - Contributing Guidelines
  - Use `Ctrl-S` to write the current buffer to disk.
+ - Notify the user whether the save succeeded or not.
+ - Notify the user in the status bar if the file has been modified.
 
 ### Fixed
 
@@ -47,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Display a status bar and a status message.
  - Take `--help` and `--version` command-line options.
 
-[unreleased]: https://github.com/cezelot/eve/compare/v0.2.0...HEAD
+[unreleased]: https://github.com/cezelot/eve/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/cezelot/eve/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/cezelot/eve/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/cezelot/eve/releases/tag/v0.1.0

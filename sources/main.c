@@ -3,7 +3,7 @@
 /*   eve - simple terminal-based text editor                                  */
 /*                                                                            */
 /*   Created: 2023/11/26 12:20:29 by cezelot                                  */
-/*   Updated: 2024/07/20 14:21:17 by cezelot                                  */
+/*   Updated: 2024/07/21 19:31:26 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -65,6 +65,7 @@ static void	init_editor(t_env *env)
 	env->numrows = 0;
 	env->row = NULL;
 	env->filename = NULL;
+	env->dirty = 0;
 	env->statusmsg[0] = '\0';
 	env->statusmsg_time = 0;
 	if (get_window_size(&env->screenrows, \

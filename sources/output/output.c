@@ -3,7 +3,7 @@
 /*   output.c - standard output routines                                      */
 /*                                                                            */
 /*   Created: 2023/12/06 18:08:14 by cezelot                                  */
-/*   Updated: 2024/06/30 09:01:50 by cezelot                                  */
+/*   Updated: 2024/07/21 19:52:16 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -61,12 +61,9 @@ static void	editor_draw_status_bar(t_env *env, t_abuf *abuf)
 	int		len;
 	int		rlen;
 
-	if (env->filename)
-		len = snprintf(status, sizeof(status), "%.20s - %d lines", \
-						env->filename, env->numrows);
-	else
-		len = snprintf(status, sizeof(status), "%.20s - %d lines", \
-						"[No Name]", env->numrows);
+	len = snprintf(status, sizeof(status), "%.20s - %d lines %s", \
+				env->filename ? env->filename : "[No Name]", env->numrows, \
+				env->dirty ? "(modified)" : "");
 	rlen = snprintf(rstatus, sizeof(rstatus), "%d,%d", env->cy + 1, \
 					env->cx + 1);
 	abuf_append(abuf, "\x1b[7m", 4);

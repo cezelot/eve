@@ -3,7 +3,7 @@
 /*   file_io.c - file input/output routines                                   */
 /*                                                                            */
 /*   Created: 2023/12/29 16:01:01 by cezelot                                  */
-/*   Updated: 2024/07/20 14:34:53 by cezelot                                  */
+/*   Updated: 2024/07/21 20:03:47 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -75,6 +75,7 @@ void	editor_save(t_env *env)
 			{
 				close(fd);
 				free(buf);
+				env->dirty = 0;
 				editor_set_status_message(env, "%d bytes written", len);
 				return ;
 			}
@@ -122,4 +123,5 @@ void	editor_open(t_env *env, char *filename)
 	}
 	free(line);
 	fclose(fp);
+	env->dirty = 0;
 }

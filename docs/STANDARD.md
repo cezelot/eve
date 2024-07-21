@@ -13,7 +13,6 @@ project.
  - [Macros and Pre-processors](#macros-and-pre-processors)
  - [Forbidden stuff](#forbidden-stuff)
  - [Comments](#comments)
- - [Files](#files)
 
 ## Denomination
 
@@ -204,7 +203,6 @@ void    die(const char *format, ...);
  - You’re not allowed to use:
    - `do...while`
    - `goto`
- - Ternary operators such as ‘?’.
  - VLAs - Variable Length Arrays.
 
 ## Comments
@@ -229,7 +227,3 @@ void    func(int nodenum)
 {
 }
 ```
-
-## Files
-
- - You cannot include a .c file.

@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/07/21 17:02:19 by cezelot                                  */
+/*   Updated: 2024/07/21 19:31:08 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -33,7 +33,7 @@
 # endif
 
 # define EVE_TAB_STOP 4
-# define EVE_VERSION "0.2.0"
+# define EVE_VERSION "0.3.0"
 # define PROGRAM_NAME "eve"
 
 # include <ctype.h>
@@ -83,6 +83,7 @@ typedef struct s_editor_config
 	int		numrows;
 	t_erow	*row;
 	char	*filename;
+	int		dirty;
 	char	statusmsg[80];
 	time_t	statusmsg_time;
 }			t_env;

@@ -3,7 +3,7 @@
 /*   input.c - map keypresses to editor functions                             */
 /*                                                                            */
 /*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/07/21 17:16:34 by cezelot                                  */
+/*   Updated: 2024/07/21 20:01:16 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -34,6 +34,7 @@ void	editor_insert_char(t_env *env, int c)
 		editor_append_row(env, "", 0);
 	editor_row_insert_char(&env->row[env->cy], c, env->cx);
 	env->cx++;
+	env->dirty++;
 }
 
 /* Move the cursor according to the given key.  */
