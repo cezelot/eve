@@ -3,7 +3,7 @@
 /*   editor_operations.c - functions called from process_keypress()           */
 /*                                                                            */
 /*   Created: 2024/07/22 11:54:00 by cezelot                                  */
-/*   Updated: 2024/07/22 14:19:35 by cezelot                                  */
+/*   Updated: 2024/07/22 17:19:36 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -44,10 +44,20 @@ void	delete_char(t_env *env)
 
 	if (env->cy == env->numrows)
 		return ;
+	if (env->cy == 0 && env->cx == 0)
+		return ;
 	row = &env->row[env->cy];
 	if (env->cx > 0)
 	{
 		row_delete_char(row, env->cx - 1, &env->dirty);
 		env->cx--;
+	}
+	else
+	{
+		env->cx = env->row[env->cy - 1].size;
+		row_append_string(&env->row[env->cy - 1], row->chars, \
+						row->size, &env->dirty);
+		delete_row(env, env->cy);
+		env->cy--;
 	}
 }

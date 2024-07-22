@@ -3,7 +3,7 @@
 /*   row_operations_2.c                                                       */
 /*                                                                            */
 /*   Created: 2024/07/22 11:34:50 by cezelot                                  */
-/*   Updated: 2024/07/22 11:36:41 by cezelot                                  */
+/*   Updated: 2024/07/22 17:22:37 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -32,4 +32,34 @@ void	render_tab(char *render, int *index)
 	render[(*index)++] = ' ';
 	while (*index % TAB_STOP)
 		render[(*index)++] = ' ';
+}
+
+/* Append S to the end of ROW.  */
+void	row_append_string(t_erow *row, char *s, size_t len, int *dirty)
+{
+	row->chars = realloc(row->chars, row->size + len + 1);
+	memcpy(&row->chars[row->size], s, len);
+	row->size += len;
+	row->chars[row->size] = '\0';
+	update_row(row);
+	++*dirty;
+}
+
+/* Deallocate memories in ROW.  */
+static void	free_row(t_erow *row)
+{
+	free(row->render);
+	free(row->chars);
+}
+
+/* Delete ROW at INDEX.  */
+void	delete_row(t_env *env, int index)
+{
+	if (index < 0 || index >= env->numrows)
+		return ;
+	free_row(&env->row[index]);
+	memmove(&env->row[index], &env->row[index + 1], \
+			(env->numrows - index - 1) * sizeof(t_erow));
+	env->numrows--;
+	env->dirty++;
 }

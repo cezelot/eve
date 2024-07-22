@@ -3,7 +3,7 @@
 /*   row_operations.c                                                         */
 /*                                                                            */
 /*   Created: 2023/12/31 18:08:27 by cezelot                                  */
-/*   Updated: 2024/07/22 14:17:06 by cezelot                                  */
+/*   Updated: 2024/07/22 16:51:18 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -45,7 +45,7 @@ int	row_cx_to_rx(t_erow *row, int cx)
 }
 
 /* Update RENDER and RSIZE according to CHARS.  */
-static void	update_row(t_erow *row)
+void	update_row(t_erow *row)
 {
 	int	i;
 	int	n;

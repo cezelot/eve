@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/07/22 14:15:20 by cezelot                                  */
+/*   Updated: 2024/07/22 17:16:30 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -137,8 +137,11 @@ void	append_row(t_env *env, char *str, size_t len);
 int		row_cx_to_rx(t_erow *row, int cx);
 void	row_delete_char(t_erow *row, int index, int *dirty);
 void	row_insert_char(t_erow *row, int c, int index);
+void	update_row(t_erow *row);
 // ------------------------------------------------------- row_operations_2.c --
+void	delete_row(t_env *env, int index);
 void	render_tab(char *render, int *index);
+void	row_append_string(t_erow *row, char *s, size_t len, int *dirty);
 // --------------------------------------------------------------- terminal.c --
 void	enable_raw_mode(void);
 int		read_key(void);
