@@ -3,7 +3,7 @@
 /*   input.c - map keypresses to editor functions                             */
 /*                                                                            */
 /*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/07/21 20:01:16 by cezelot                                  */
+/*   Updated: 2024/07/22 11:18:26 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -62,7 +62,8 @@ void	editor_move_cursor(t_env *env, int key)
 /* Wait for a keypress, then handle it.  */
 void	editor_process_keypress(t_env *env)
 {
-	int	key;
+	static int	quit_times = 1;
+	int			key;
 
 	key = editor_read_key();
 	if (key == '\r')
@@ -70,6 +71,13 @@ void	editor_process_keypress(t_env *env)
 		return ;
 	if (key == ('q' & 0x1f))
 	{
+		if (env->dirty && quit_times > 0)
+		{
+			editor_set_status_message(env, \
+			"File has unsaved changes! Press 'Ctrl-Q' one more time to quit");
+			--quit_times;
+			return ;
+		}
 		write(STDOUT_FILENO, "\x1b[2J", 4);
 		write(STDOUT_FILENO, "\x1b[H", 3);
 		close_editor(env);
@@ -79,4 +87,5 @@ void	editor_process_keypress(t_env *env)
 		editor_save(env);
 	else
 		process_esc_seq_keys(env, key);
+	quit_times = 1;
 }

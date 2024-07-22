@@ -38,17 +38,17 @@ int	editor_row_cx_to_rx(t_erow *row, int cx)
 	while (i < cx)
 	{
 		if (row->chars[i++] == '\t')
-			rx += (EVE_TAB_STOP - 1) - (rx % EVE_TAB_STOP);
+			rx += (TAB_STOP - 1) - (rx % TAB_STOP);
 		++rx;
 	}
 	return (rx);
 }
 
-/* Replace a tab by EVE_TAB_STOP spaces characters.  */
+/* Replace a tab by TAB_STOP spaces characters.  */
 static void	editor_render_tab(char *render, int *index)
 {
 	render[(*index)++] = ' ';
-	while (*index % EVE_TAB_STOP)
+	while (*index % TAB_STOP)
 		render[(*index)++] = ' ';
 }
 
@@ -66,7 +66,7 @@ static void	editor_update_row(t_erow *row)
 		if (row->chars[n++] == '\t')
 			++tabs;
 	free(row->render);
-	row->render = malloc(row->size + tabs * (EVE_TAB_STOP - 1) + 1);
+	row->render = malloc(row->size + tabs * (TAB_STOP - 1) + 1);
 	n = 0;
 	while (n < row->size)
 	{

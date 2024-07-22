@@ -32,9 +32,9 @@
 #  define _GNU_SOURCE
 # endif
 
-# define EVE_TAB_STOP 4
-# define EVE_VERSION "0.3.0"
 # define PROGRAM_NAME "eve"
+# define VERSION "0.3.0"
+# define TAB_STOP 4
 
 # include <ctype.h>
 # include <errno.h>

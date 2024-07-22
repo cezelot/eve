@@ -38,7 +38,7 @@ static void	show_help(void)
 /* Display the version and license.  */
 static void	show_version(void)
 {
-	printf("%s %s\n", PROGRAM_NAME, EVE_VERSION);
+	printf("%s %s\n", PROGRAM_NAME, VERSION);
 	puts("Copyright (C) 2024 Ismael B. Hamed");
 	puts("License GPLv3+: GNU GPL version 3 or later "
 		"<https://gnu.org/licenses/gpl.html>\n"

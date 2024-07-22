@@ -55,7 +55,7 @@ void	display_welcome_message(t_env *env, t_abuf *abuf)
 	int		padding;
 
 	welcomelen = snprintf(welcome, sizeof(welcome), \
-		"eve editor -- version %s", EVE_VERSION);
+		"eve editor -- version %s", VERSION);
 	if (welcomelen > env->screencols)
 		welcomelen = env->screencols;
 	padding = (env->screencols - welcomelen) / 2;
