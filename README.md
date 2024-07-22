@@ -3,7 +3,7 @@ eve
 
 [![Build Status](https://github.com/cezelot/eve/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/cezelot/eve/actions/workflows/build.yml)
 [![CodeQL](https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql)
-![CodeScene Code Health](https://codescene.io/projects/51883/status-badges/code-health)
+[![CodeScene Code Health](https://codescene.io/projects/51883/status-badges/code-health)](https://drive.proton.me/urls/5SKHRBA710#yz0WZNGdkCAk)
 ![Code Size](https://img.shields.io/github/languages/code-size/cezelot/eve)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg?style=flat-square)](https://makeapullrequest.com)
 
