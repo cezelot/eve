@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/07/22 11:36:25 by cezelot                                  */
+/*   Updated: 2024/07/22 14:15:20 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -101,6 +101,7 @@ void	die(const char *format, ...);
 void	abuf_append(t_abuf *abuf, const char *str, int len);
 void	abuf_free(t_abuf *abuf);
 // ------------------------------------------------------ editor_operations.c --
+void	editor_del_char(t_env *env);
 void	editor_insert_char(t_env *env, int c);
 // ---------------------------------------------------------------- file_io.c --
 void	editor_open(t_env *env, char *filename);
@@ -134,6 +135,7 @@ void	editor_set_status_message(t_env *env, const char *format, ...);
 // --------------------------------------------------------- row_operations.c --
 void	editor_append_row(t_env *env, char *str, size_t len);
 int		editor_row_cx_to_rx(t_erow *row, int cx);
+void	editor_row_del_char(t_erow *row, int index, int *dirty);
 void	editor_row_insert_char(t_erow *row, int c, int index);
 // ------------------------------------------------------- row_operations_2.c --
 void	render_tab(char *render, int *index);

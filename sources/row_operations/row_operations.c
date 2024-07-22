@@ -3,7 +3,7 @@
 /*   row_operations.c                                                         */
 /*                                                                            */
 /*   Created: 2023/12/31 18:08:27 by cezelot                                  */
-/*   Updated: 2024/07/22 11:37:19 by cezelot                                  */
+/*   Updated: 2024/07/22 14:17:06 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -102,4 +102,15 @@ void	editor_append_row(t_env *env, char *str, size_t len)
 	editor_update_row(&env->row[at]);
 	env->numrows++;
 	env->dirty++;
+}
+
+/* Delete the character at INDEX in ROW, then increment DIRTY.  */
+void	editor_row_del_char(t_erow *row, int index, int *dirty)
+{
+	if (index < 0 || index >= row->size)
+		return ;
+	memmove(&row->chars[index], &row->chars[index + 1], row->size - index);
+	row->size--;
+	editor_update_row(row);
+	++*dirty;
 }

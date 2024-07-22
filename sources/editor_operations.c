@@ -3,7 +3,7 @@
 /*   editor_operations.c - functions called from editor_process_keypress()    */
 /*                                                                            */
 /*   Created: 2024/07/22 11:54:00 by cezelot                                  */
-/*   Updated: 2024/07/22 11:55:09 by cezelot                                  */
+/*   Updated: 2024/07/22 14:19:35 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -35,4 +35,19 @@ void	editor_insert_char(t_env *env, int c)
 	editor_row_insert_char(&env->row[env->cy], c, env->cx);
 	env->cx++;
 	env->dirty++;
+}
+
+/* Delete the character that is to the left of the cursor.  */
+void	editor_del_char(t_env *env)
+{
+	t_erow	*row;
+
+	if (env->cy == env->numrows)
+		return ;
+	row = &env->row[env->cy];
+	if (env->cx > 0)
+	{
+		editor_row_del_char(row, env->cx - 1, &env->dirty);
+		env->cx--;
+	}
 }

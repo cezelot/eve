@@ -3,7 +3,7 @@
 /*   input_3.c                                                                */
 /*                                                                            */
 /*   Created: 2024/05/30 17:10:05 by cezelot                                  */
-/*   Updated: 2024/07/21 17:16:36 by cezelot                                  */
+/*   Updated: 2024/07/22 14:08:32 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
@@ -39,7 +39,9 @@ static inline int	handle_special_keys(t_env *env, int key)
 		case BACKSPACE:
 		case ('h' & 0x1f):
 		case DEL_KEY:
-			/* To-Do */
+			if (key == DEL_KEY)
+				editor_move_cursor(env, ARROW_RIGHT);
+			editor_del_char(env);
 			return (1);
 		case ('l' & 0x1f):
 		case '\x1b':
