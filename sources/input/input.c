@@ -27,7 +27,7 @@
 #include "../../includes/eve.h"
 
 /* Move the cursor according to the given key.  */
-void	editor_move_cursor(t_env *env, int key)
+void	move_cursor(t_env *env, int key)
 {
 	t_erow	*row;
 	int		rowlen;
@@ -49,12 +49,12 @@ void	editor_move_cursor(t_env *env, int key)
 }
 
 /* Wait for a keypress, then handle it.  */
-void	editor_process_keypress(t_env *env)
+void	process_keypress(t_env *env)
 {
 	static int	quit_times = 1;
 	int			key;
 
-	key = editor_read_key();
+	key = read_key();
 	if (key == '\r')
 		/* To-Do */
 		return ;
@@ -62,7 +62,7 @@ void	editor_process_keypress(t_env *env)
 	{
 		if (env->dirty && quit_times > 0)
 		{
-			editor_set_status_message(env, \
+			set_status_message(env, \
 			"File has unsaved changes! Press 'Ctrl-Q' one more time to quit");
 			--quit_times;
 			return ;
@@ -73,7 +73,7 @@ void	editor_process_keypress(t_env *env)
 		exit(0);
 	}
 	if (key == ('s' & 0x1f))
-		editor_save(env);
+		save(env);
 	else
 		process_esc_seq_keys(env, key);
 	quit_times = 1;

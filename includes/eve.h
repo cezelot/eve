@@ -101,16 +101,16 @@ void	die(const char *format, ...);
 void	abuf_append(t_abuf *abuf, const char *str, int len);
 void	abuf_free(t_abuf *abuf);
 // ------------------------------------------------------ editor_operations.c --
-void	editor_del_char(t_env *env);
-void	editor_insert_char(t_env *env, int c);
+void	delete_char(t_env *env);
+void	insert_char(t_env *env, int c);
 // ---------------------------------------------------------------- file_io.c --
-void	editor_open(t_env *env, char *filename);
-void	editor_save(t_env *env);
+void	open_file(t_env *env, char *filename);
+void	save(t_env *env);
 // ---------------------------------------------------------------- options.c --
 void	parse_options(int ac, char **av, int *option_index);
 // ------------------------------------------------------------------ input.c --
-void	editor_move_cursor(t_env *env, int key);
-void	editor_process_keypress(t_env *env);
+void	move_cursor(t_env *env, int key);
+void	process_keypress(t_env *env);
 // ---------------------------------------------------------------- input_2.c --
 void	move_cursor_down(t_env *env);
 void	move_cursor_left(t_env *env);
@@ -125,23 +125,23 @@ int		is_page_keys(int c);
 void	move_cursor_to_end_line(t_env *env);
 void	process_page_keys(t_env *env, int key);
 // ----------------------------------------------------------------- output.c --
-void	editor_draw_message_bar(t_env *env, t_abuf *abuf);
-void	editor_refresh_screen(t_env *env);
+void	draw_message_bar(t_env *env, t_abuf *abuf);
+void	refresh_screen(t_env *env);
 // --------------------------------------------------------------- output_2.c --
 void	display_text_buffer(t_env *env, t_abuf *abuf, int filerow);
 void	display_tilde(t_env *env, t_abuf *abuf, int n);
 void	display_welcome_message(t_env *env, t_abuf *abuf);
-void	editor_set_status_message(t_env *env, const char *format, ...);
+void	set_status_message(t_env *env, const char *format, ...);
 // --------------------------------------------------------- row_operations.c --
-void	editor_append_row(t_env *env, char *str, size_t len);
-int		editor_row_cx_to_rx(t_erow *row, int cx);
-void	editor_row_del_char(t_erow *row, int index, int *dirty);
-void	editor_row_insert_char(t_erow *row, int c, int index);
+void	append_row(t_env *env, char *str, size_t len);
+int		row_cx_to_rx(t_erow *row, int cx);
+void	row_delete_char(t_erow *row, int index, int *dirty);
+void	row_insert_char(t_erow *row, int c, int index);
 // ------------------------------------------------------- row_operations_2.c --
 void	render_tab(char *render, int *index);
 // --------------------------------------------------------------- terminal.c --
 void	enable_raw_mode(void);
-int		editor_read_key(void);
+int		read_key(void);
 int		get_window_size(int *rows, int *cols);
 // ------------------------------------------------------------- terminal_2.c --
 int		get_cursor_position(int *rows, int *cols);

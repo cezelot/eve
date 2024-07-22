@@ -29,7 +29,7 @@
 /* Convert ROW structs into a single string.
    Its length will be assigned to BUFLEN.
    Return the string.  */
-static char	*editor_rows_to_string(t_env *env, int *buflen)
+static char	*rows_to_string(t_env *env, int *buflen)
 {
 	char	*buf;
 	char	*p;
@@ -55,8 +55,8 @@ static char	*editor_rows_to_string(t_env *env, int *buflen)
 	return (buf);
 }
 
-/* Write the current buffer to disk.  */
-void	editor_save(t_env *env)
+/* Write the current text buffer to disk.  */
+void	save(t_env *env)
 {
 	char	*buf;
 	int		len;
@@ -65,7 +65,7 @@ void	editor_save(t_env *env)
 	if (env->filename == NULL)
 		return ;
 	len = 0;
-	buf = editor_rows_to_string(env, &len);
+	buf = rows_to_string(env, &len);
 	fd = open(env->filename, O_RDWR | O_CREAT, 0644);
 	if (fd != -1)
 	{
@@ -76,14 +76,14 @@ void	editor_save(t_env *env)
 				close(fd);
 				free(buf);
 				env->dirty = 0;
-				editor_set_status_message(env, "%d bytes written", len);
+				set_status_message(env, "%d bytes written", len);
 				return ;
 			}
 		}
 		close(fd);
 	}
 	free(buf);
-	editor_set_status_message(env, "Unable to save: %s", strerror(errno));
+	set_status_message(env, "Unable to save: %s", strerror(errno));
 }
 
 /* Return true if LINE has a newline or a carriage return,
@@ -94,7 +94,7 @@ static int	has_newline_or_carriage_return(char *line, ssize_t linelen)
 }
 
 /* Open and read FILENAME.  */
-void	editor_open(t_env *env, char *filename)
+void	open_file(t_env *env, char *filename)
 {
 	FILE	*fp;
 	char	*line;
@@ -119,7 +119,7 @@ void	editor_open(t_env *env, char *filename)
 			break ;
 		while (linelen > 0 && has_newline_or_carriage_return(line, linelen))
 			--linelen;
-		editor_append_row(env, line, linelen);
+		append_row(env, line, linelen);
 	}
 	free(line);
 	fclose(fp);

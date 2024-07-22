@@ -28,7 +28,7 @@
 
 /* Converts a chars index into a render index,
    and return the render index.  */
-int	editor_row_cx_to_rx(t_erow *row, int cx)
+int	row_cx_to_rx(t_erow *row, int cx)
 {
 	int	rx;
 	int	i;
@@ -45,7 +45,7 @@ int	editor_row_cx_to_rx(t_erow *row, int cx)
 }
 
 /* Update RENDER and RSIZE according to CHARS.  */
-static void	editor_update_row(t_erow *row)
+static void	update_row(t_erow *row)
 {
 	int	i;
 	int	n;
@@ -74,7 +74,7 @@ static void	editor_update_row(t_erow *row)
 
 /* Insert the character C into CHARS, at position INDEX,
    and update the other variables in row.  */
-void	editor_row_insert_char(t_erow *row, int c, int index)
+void	row_insert_char(t_erow *row, int c, int index)
 {
 	if (index < 0 || index > row->size)
 		index = row->size;
@@ -82,12 +82,12 @@ void	editor_row_insert_char(t_erow *row, int c, int index)
 	memmove(&row->chars[index + 1], &row->chars[index], row->size - index + 1);
 	row->size++;
 	row->chars[index] = c;
-	editor_update_row(row);
+	update_row(row);
 }
 
 /* Add STR to the contents of a new editor row,
    and add the new erow after the last erow.  */
-void	editor_append_row(t_env *env, char *str, size_t len)
+void	append_row(t_env *env, char *str, size_t len)
 {
 	size_t	at;
 
@@ -99,18 +99,18 @@ void	editor_append_row(t_env *env, char *str, size_t len)
 	env->row[at].chars[len] = '\0';
 	env->row[at].rsize = 0;
 	env->row[at].render = NULL;
-	editor_update_row(&env->row[at]);
+	update_row(&env->row[at]);
 	env->numrows++;
 	env->dirty++;
 }
 
 /* Delete the character at INDEX in ROW, then increment DIRTY.  */
-void	editor_row_del_char(t_erow *row, int index, int *dirty)
+void	row_delete_char(t_erow *row, int index, int *dirty)
 {
 	if (index < 0 || index >= row->size)
 		return ;
 	memmove(&row->chars[index], &row->chars[index + 1], row->size - index);
 	row->size--;
-	editor_update_row(row);
+	update_row(row);
 	++*dirty;
 }

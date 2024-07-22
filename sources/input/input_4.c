@@ -51,9 +51,9 @@ static void	change_page(t_env *env, int key)
 	while (times--)
 	{
 		if (key == PAGE_UP)
-			editor_move_cursor(env, ARROW_UP);
+			move_cursor(env, ARROW_UP);
 		else
-			editor_move_cursor(env, ARROW_DOWN);
+			move_cursor(env, ARROW_DOWN);
 	}
 }
 

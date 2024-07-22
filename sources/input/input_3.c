@@ -40,8 +40,8 @@ static inline int	handle_special_keys(t_env *env, int key)
 		case ('h' & 0x1f):
 		case DEL_KEY:
 			if (key == DEL_KEY)
-				editor_move_cursor(env, ARROW_RIGHT);
-			editor_del_char(env);
+				move_cursor(env, ARROW_RIGHT);
+			delete_char(env);
 			return (1);
 		case ('l' & 0x1f):
 		case '\x1b':
@@ -65,7 +65,7 @@ static inline int	handle_movement_keys(t_env *env, int key)
 {
 	if (is_arrow_keys(key))
 	{
-		editor_move_cursor(env, key);
+		move_cursor(env, key);
 		return (1);
 	}
 	return (0);
@@ -86,5 +86,5 @@ void	process_esc_seq_keys(t_env *env, int key)
 		return ;
 	if (handle_navigation_keys(env, key))
 		return ;
-	editor_insert_char(env, key);
+	insert_char(env, key);
 }

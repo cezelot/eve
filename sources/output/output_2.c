@@ -26,7 +26,7 @@
 
 #include "../../includes/eve.h"
 
-void	editor_set_status_message(t_env *env, const char *format, ...)
+void	set_status_message(t_env *env, const char *format, ...)
 {
 	va_list	ap;
 

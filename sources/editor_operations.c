@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   editor_operations.c - functions called from editor_process_keypress()    */
+/*   editor_operations.c - functions called from process_keypress()           */
 /*                                                                            */
 /*   Created: 2024/07/22 11:54:00 by cezelot                                  */
 /*   Updated: 2024/07/22 14:19:35 by cezelot                                  */
@@ -28,17 +28,17 @@
 
 /* Insert the character C at the current position of the cursor,
    then move the cursor forward.  */
-void	editor_insert_char(t_env *env, int c)
+void	insert_char(t_env *env, int c)
 {
 	if (env->cy == env->numrows)
-		editor_append_row(env, "", 0);
-	editor_row_insert_char(&env->row[env->cy], c, env->cx);
+		append_row(env, "", 0);
+	row_insert_char(&env->row[env->cy], c, env->cx);
 	env->cx++;
 	env->dirty++;
 }
 
 /* Delete the character that is to the left of the cursor.  */
-void	editor_del_char(t_env *env)
+void	delete_char(t_env *env)
 {
 	t_erow	*row;
 
@@ -47,7 +47,7 @@ void	editor_del_char(t_env *env)
 	row = &env->row[env->cy];
 	if (env->cx > 0)
 	{
-		editor_row_del_char(row, env->cx - 1, &env->dirty);
+		row_delete_char(row, env->cx - 1, &env->dirty);
 		env->cx--;
 	}
 }

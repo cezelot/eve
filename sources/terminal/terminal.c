@@ -85,7 +85,7 @@ void	enable_raw_mode(void)
 }
 
 /* Wait for a keypress and return it.  */
-int	editor_read_key(void)
+int	read_key(void)
 {
 	ssize_t	nbytes_read;
 	char	c;

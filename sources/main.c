@@ -85,12 +85,12 @@ int	main(int ac, char **av)
 	enable_raw_mode();
 	init_editor(&env);
 	if (option_index < ac)
-		editor_open(&env, av[option_index]);
-	editor_set_status_message(&env, "Help: Ctrl-S = save | Ctrl-Q = quit");
+		open_file(&env, av[option_index]);
+	set_status_message(&env, "Help: Ctrl-S = save | Ctrl-Q = quit");
 	while (1)
 	{
-		editor_refresh_screen(&env);
-		editor_process_keypress(&env);
+		refresh_screen(&env);
+		process_keypress(&env);
 	}
 	return (0);
 }

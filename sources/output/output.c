@@ -27,11 +27,11 @@
 #include "../../includes/eve.h"
 
 /* Scroll the file if the cursor has moved outside of the visible window.  */
-static void	editor_scroll(t_env *env)
+static void	scroll(t_env *env)
 {
 	env->rx = 0;
 	if (env->cy < env->numrows)
-		env->rx = editor_row_cx_to_rx(&env->row[env->cy], env->cx);
+		env->rx = row_cx_to_rx(&env->row[env->cy], env->cx);
 	if (env->cy < env->rowoff)
 		env->rowoff = env->cy;
 	if (env->cy >= env->rowoff + env->screenrows)
@@ -42,7 +42,7 @@ static void	editor_scroll(t_env *env)
 		env->coloff = env->rx - env->screencols + 1;
 }
 
-void	editor_draw_message_bar(t_env *env, t_abuf *abuf)
+void	draw_message_bar(t_env *env, t_abuf *abuf)
 {
 	int	msglen;
 
@@ -54,7 +54,7 @@ void	editor_draw_message_bar(t_env *env, t_abuf *abuf)
 		abuf_append(abuf, env->statusmsg, msglen);
 }
 
-static void	editor_draw_status_bar(t_env *env, t_abuf *abuf)
+static void	draw_status_bar(t_env *env, t_abuf *abuf)
 {
 	char	status[80];
 	char	rstatus[80];
@@ -87,7 +87,7 @@ static void	editor_draw_status_bar(t_env *env, t_abuf *abuf)
 /* If the the program was run without a file, draw a column of tildes
    on the left hand side of the screen.  Otherwise, draw a tilde at
    the beginning of any lines that come after the end of the file.  */
-static void	editor_draw_rows(t_env *env, t_abuf *abuf)
+static void	draw_rows(t_env *env, t_abuf *abuf)
 {
 	int	n;
 	int	filerow;
@@ -106,19 +106,19 @@ static void	editor_draw_rows(t_env *env, t_abuf *abuf)
 	}
 }
 
-void	editor_refresh_screen(t_env *env)
+void	refresh_screen(t_env *env)
 {
 	t_abuf	abuf;
 	char	buf[32];
 
 	abuf.buf = NULL;
 	abuf.len = 0;
-	editor_scroll(env);
+	scroll(env);
 	abuf_append(&abuf, "\x1b[?25l", 6);
 	abuf_append(&abuf, "\x1b[H", 3);
-	editor_draw_rows(env, &abuf);
-	editor_draw_status_bar(env, &abuf);
-	editor_draw_message_bar(env, &abuf);
+	draw_rows(env, &abuf);
+	draw_status_bar(env, &abuf);
+	draw_message_bar(env, &abuf);
 	snprintf(buf, sizeof(buf), "\x1b[%d;%dH", \
 			(env->cy - env->rowoff) + 1, (env->rx - env->coloff) + 1);
 	abuf_append(&abuf, buf, strlen(buf));
