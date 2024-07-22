@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   output_utils.c                                                           */
+/*   terminal_2.c                                                             */
 /*                                                                            */
-/*   Created: 2024/05/29 10:19:15 by cezelot                                  */
-/*   Updated: 2024/05/30 18:25:02 by cezelot                                  */
+/*   Created: 2023/12/18 10:35:43 by cezelot                                  */
+/*   Updated: 2024/05/31 13:39:45 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -26,56 +26,86 @@
 
 #include "../../includes/eve.h"
 
-void	editor_set_status_message(t_env *env, const char *format, ...)
+static int	get_home_or_end_key(char *seq)
 {
-	va_list	ap;
-
-	va_start(ap, format);
-	vsnprintf(env->statusmsg, sizeof(env->statusmsg), format, ap);
-	va_end(ap);
-	env->statusmsg_time = time(NULL);
+	if (seq[1] == 'H')
+		return (HOME_KEY);
+	else if (seq[1] == 'F')
+		return (END_KEY);
+	return (0);
 }
 
-void	display_text_buffer(t_env *env, t_abuf *abuf, int filerow)
+static int	get_arrow_key(char *seq)
 {
-	int	len;
-
-	len = env->row[filerow].rsize - env->coloff;
-	if (len < 0)
-		len = 0;
-	if (len > env->screencols)
-		len = env->screencols;
-	abuf_append(abuf, &env->row[filerow].render[env->coloff], len);
+	if (seq[1] == 'A')
+		return (ARROW_UP);
+	else if (seq[1] == 'B')
+		return (ARROW_DOWN);
+	else if (seq[1] == 'C')
+		return (ARROW_RIGHT);
+	else if (seq[1] == 'D')
+		return (ARROW_LEFT);
+	return (0);
 }
 
-void	display_welcome_message(t_env *env, t_abuf *abuf)
+static int	get_navigation_key(char *seq)
 {
-	char	welcome[80];
-	int		welcomelen;
-	int		padding;
-
-	welcomelen = snprintf(welcome, sizeof(welcome), \
-		"eve editor -- version %s", VERSION);
-	if (welcomelen > env->screencols)
-		welcomelen = env->screencols;
-	padding = (env->screencols - welcomelen) / 2;
-	if (padding)
+	if (seq[1] >= '0' && seq[1] <= '9')
 	{
-		abuf_append(abuf, "~", 1);
-		--padding;
+		if (read(STDIN_FILENO, &seq[2], 1) != 1)
+			return ('\x1b');
+		if (seq[2] == '~')
+			return (get_nav_key(seq));
 	}
-	while (padding--)
-		abuf_append(abuf, " ", 1);
-	abuf_append(abuf, welcome, welcomelen);
+	return (0);
 }
 
-void	display_tilde(t_env *env, t_abuf *abuf, int n)
+int	read_escape_sequences(void)
 {
-	if (env->numrows == 0 && n == env->screenrows / 3)
+	int		key;
+	char	seq[3];
+
+	if (read(STDIN_FILENO, &seq[0], 1) != 1)
+		return ('\x1b');
+	if (read(STDIN_FILENO, &seq[1], 1) != 1)
+		return ('\x1b');
+	if (seq[0] == '[')
 	{
-		if (n == env->screenrows / 3)
-			display_welcome_message(env, abuf);
+		key = get_navigation_key(seq);
+		if (key)
+			return (key);
+		key = get_arrow_key(seq);
+		if (key)
+			return (key);
+		key = get_home_or_end_key(seq);
+		if (key)
+			return (key);
 	}
-	else
-		abuf_append(abuf, "~", 1);
+	else if (seq[0] == 'O')
+		return (get_home_or_end_key(seq));
+	return ('\x1b');
+}
+
+int	get_cursor_position(int *rows, int *cols)
+{
+	char			buf[32];
+	unsigned int	i;
+
+	i = 0;
+	if (write(STDOUT_FILENO, "\x1b[6n", 4) != 4)
+		return (-1);
+	while (i < sizeof(buf) - 1)
+	{
+		if (read(STDIN_FILENO, &buf[i], 1) != 1)
+			break ;
+		if (buf[i] == 'R')
+			break ;
+		i++;
+	}
+	buf[i] = '\0';
+	if (buf[0] != '\x1b' || buf[1] != '[')
+		return (-1);
+	if (sscanf(&buf[2], "%d;%d", rows, cols) != 2)
+		return (-1);
+	return (0);
 }

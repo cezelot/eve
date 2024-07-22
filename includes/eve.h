@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/07/21 19:31:08 by cezelot                                  */
+/*   Updated: 2024/07/22 11:36:25 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -97,51 +97,54 @@ typedef struct s_append_buffer
 // ------------------------------------------------------------------- main.c --
 void	close_editor(t_env *env);
 void	die(const char *format, ...);
+// ---------------------------------------------------------- append_buffer.c --
+void	abuf_append(t_abuf *abuf, const char *str, int len);
+void	abuf_free(t_abuf *abuf);
+// ------------------------------------------------------ editor_operations.c --
+void	editor_insert_char(t_env *env, int c);
+// ---------------------------------------------------------------- file_io.c --
+void	editor_open(t_env *env, char *filename);
+void	editor_save(t_env *env);
 // ---------------------------------------------------------------- options.c --
 void	parse_options(int ac, char **av, int *option_index);
 // ------------------------------------------------------------------ input.c --
-void	editor_insert_char(t_env *env, int c);
 void	editor_move_cursor(t_env *env, int key);
 void	editor_process_keypress(t_env *env);
-// ------------------------------------------------------------ input_utils.c --
+// ---------------------------------------------------------------- input_2.c --
 void	move_cursor_down(t_env *env);
 void	move_cursor_left(t_env *env);
 void	move_cursor_right(t_env *env, t_erow *row);
 void	move_cursor_up(t_env *env);
 void	snap_cursor_to_end_line(t_env *env, t_erow *row, int rowlen);
-// ---------------------------------------------------------- input_utils_2.c --
+// ---------------------------------------------------------------- input_3.c --
 void	process_esc_seq_keys(t_env *env, int key);
-// ---------------------------------------------------------- input_utils_3.c --
+// ---------------------------------------------------------------- input_4.c --
 int		is_arrow_keys(int c);
 int		is_page_keys(int c);
 void	move_cursor_to_end_line(t_env *env);
 void	process_page_keys(t_env *env, int key);
-// --------------------------------------------------------------- terminal.c --
-void	enable_raw_mode(void);
-int		editor_read_key(void);
-// --------------------------------------------------------- terminal_utils.c --
-int		get_cursor_position(int *rows, int *cols);
-int		get_window_size(int *rows, int *cols);
-int		read_escape_sequences(void);
-// ------------------------------------------------------- terminal_utils_2.c --
-int		get_nav_key(char *seq);
 // ----------------------------------------------------------------- output.c --
 void	editor_draw_message_bar(t_env *env, t_abuf *abuf);
 void	editor_refresh_screen(t_env *env);
-// ----------------------------------------------------------- output_utils.c --
+// --------------------------------------------------------------- output_2.c --
 void	display_text_buffer(t_env *env, t_abuf *abuf, int filerow);
 void	display_tilde(t_env *env, t_abuf *abuf, int n);
 void	display_welcome_message(t_env *env, t_abuf *abuf);
 void	editor_set_status_message(t_env *env, const char *format, ...);
-// ---------------------------------------------------------- append_buffer.c --
-void	abuf_append(t_abuf *abuf, const char *str, int len);
-void	abuf_free(t_abuf *abuf);
-// ---------------------------------------------------------------- file_io.c --
-void	editor_open(t_env *env, char *filename);
-void	editor_save(t_env *env);
 // --------------------------------------------------------- row_operations.c --
 void	editor_append_row(t_env *env, char *str, size_t len);
 int		editor_row_cx_to_rx(t_erow *row, int cx);
 void	editor_row_insert_char(t_erow *row, int c, int index);
+// ------------------------------------------------------- row_operations_2.c --
+void	render_tab(char *render, int *index);
+// --------------------------------------------------------------- terminal.c --
+void	enable_raw_mode(void);
+int		editor_read_key(void);
+int		get_window_size(int *rows, int *cols);
+// ------------------------------------------------------------- terminal_2.c --
+int		get_cursor_position(int *rows, int *cols);
+int		read_escape_sequences(void);
+// ------------------------------------------------------------- terminal_3.c --
+int		get_nav_key(char *seq);
 
 #endif /* EVE_H */

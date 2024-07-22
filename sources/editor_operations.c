@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   input_utils.c                                                            */
+/*   editor_operations.c - functions called from editor_process_keypress()    */
 /*                                                                            */
-/*   Created: 2024/05/28 10:13:12 by cezelot                                  */
-/*   Updated: 2024/05/30 21:00:44 by cezelot                                  */
+/*   Created: 2024/07/22 11:54:00 by cezelot                                  */
+/*   Updated: 2024/07/22 11:55:09 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -24,52 +24,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/eve.h"
+#include "../includes/eve.h"
 
-void	snap_cursor_to_end_line(t_env *env, t_erow *row, int rowlen)
+/* Insert the character C at the current position of the cursor,
+   then move the cursor forward.  */
+void	editor_insert_char(t_env *env, int c)
 {
-	if (env->cy >= env->numrows)
-		row = NULL;
-	else
-		row = &env->row[env->cy];
-	if (row)
-		rowlen = row->size;
-	else
-		row = 0;
-	if (env->cx > rowlen)
-		env->cx = rowlen;
-}
-
-void	move_cursor_down(t_env *env)
-{
-	if (env->cy < env->numrows)
-		env->cy++;
-}
-
-void	move_cursor_up(t_env *env)
-{
-	if (env->cy != 0)
-		env->cy--;
-}
-
-void	move_cursor_right(t_env *env, t_erow *row)
-{
-	if (row && env->cx < row->size)
-		env->cx++;
-	else if (row && env->cx == row->size)
-	{
-		env->cy++;
-		env->cx = 0;
-	}
-}
-
-void	move_cursor_left(t_env *env)
-{
-	if (env->cx != 0)
-		env->cx--;
-	else if (env->cy > 0)
-	{
-		env->cy--;
-		env->cx = env->row[env->cy].size;
-	}
+	if (env->cy == env->numrows)
+		editor_append_row(env, "", 0);
+	editor_row_insert_char(&env->row[env->cy], c, env->cx);
+	env->cx++;
+	env->dirty++;
 }

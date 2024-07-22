@@ -3,7 +3,7 @@
 /*   row_operations.c                                                         */
 /*                                                                            */
 /*   Created: 2023/12/31 18:08:27 by cezelot                                  */
-/*   Updated: 2024/07/21 19:54:52 by cezelot                                  */
+/*   Updated: 2024/07/22 11:37:19 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -24,7 +24,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eve.h"
+#include "../../includes/eve.h"
 
 /* Converts a chars index into a render index,
    and return the render index.  */
@@ -42,14 +42,6 @@ int	editor_row_cx_to_rx(t_erow *row, int cx)
 		++rx;
 	}
 	return (rx);
-}
-
-/* Replace a tab by TAB_STOP spaces characters.  */
-static void	editor_render_tab(char *render, int *index)
-{
-	render[(*index)++] = ' ';
-	while (*index % TAB_STOP)
-		render[(*index)++] = ' ';
 }
 
 /* Update RENDER and RSIZE according to CHARS.  */
@@ -71,7 +63,7 @@ static void	editor_update_row(t_erow *row)
 	while (n < row->size)
 	{
 		if (row->chars[n] == '\t')
-			editor_render_tab(row->render, &i);
+			render_tab(row->render, &i);
 		else
 			row->render[i++] = row->chars[n];
 		++n;

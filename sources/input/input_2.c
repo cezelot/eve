@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   input.c - map keypresses to editor functions                             */
+/*   input_2.c                                                                */
 /*                                                                            */
-/*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/07/22 11:18:26 by cezelot                                  */
+/*   Created: 2024/05/28 10:13:12 by cezelot                                  */
+/*   Updated: 2024/05/30 21:00:44 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -26,55 +26,50 @@
 
 #include "../../includes/eve.h"
 
-/* Move the cursor according to the given key.  */
-void	editor_move_cursor(t_env *env, int key)
+void	snap_cursor_to_end_line(t_env *env, t_erow *row, int rowlen)
 {
-	t_erow	*row;
-	int		rowlen;
-
-	rowlen = 0;
 	if (env->cy >= env->numrows)
 		row = NULL;
 	else
 		row = &env->row[env->cy];
-	if (key == ARROW_LEFT)
-		move_cursor_left(env);
-	if (key == ARROW_RIGHT)
-		move_cursor_right(env, row);
-	if (key == ARROW_UP)
-		move_cursor_up(env);
-	if (key == ARROW_DOWN)
-		move_cursor_down(env);
-	snap_cursor_to_end_line(env, row, rowlen);
+	if (row)
+		rowlen = row->size;
+	else
+		row = 0;
+	if (env->cx > rowlen)
+		env->cx = rowlen;
 }
 
-/* Wait for a keypress, then handle it.  */
-void	editor_process_keypress(t_env *env)
+void	move_cursor_down(t_env *env)
 {
-	static int	quit_times = 1;
-	int			key;
+	if (env->cy < env->numrows)
+		env->cy++;
+}
 
-	key = editor_read_key();
-	if (key == '\r')
-		/* To-Do */
-		return ;
-	if (key == ('q' & 0x1f))
+void	move_cursor_up(t_env *env)
+{
+	if (env->cy != 0)
+		env->cy--;
+}
+
+void	move_cursor_right(t_env *env, t_erow *row)
+{
+	if (row && env->cx < row->size)
+		env->cx++;
+	else if (row && env->cx == row->size)
 	{
-		if (env->dirty && quit_times > 0)
-		{
-			editor_set_status_message(env, \
-			"File has unsaved changes! Press 'Ctrl-Q' one more time to quit");
-			--quit_times;
-			return ;
-		}
-		write(STDOUT_FILENO, "\x1b[2J", 4);
-		write(STDOUT_FILENO, "\x1b[H", 3);
-		close_editor(env);
-		exit(0);
+		env->cy++;
+		env->cx = 0;
 	}
-	if (key == ('s' & 0x1f))
-		editor_save(env);
-	else
-		process_esc_seq_keys(env, key);
-	quit_times = 1;
+}
+
+void	move_cursor_left(t_env *env)
+{
+	if (env->cx != 0)
+		env->cx--;
+	else if (env->cy > 0)
+	{
+		env->cy--;
+		env->cx = env->row[env->cy].size;
+	}
 }

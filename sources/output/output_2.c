@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   input_utils_3.c - functions called from editor_process_keypress()        */
+/*   output_2.c                                                               */
 /*                                                                            */
-/*   Created: 2024/07/11 16:56:07 by cezelot                                  */
-/*   Updated: 2024/07/21 16:50:15 by cezelot                                  */
+/*   Created: 2024/05/29 10:19:15 by cezelot                                  */
+/*   Updated: 2024/05/30 18:25:02 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -26,46 +26,56 @@
 
 #include "../../includes/eve.h"
 
-void	move_cursor_to_end_line(t_env *env)
+void	editor_set_status_message(t_env *env, const char *format, ...)
 {
-	if (env->cy < env->numrows)
-		env->cx = env->row[env->cy].size;
+	va_list	ap;
+
+	va_start(ap, format);
+	vsnprintf(env->statusmsg, sizeof(env->statusmsg), format, ap);
+	va_end(ap);
+	env->statusmsg_time = time(NULL);
 }
 
-int	is_arrow_keys(int key)
+void	display_text_buffer(t_env *env, t_abuf *abuf, int filerow)
 {
-	return ((key == ARROW_LEFT) || (key == ARROW_RIGHT) \
-			|| (key == ARROW_UP) || (key == ARROW_DOWN));
+	int	len;
+
+	len = env->row[filerow].rsize - env->coloff;
+	if (len < 0)
+		len = 0;
+	if (len > env->screencols)
+		len = env->screencols;
+	abuf_append(abuf, &env->row[filerow].render[env->coloff], len);
 }
 
-int	is_page_keys(int key)
+void	display_welcome_message(t_env *env, t_abuf *abuf)
 {
-	return ((key == PAGE_UP) || (key == PAGE_DOWN));
-}
+	char	welcome[80];
+	int		welcomelen;
+	int		padding;
 
-static void	change_page(t_env *env, int key)
-{
-	int	times;
-
-	times = env->screenrows;
-	while (times--)
+	welcomelen = snprintf(welcome, sizeof(welcome), \
+		"eve editor -- version %s", VERSION);
+	if (welcomelen > env->screencols)
+		welcomelen = env->screencols;
+	padding = (env->screencols - welcomelen) / 2;
+	if (padding)
 	{
-		if (key == PAGE_UP)
-			editor_move_cursor(env, ARROW_UP);
-		else
-			editor_move_cursor(env, ARROW_DOWN);
+		abuf_append(abuf, "~", 1);
+		--padding;
 	}
+	while (padding--)
+		abuf_append(abuf, " ", 1);
+	abuf_append(abuf, welcome, welcomelen);
 }
 
-void	process_page_keys(t_env *env, int key)
+void	display_tilde(t_env *env, t_abuf *abuf, int n)
 {
-	if (key == PAGE_UP)
-		env->cy = env->rowoff;
+	if (env->numrows == 0 && n == env->screenrows / 3)
+	{
+		if (n == env->screenrows / 3)
+			display_welcome_message(env, abuf);
+	}
 	else
-	{
-		env->cy = env->rowoff + env->screenrows - 1;
-		if (env->cy > env->numrows)
-			env->cy = env->numrows;
-	}
-	change_page(env, key);
+		abuf_append(abuf, "~", 1);
 }

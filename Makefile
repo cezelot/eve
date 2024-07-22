@@ -23,19 +23,21 @@ FLAGS     := -Wall -Werror -Wextra -pedantic -std=c99
 SRC_DIR   := ./sources
 
 SRC_FILES := main.c \
-             options.c \
              append_buffer.c \
+             editor_operations.c \
              file_io.c \
-             row_operations.c \
-             terminal/terminal.c \
-             terminal/terminal_utils.c \
-             terminal/terminal_utils_2.c \
+             options.c \
              input/input.c \
-             input/input_utils.c \
-             input/input_utils_2.c \
-             input/input_utils_3.c \
+             input/input_2.c \
+             input/input_3.c \
+             input/input_4.c \
              output/output.c \
-             output/output_utils.c
+             output/output_2.c \
+             row_operations/row_operations.c \
+             row_operations/row_operations_2.c \
+             terminal/terminal.c \
+             terminal/terminal_2.c \
+             terminal/terminal_3.c
 
 OBJ_DIR   := ./objects
 
