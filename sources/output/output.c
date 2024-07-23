@@ -3,7 +3,7 @@
 /*   output.c - standard output routines                                      */
 /*                                                                            */
 /*   Created: 2023/12/06 18:08:14 by cezelot                                  */
-/*   Updated: 2024/07/21 19:52:16 by cezelot                                  */
+/*   Updated: 2024/07/23 19:50:43 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -70,7 +70,7 @@ static void	draw_status_bar(t_env *env, t_abuf *abuf)
 	if (len > env->screencols)
 		len = env->screencols;
 	abuf_append(abuf, status, len);
-	while (len++ < env->screencols)
+	while (len < env->screencols)
 	{
 		if (env->screencols - len == rlen)
 		{
@@ -78,7 +78,10 @@ static void	draw_status_bar(t_env *env, t_abuf *abuf)
 			break ;
 		}
 		else
+		{
 			abuf_append(abuf, " ", 1);
+			++len;
+		}
 	}
 	abuf_append(abuf, "\x1b[m", 3);
 	abuf_append(abuf, "\r\n", 2);

@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Use `Backspace` and `Delete` to delete characters.
  - Use `Enter` to insert new lines.
 
+### Fixed
+
+ - Fill in the blank space on the right edge of the status bar
+
 ## [0.3.0] - 2024-07-21
 
 ### Added
