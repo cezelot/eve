@@ -3,7 +3,7 @@
 /*   file_io.c - file input/output routines                                   */
 /*                                                                            */
 /*   Created: 2023/12/29 16:01:01 by cezelot                                  */
-/*   Updated: 2024/07/21 20:03:47 by cezelot                                  */
+/*   Updated: 2024/07/23 19:10:39 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -119,7 +119,7 @@ void	open_file(t_env *env, char *filename)
 			break ;
 		while (linelen > 0 && has_newline_or_carriage_return(line, linelen))
 			--linelen;
-		append_row(env, line, linelen);
+		insert_row(env, line, linelen, env->numrows);
 	}
 	free(line);
 	fclose(fp);

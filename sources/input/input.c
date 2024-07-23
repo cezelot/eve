@@ -3,7 +3,7 @@
 /*   input.c - map keypresses to editor functions                             */
 /*                                                                            */
 /*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/07/22 11:18:26 by cezelot                                  */
+/*   Updated: 2024/07/23 19:29:49 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -56,8 +56,10 @@ void	process_keypress(t_env *env)
 
 	key = read_key();
 	if (key == '\r')
-		/* To-Do */
+	{
+		insert_newline(env);
 		return ;
+	}
 	if (key == ('q' & 0x1f))
 	{
 		if (env->dirty && quit_times > 0)

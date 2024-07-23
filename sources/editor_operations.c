@@ -3,7 +3,7 @@
 /*   editor_operations.c - functions called from process_keypress()           */
 /*                                                                            */
 /*   Created: 2024/07/22 11:54:00 by cezelot                                  */
-/*   Updated: 2024/07/22 17:19:36 by cezelot                                  */
+/*   Updated: 2024/07/23 19:33:24 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -31,10 +31,31 @@
 void	insert_char(t_env *env, int c)
 {
 	if (env->cy == env->numrows)
-		append_row(env, "", 0);
+		insert_row(env, "", 0, env->numrows);
 	row_insert_char(&env->row[env->cy], c, env->cx);
 	env->cx++;
 	env->dirty++;
+}
+
+/* Insert a new line at the current position of the cursor,
+   then move the cursor to the beginning of that line.  */
+void	insert_newline(t_env *env)
+{
+	t_erow	*row;
+
+	row = &env->row[env->cy];
+	if (env->cx != 0)
+	{
+		insert_row(env, &row->chars[env->cx], row->size - env->cx, env->cy + 1);
+		row = &env->row[env->cy];
+		row->size = env->cx;
+		row->chars[row->size] = '\0';
+		update_row(row);
+	}
+	else
+		insert_row(env, "", 0, env->cy);
+	env->cy++;
+	env->cx = 0;
 }
 
 /* Delete the character that is to the left of the cursor.  */

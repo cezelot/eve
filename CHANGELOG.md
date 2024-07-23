@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
  - Show a warning in the status bar about unsaved changes when closing.
+ - Use `Backspace` and `Delete` to delete characters.
+ - Use `Enter` to insert new lines.
 
 ## [0.3.0] - 2024-07-21
 

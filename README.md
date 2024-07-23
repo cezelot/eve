@@ -108,7 +108,7 @@ Please make sure to read the [contributing guidelines](docs/CONTRIBUTING.md) bef
 
 ## Authors
 
-**Ismael Benjara** - [@cezelot](https://x.com/count_ezelot) - [email](mailto:cezelot@proton.me)
+**Ismael Benjara** - @cezelot - [email](mailto:cezelot@proton.me)
 
 See also the list of [contributors](https://github.com/cezelot/eve/graphs/contributors)
 who participated in this project.

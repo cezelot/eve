@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/07/22 17:16:30 by cezelot                                  */
+/*   Updated: 2024/07/23 19:28:10 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -103,6 +103,7 @@ void	abuf_free(t_abuf *abuf);
 // ------------------------------------------------------ editor_operations.c --
 void	delete_char(t_env *env);
 void	insert_char(t_env *env, int c);
+void	insert_newline(t_env *env);
 // ---------------------------------------------------------------- file_io.c --
 void	open_file(t_env *env, char *filename);
 void	save(t_env *env);
@@ -133,7 +134,7 @@ void	display_tilde(t_env *env, t_abuf *abuf, int n);
 void	display_welcome_message(t_env *env, t_abuf *abuf);
 void	set_status_message(t_env *env, const char *format, ...);
 // --------------------------------------------------------- row_operations.c --
-void	append_row(t_env *env, char *str, size_t len);
+void	insert_row(t_env *env, char *str, size_t len, int index);
 int		row_cx_to_rx(t_erow *row, int cx);
 void	row_delete_char(t_erow *row, int index, int *dirty);
 void	row_insert_char(t_erow *row, int c, int index);

@@ -3,7 +3,7 @@
 /*   row_operations.c                                                         */
 /*                                                                            */
 /*   Created: 2023/12/31 18:08:27 by cezelot                                  */
-/*   Updated: 2024/07/22 16:51:18 by cezelot                                  */
+/*   Updated: 2024/07/23 19:07:08 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -30,11 +30,9 @@
    and return the render index.  */
 int	row_cx_to_rx(t_erow *row, int cx)
 {
-	int	rx;
-	int	i;
+	int	rx = 0;
+	int	i = 0;
 
-	rx = 0;
-	i = 0;
 	while (i < cx)
 	{
 		if (row->chars[i++] == '\t')
@@ -47,13 +45,10 @@ int	row_cx_to_rx(t_erow *row, int cx)
 /* Update RENDER and RSIZE according to CHARS.  */
 void	update_row(t_erow *row)
 {
-	int	i;
-	int	n;
-	int	tabs;
+	int	i = 0;
+	int	n = 0;
+	int	tabs = 0;
 
-	i = 0;
-	n = 0;
-	tabs = 0;
 	while (n < row->size)
 		if (row->chars[n++] == '\t')
 			++tabs;
@@ -85,21 +80,22 @@ void	row_insert_char(t_erow *row, int c, int index)
 	update_row(row);
 }
 
-/* Add STR to the contents of a new editor row,
-   and add the new erow after the last erow.  */
-void	append_row(t_env *env, char *str, size_t len)
+/* Copy STR to a new row, then insert the row at INDEX.  */
+void	insert_row(t_env *env, char *str, size_t len, int index)
 {
-	size_t	at;
-
-	env->row = realloc(env->row, sizeof(t_erow) * (env->numrows + 1));
-	at = env->numrows;
-	env->row[at].size = len;
-	env->row[at].chars = malloc(len + 1);
-	memcpy(env->row[at].chars, str, len);
-	env->row[at].chars[len] = '\0';
-	env->row[at].rsize = 0;
-	env->row[at].render = NULL;
-	update_row(&env->row[at]);
+	if (index < 0 || index > env->numrows)
+		return ;
+	env->row = realloc(env->row, (env->numrows + 1) * sizeof(t_erow));
+	memmove(&env->row[index + 1], &env->row[index], (env->numrows - index) \
+			* sizeof(t_erow));
+	env->row = realloc(env->row, (env->numrows + 1) * sizeof(t_erow));
+	env->row[index].size = len;
+	env->row[index].chars = malloc(len + 1);
+	memcpy(env->row[index].chars, str, len);
+	env->row[index].chars[len] = '\0';
+	env->row[index].rsize = 0;
+	env->row[index].render = NULL;
+	update_row(&env->row[index]);
 	env->numrows++;
 	env->dirty++;
 }

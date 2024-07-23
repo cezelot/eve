@@ -55,15 +55,10 @@ project.
  - Each variable declaration must be indented on the same column for its scope.
  - The asterisks that go with pointers must be stuck to variable names.
  - One single variable declaration per line.
- - Declaration and an initialisation cannot be on the same line, except for global
-   variables, static variables, and constants.
  - Declarations must be at the beginning of a function.
  - In a function, you must place an empty line between variable declarations and the
-   remaining of the function. No other empty lines are allowed in a function.
- - Multiple assignments are strictly forbidden.
- - You may add a new line after an instruction or control structure, but you’ll have
-   to add an indentation with brackets or assignment operator. Operators must be at
-   the beginning of a line.
+   remaining of the function.
+ - Multiple assignments are forbidden.
  - Control structures (`if`, `while..`) must have braces, unless they contain a single line.
  - Braces following functions, declarators or control structures must be preceded and
    followed by a newline.
