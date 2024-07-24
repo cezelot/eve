@@ -3,7 +3,7 @@
 /*   file_io.c - file input/output routines                                   */
 /*                                                                            */
 /*   Created: 2023/12/29 16:01:01 by cezelot                                  */
-/*   Updated: 2024/07/23 19:10:39 by cezelot                                  */
+/*   Updated: 2024/07/24 20:02:00 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -59,12 +59,18 @@ static char	*rows_to_string(t_env *env, int *buflen)
 void	save(t_env *env)
 {
 	char	*buf;
-	int		len;
+	int		len = 0;
 	int		fd;
 
 	if (env->filename == NULL)
-		return ;
-	len = 0;
+	{
+		env->filename = prompt(env, "Save as: %s");
+		if (env->filename == NULL)
+		{
+			set_status_message(env, "Save aborted");
+			return ;
+		}
+	}
 	buf = rows_to_string(env, &len);
 	fd = open(env->filename, O_RDWR | O_CREAT, 0644);
 	if (fd != -1)

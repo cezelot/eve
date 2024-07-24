@@ -85,7 +85,7 @@ To open and edit a file, remove `./` if you have installed the binary:
 List of features planned for version 1.0.0:
 
  - [x] Display text files
- - [ ] Edit text files
+ - [x] Edit text files
  - [ ] Search feature
  - [ ] Syntax highlighting and filetype detection
  - [ ] Line number

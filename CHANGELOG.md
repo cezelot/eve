@@ -7,15 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2024-07-24
+
 ### Added
 
  - Show a warning in the status bar about unsaved changes when closing.
  - Use `Backspace` and `Delete` to delete characters.
  - Use `Enter` to insert new lines.
+ - Display a prompt in the status bar when saving a new file.
 
 ### Fixed
 
- - Fill in the blank space on the right edge of the status bar
+ - Fill in the blank space on the right edge of the status bar.
 
 ## [0.3.0] - 2024-07-21
 
@@ -61,7 +64,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Display a status bar and a status message.
  - Take `--help` and `--version` command-line options.
 
-[unreleased]: https://github.com/cezelot/eve/compare/v0.3.0...HEAD
+[unreleased]: https://github.com/cezelot/eve/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/cezelot/eve/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/cezelot/eve/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/cezelot/eve/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/cezelot/eve/releases/tag/v0.1.0

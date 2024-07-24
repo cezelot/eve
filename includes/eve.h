@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/07/23 19:28:10 by cezelot                                  */
+/*   Updated: 2024/07/24 20:07:30 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -33,7 +33,7 @@
 # endif
 
 # define PROGRAM_NAME "eve"
-# define VERSION "0.3.0"
+# define VERSION "0.4.0"
 # define TAB_STOP 4
 
 # include <ctype.h>
@@ -112,6 +112,7 @@ void	parse_options(int ac, char **av, int *option_index);
 // ------------------------------------------------------------------ input.c --
 void	move_cursor(t_env *env, int key);
 void	process_keypress(t_env *env);
+char	*prompt(t_env *env, char *message);
 // ---------------------------------------------------------------- input_2.c --
 void	move_cursor_down(t_env *env);
 void	move_cursor_left(t_env *env);

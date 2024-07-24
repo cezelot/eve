@@ -3,7 +3,7 @@
 /*   input.c - map keypresses to editor functions                             */
 /*                                                                            */
 /*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/07/23 19:29:49 by cezelot                                  */
+/*   Updated: 2024/07/24 19:58:56 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -25,6 +25,51 @@
 /* ************************************************************************** */
 
 #include "../../includes/eve.h"
+
+char	*prompt(t_env *env, char *message)
+{
+	char	*buf;
+	size_t	bufsize = 128;
+	size_t	buflen = 0;
+	int		c;
+
+	buf = malloc(bufsize * sizeof(*buf));
+	if (buf == NULL)
+		die("%s:%d: %s", __FILE__, __LINE__, strerror(errno));
+	buf[0] = '\0';
+	while (1)
+	{
+		set_status_message(env, message, buf);
+		refresh_screen(env);
+		c = read_key();
+		if (c == '\x1b')
+		{
+			set_status_message(env, "");
+			free(buf);
+			return (NULL);
+		}
+		else if (c == DEL_KEY || c == ('h' & 0x1f) || c == BACKSPACE)
+		{
+			if (buflen != 0)
+				buf[--buflen] = '\0';
+		}
+		else if (c == '\r' && buflen != 0)
+		{
+			set_status_message(env, "");
+			return (buf);
+		}
+		else if (!iscntrl(c) && c < 128)
+		{
+			if (buflen == bufsize - 1)
+			{
+				bufsize *= 2;
+				buf = realloc(buf, bufsize);
+			}
+			buf[buflen++] = c;
+			buf[buflen] = '\0';
+		}
+	}
+}
 
 /* Move the cursor according to the given key.  */
 void	move_cursor(t_env *env, int key)
