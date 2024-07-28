@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/07/24 20:07:30 by cezelot                                  */
+/*   Updated: 2024/07/27 16:29:39 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -107,12 +107,15 @@ void	insert_newline(t_env *env);
 // ---------------------------------------------------------------- file_io.c --
 void	open_file(t_env *env, char *filename);
 void	save(t_env *env);
+// ------------------------------------------------------------------- find.c --
+void	find(t_env *env);
 // ---------------------------------------------------------------- options.c --
 void	parse_options(int ac, char **av, int *option_index);
 // ------------------------------------------------------------------ input.c --
 void	move_cursor(t_env *env, int key);
 void	process_keypress(t_env *env);
-char	*prompt(t_env *env, char *message);
+char	*prompt(t_env *env, char *message, \
+				void (*callback)(t_env *, char *, int));
 // ---------------------------------------------------------------- input_2.c --
 void	move_cursor_down(t_env *env);
 void	move_cursor_left(t_env *env);
@@ -144,6 +147,7 @@ void	update_row(t_erow *row);
 void	delete_row(t_env *env, int index);
 void	render_tab(char *render, int *index);
 void	row_append_string(t_erow *row, char *s, size_t len, int *dirty);
+int		row_rx_to_cx(t_erow *row, int rx);
 // --------------------------------------------------------------- terminal.c --
 void	enable_raw_mode(void);
 int		read_key(void);

@@ -3,7 +3,7 @@
 /*   file_io.c - file input/output routines                                   */
 /*                                                                            */
 /*   Created: 2023/12/29 16:01:01 by cezelot                                  */
-/*   Updated: 2024/07/24 20:02:00 by cezelot                                  */
+/*   Updated: 2024/07/27 16:31:27 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -33,11 +33,9 @@ static char	*rows_to_string(t_env *env, int *buflen)
 {
 	char	*buf;
 	char	*p;
-	int		len;
-	int		i;
+	int		len = 0;
+	int		i = 0;
 
-	len = 0;
-	i = 0;
 	while (i < env->numrows)
 		len += env->row[i++].size + 1;
 	*buflen = len;
@@ -64,7 +62,7 @@ void	save(t_env *env)
 
 	if (env->filename == NULL)
 	{
-		env->filename = prompt(env, "Save as: %s");
+		env->filename = prompt(env, "Save as: %s", NULL);
 		if (env->filename == NULL)
 		{
 			set_status_message(env, "Save aborted");

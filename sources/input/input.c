@@ -3,7 +3,7 @@
 /*   input.c - map keypresses to editor functions                             */
 /*                                                                            */
 /*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/07/24 19:58:56 by cezelot                                  */
+/*   Updated: 2024/07/27 16:30:28 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -26,7 +26,8 @@
 
 #include "../../includes/eve.h"
 
-char	*prompt(t_env *env, char *message)
+char	*prompt(t_env *env, char *message, \
+				void (*callback)(t_env *, char *, int))
 {
 	char	*buf;
 	size_t	bufsize = 128;
@@ -45,6 +46,8 @@ char	*prompt(t_env *env, char *message)
 		if (c == '\x1b')
 		{
 			set_status_message(env, "");
+			if (callback)
+				callback(env, buf, c);
 			free(buf);
 			return (NULL);
 		}
@@ -56,6 +59,8 @@ char	*prompt(t_env *env, char *message)
 		else if (c == '\r' && buflen != 0)
 		{
 			set_status_message(env, "");
+			if (callback)
+				callback(env, buf, c);
 			return (buf);
 		}
 		else if (!iscntrl(c) && c < 128)
@@ -68,6 +73,8 @@ char	*prompt(t_env *env, char *message)
 			buf[buflen++] = c;
 			buf[buflen] = '\0';
 		}
+		if (callback)
+			callback(env, buf, c);
 	}
 }
 
@@ -121,6 +128,8 @@ void	process_keypress(t_env *env)
 	}
 	if (key == ('s' & 0x1f))
 		save(env);
+	else if (key == ('f' & 0x1f))
+		find(env);
 	else
 		process_esc_seq_keys(env, key);
 	quit_times = 1;

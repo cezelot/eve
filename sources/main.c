@@ -3,7 +3,7 @@
 /*   eve - simple terminal-based text editor                                  */
 /*                                                                            */
 /*   Created: 2023/11/26 12:20:29 by cezelot                                  */
-/*   Updated: 2024/07/21 19:31:26 by cezelot                                  */
+/*   Updated: 2024/07/27 15:20:51 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -78,15 +78,15 @@ static void	init_editor(t_env *env)
 int	main(int ac, char **av)
 {
 	t_env	env;
-	int		option_index;
+	int		option_index = 0;
 
-	option_index = 0;
 	parse_options(ac, av, &option_index);
 	enable_raw_mode();
 	init_editor(&env);
 	if (option_index < ac)
 		open_file(&env, av[option_index]);
-	set_status_message(&env, "Help: Ctrl-S = save | Ctrl-Q = quit");
+	set_status_message(&env, \
+		"Help: Ctrl-S = save | Ctrl-Q = quit | Ctrl-F = find");
 	while (1)
 	{
 		refresh_screen(&env);

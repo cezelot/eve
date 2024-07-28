@@ -3,7 +3,7 @@
 /*   row_operations_2.c                                                       */
 /*                                                                            */
 /*   Created: 2024/07/22 11:34:50 by cezelot                                  */
-/*   Updated: 2024/07/22 17:22:37 by cezelot                                  */
+/*   Updated: 2024/07/27 14:50:42 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -25,6 +25,25 @@
 /* ************************************************************************** */
 
 #include "../../includes/eve.h"
+
+/* Converts a render index into a chars index,
+   and return the chars index.  */
+int	row_rx_to_cx(t_erow *row, int rx)
+{
+	int	cur_rx = 0;
+	int	cx = 0;
+
+	while (cx < row->size)
+	{
+		if (row->chars[cx] == '\t')
+			cur_rx += (TAB_STOP - 1) - (cur_rx % TAB_STOP);
+		++cur_rx;
+		if (cur_rx > rx)
+			return (cx);
+		++cx;
+	}
+	return (cx);
+}
 
 /* Replace a tab by TAB_STOP spaces characters.  */
 void	render_tab(char *render, int *index)

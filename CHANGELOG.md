@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+
+ - Use `Ctrl-F` to search for strings.
+
 ## [0.4.0] - 2024-07-24
 
 ### Added

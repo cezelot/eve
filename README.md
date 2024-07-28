@@ -86,7 +86,7 @@ List of features planned for version 1.0.0:
 
  - [x] Display text files
  - [x] Edit text files
- - [ ] Search feature
+ - [x] Search feature
  - [ ] Syntax highlighting and filetype detection
  - [ ] Line number
  - [ ] Config file
@@ -108,7 +108,7 @@ Please make sure to read the [contributing guidelines](docs/CONTRIBUTING.md) bef
 
 ## Authors
 
-**Ismael Benjara** - @cezelot - [email](mailto:cezelot@proton.me)
+**Ismael Benjara** - @cezelot - [contact](mailto:cezelot@proton.me)
 
 See also the list of [contributors](https://github.com/cezelot/eve/graphs/contributors)
 who participated in this project.
