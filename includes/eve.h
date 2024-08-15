@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/07/27 16:29:39 by cezelot                                  */
+/*   Updated: 2024/08/15 22:17:32 by alberrod                                 */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -51,6 +51,9 @@
 
 enum e_editor_key
 {
+	CTRL_L = ('l' & 0x1f),
+	CTRL_H = ('h' & 0x1f),
+	ESC = '\x1b',
 	BACKSPACE = 127,
 	ARROW_LEFT = 1000,
 	ARROW_RIGHT,
@@ -94,6 +97,14 @@ typedef struct s_append_buffer
 	int		len;
 }			t_abuf;
 
+typedef void (*t_key_handler)(t_env *env, int key);
+
+typedef struct s_key_map
+{
+	int				key;
+	t_key_handler	handler;
+}					t_key_map;
+
 // ------------------------------------------------------------------- main.c --
 void	close_editor(t_env *env);
 void	die(const char *format, ...);
@@ -125,10 +136,12 @@ void	snap_cursor_to_end_line(t_env *env, t_erow *row, int rowlen);
 // ---------------------------------------------------------------- input_3.c --
 void	process_esc_seq_keys(t_env *env, int key);
 // ---------------------------------------------------------------- input_4.c --
-int		is_arrow_keys(int c);
-int		is_page_keys(int c);
 void	move_cursor_to_end_line(t_env *env);
 void	process_page_keys(t_env *env, int key);
+void	handle_position_keys(t_env *env, int key);
+void	handle_deletion_keys(t_env *env, int key);
+// ---------------------------------------------------- additional_handlers.c --
+void	pending_to_handle(t_env *env, int key);
 // ----------------------------------------------------------------- output.c --
 void	draw_message_bar(t_env *env, t_abuf *abuf);
 void	refresh_screen(t_env *env);
