@@ -118,6 +118,12 @@ void	insert_newline(t_env *env);
 // ---------------------------------------------------------------- file_io.c --
 void	open_file(t_env *env, char *filename);
 void	save(t_env *env);
+// --------------------------------------------------- save_file_operations.c --
+void	cleanup(int fd, char *buf);
+int		set_filename(t_env *env);
+int		open_save_file(t_env *env, char *buf);
+int		truncate_file(int fd, int len, char *buf, t_env *env);
+int		write_file(int fd, int len, char *buf, t_env *env);
 // ------------------------------------------------------------------- find.c --
 void	find(t_env *env);
 // ---------------------------------------------------------------- options.c --
