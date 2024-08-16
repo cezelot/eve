@@ -3,7 +3,7 @@
 /*   file_io.c - file input/output routines                                   */
 /*                                                                            */
 /*   Created: 2023/12/29 16:01:01 by cezelot                                  */
-/*   Updated: 2024/07/27 16:31:27 by cezelot                                  */
+/*   Updated: 2024/08/16 17:00:27 by alberrod                                 */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -60,34 +60,19 @@ void	save(t_env *env)
 	int		len = 0;
 	int		fd;
 
-	if (env->filename == NULL)
-	{
-		env->filename = prompt(env, "Save as: %s", NULL);
-		if (env->filename == NULL)
-		{
-			set_status_message(env, "Save aborted");
-			return ;
-		}
-	}
+	if (env->filename == NULL && set_filename(env) == -1)
+		return;
 	buf = rows_to_string(env, &len);
-	fd = open(env->filename, O_RDWR | O_CREAT, 0644);
-	if (fd != -1)
-	{
-		if (ftruncate(fd, len) != -1)
-		{
-			if (write(fd, buf, len) == len)
-			{
-				close(fd);
-				free(buf);
-				env->dirty = 0;
-				set_status_message(env, "%d bytes written", len);
-				return ;
-			}
-		}
-		close(fd);
-	}
-	free(buf);
-	set_status_message(env, "Unable to save: %s", strerror(errno));
+	fd = open_save_file(env, buf);
+	if (fd == -1)
+		return ;
+	if (truncate_file(fd, len, buf, env) == -1)
+		return ;
+	if (write_file(fd, len, buf, env) == -1)
+		return ;
+	set_status_message(env, "%d bytes written", len);
+	cleanup(fd, buf);
+	env->dirty = 0;
 }
 
 /* Return true if LINE has a newline or a carriage return,

@@ -26,6 +26,7 @@ SRC_FILES := main.c \
              append_buffer.c \
              editor_operations.c \
              file_io.c \
+             save_file_operations.c \
              find.c \
              options.c \
              input/input.c \
