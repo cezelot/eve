@@ -1,11 +1,11 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   input_4.c                                                                */
+/*   additional_handlers.c                                                    */
 /*                                                                            */
-/*   Created: 2024/07/11 16:56:07 by cezelot                                  */
-/*   Updated: 2024/08/15 22:17:32 by alberrod                                 */
+/*   Created: 2024/08/15 21:10:05 by alberrod                                 */
+/*   Updated: 2024/08/15 21:10:05 by alberrod                                 */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed                                       */
+/*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -26,50 +26,8 @@
 
 #include "../../includes/eve.h"
 
-void	move_cursor_to_end_line(t_env *env)
+void	pending_to_handle(t_env *env, int key)
 {
-	if (env->cy < env->numrows)
-		env->cx = env->row[env->cy].size;
-}
-
-static void	change_page(t_env *env, int key)
-{
-	int	times;
-
-	times = env->screenrows;
-	while (times--)
-	{
-		if (key == PAGE_UP)
-			move_cursor(env, ARROW_UP);
-		else
-			move_cursor(env, ARROW_DOWN);
-	}
-}
-
-void	process_page_keys(t_env *env, int key)
-{
-	if (key == PAGE_UP)
-		env->cy = env->rowoff;
-	else
-	{
-		env->cy = env->rowoff + env->screenrows - 1;
-		if (env->cy > env->numrows)
-			env->cy = env->numrows;
-	}
-	change_page(env, key);
-}
-
-void	handle_position_keys(t_env *env, int key)
-{
-	if (key == HOME_KEY)
-		env->cx = 0;
-	if (key == END_KEY)
-		move_cursor_to_end_line(env);
-}
-
-void	handle_deletion_keys(t_env *env, int key)
-{
-	if (key == DEL_KEY)
-		move_cursor(env, ARROW_RIGHT);
-	delete_char(env);
+	(void)key;
+	(void)env;
 }

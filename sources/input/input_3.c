@@ -3,7 +3,7 @@
 /*   input_3.c                                                                */
 /*                                                                            */
 /*   Created: 2024/05/30 17:10:05 by cezelot                                  */
-/*   Updated: 2024/07/22 14:08:32 by cezelot                                  */
+/*   Updated: 2024/08/15 22:17:32 by alberrod                                 */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
@@ -26,65 +26,82 @@
 
 #include "../../includes/eve.h"
 
-static inline int	handle_special_keys(t_env *env, int key)
+/* Sort the keymap using the quicksort algorithm */
+static void quicksort_keymap(t_key_map *keymap, int start, int end)
 {
-	switch (key)
-	{
-		case HOME_KEY:
-			env->cx = 0;
-			return (1);
-		case END_KEY:
-			move_cursor_to_end_line(env);
-			return (1);
-		case BACKSPACE:
-		case ('h' & 0x1f):
-		case DEL_KEY:
-			if (key == DEL_KEY)
-				move_cursor(env, ARROW_RIGHT);
-			delete_char(env);
-			return (1);
-		case ('l' & 0x1f):
-		case '\x1b':
-			return (1);
-		default:
-			return (0);
+	if (start >= end)	
+		return ;
+	int pivot = keymap[end].key;
+	int idx = start;
+	
+	for (int i = start; i < end; ++i) {
+		if (keymap[i].key < pivot) {
+			t_key_map tmp = keymap[i];
+			keymap[i] = keymap[idx];
+			keymap[idx] = tmp;
+			++idx;
+		}
 	}
+	t_key_map tmp = keymap[idx];
+	keymap[idx] = keymap[end];
+	keymap[end] = tmp;
+	quicksort_keymap(keymap, start, idx -1);
+	quicksort_keymap(keymap, idx + 1, end);
 }
 
-static inline int	handle_page_keys(t_env *env, int key)
+
+/* Run the handler for the given key if it exists in the keymap */
+static int run_key(t_key_map *keymap, int size, t_env *env, int key)
 {
-	if (is_page_keys(key))
-	{
-		process_page_keys(env, key);
-		return (1);
-	}
+	int mid, low = 0, high = size - 1;
+
+    while (low <= high) {
+        mid = low + (high - low) / 2;
+        if (keymap[mid].key > key)
+            high = mid - 1;
+        else if (keymap[mid].key < key)
+            low = mid + 1;
+        else {
+            keymap[mid].handler(env, key);
+            return (1);
+        }
+    }
 	return (0);
 }
 
-static inline int	handle_movement_keys(t_env *env, int key)
+/* Builds a static keymap, sorts it, and tries to execute the given key.
+	return 1 if success and 0 if the key was not found */
+static int	handle_special_keys(t_env *env, int key)
 {
-	if (is_arrow_keys(key))
-	{
-		move_cursor(env, key);
-		return (1);
-	}
-	return (0);
-}
+	static t_key_map keymap[] = {
+		{CTRL_H, handle_deletion_keys},
+		{CTRL_L, pending_to_handle},
+		{ESC, pending_to_handle},
+		{BACKSPACE, handle_deletion_keys},
+		{DEL_KEY, handle_deletion_keys},
+		{HOME_KEY, handle_position_keys},
+		{END_KEY, handle_position_keys},
+		{PAGE_UP, process_page_keys},
+		{PAGE_DOWN, process_page_keys},
+		{ARROW_UP, move_cursor},
+		{ARROW_DOWN, move_cursor},
+		{ARROW_LEFT, move_cursor},
+		{ARROW_RIGHT, move_cursor},
+	};
+	static int is_map_sorted = 0;
 
-static inline int	handle_navigation_keys(t_env *env, int key)
-{
-	if (handle_page_keys(env, key))
-		return (1);
-	if (handle_movement_keys(env, key))
-		return (1);
-	return (0);
+	int size = sizeof(keymap) / sizeof(t_key_map);
+	if (!is_map_sorted)
+	{
+		quicksort_keymap(keymap, 0, size - 1);
+		is_map_sorted = 1;
+	}
+	return run_key(keymap, size, env, key);
 }
 
 void	process_esc_seq_keys(t_env *env, int key)
 {
 	if (handle_special_keys(env, key))
-		return ;
-	if (handle_navigation_keys(env, key))
 		return ;
 	insert_char(env, key);
 }
