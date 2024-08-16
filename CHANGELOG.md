@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - Use `Ctrl-F` to search for strings.
 
+### Fixed
+
+ - Fix `Complex Method` issue in input_3.c (#4).
+
 ## [0.4.0] - 2024-07-24
 
 ### Added
