@@ -3,7 +3,7 @@
 /*   eve - simple terminal-based text editor                                  */
 /*                                                                            */
 /*   Created: 2023/11/26 12:20:29 by cezelot                                  */
-/*   Updated: 2024/07/27 15:20:51 by cezelot                                  */
+/*   Updated: 2024/08/16 11:23:14 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -90,7 +90,7 @@ int	main(int ac, char **av)
 	while (1)
 	{
 		refresh_screen(&env);
-		process_keypress(&env);
+		handle_keypress(&env);
 	}
 	return (0);
 }

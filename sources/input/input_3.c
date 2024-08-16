@@ -3,7 +3,7 @@
 /*   input_3.c                                                                */
 /*                                                                            */
 /*   Created: 2024/05/30 17:10:05 by cezelot                                  */
-/*   Updated: 2024/08/15 22:17:32 by alberrod                                 */
+/*   Updated: 2024/08/16 11:16:55 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
@@ -26,7 +26,7 @@
 
 #include "../../includes/eve.h"
 
-/* Sort the keymap using the quicksort algorithm */
+/* Sort the keymap using the quicksort algorithm.  */
 static void quicksort_keymap(t_key_map *keymap, int start, int end)
 {
 	if (start >= end)	
@@ -50,7 +50,7 @@ static void quicksort_keymap(t_key_map *keymap, int start, int end)
 }
 
 
-/* Run the handler for the given key if it exists in the keymap */
+/* Run the handler for the given key if it exists in the keymap.  */
 static int run_key(t_key_map *keymap, int size, t_env *env, int key)
 {
 	int mid, low = 0, high = size - 1;
@@ -70,8 +70,8 @@ static int run_key(t_key_map *keymap, int size, t_env *env, int key)
 }
 
 /* Builds a static keymap, sorts it, and tries to execute the given key.
-	return 1 if success and 0 if the key was not found */
-static int	handle_special_keys(t_env *env, int key)
+   Return 1 if success and 0 if the key was not found.  */
+int	handle_special_keys(t_env *env, int key)
 {
 	static t_key_map keymap[] = {
 		{CTRL_H, handle_deletion_keys},
@@ -81,8 +81,8 @@ static int	handle_special_keys(t_env *env, int key)
 		{DEL_KEY, handle_deletion_keys},
 		{HOME_KEY, handle_position_keys},
 		{END_KEY, handle_position_keys},
-		{PAGE_UP, process_page_keys},
-		{PAGE_DOWN, process_page_keys},
+		{PAGE_UP, handle_page_keys},
+		{PAGE_DOWN, handle_page_keys},
 		{ARROW_UP, move_cursor},
 		{ARROW_DOWN, move_cursor},
 		{ARROW_LEFT, move_cursor},
@@ -97,11 +97,4 @@ static int	handle_special_keys(t_env *env, int key)
 		is_map_sorted = 1;
 	}
 	return run_key(keymap, size, env, key);
-}
-
-void	process_esc_seq_keys(t_env *env, int key)
-{
-	if (handle_special_keys(env, key))
-		return ;
-	insert_char(env, key);
 }

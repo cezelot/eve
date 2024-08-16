@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/08/15 22:17:32 by alberrod                                 */
+/*   Updated: 2024/08/16 11:22:36 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -124,7 +124,7 @@ void	find(t_env *env);
 void	parse_options(int ac, char **av, int *option_index);
 // ------------------------------------------------------------------ input.c --
 void	move_cursor(t_env *env, int key);
-void	process_keypress(t_env *env);
+void	handle_keypress(t_env *env);
 char	*prompt(t_env *env, char *message, \
 				void (*callback)(t_env *, char *, int));
 // ---------------------------------------------------------------- input_2.c --
@@ -134,10 +134,10 @@ void	move_cursor_right(t_env *env, t_erow *row);
 void	move_cursor_up(t_env *env);
 void	snap_cursor_to_end_line(t_env *env, t_erow *row, int rowlen);
 // ---------------------------------------------------------------- input_3.c --
-void	process_esc_seq_keys(t_env *env, int key);
+int		handle_special_keys(t_env *env, int key);
 // ---------------------------------------------------------------- input_4.c --
 void	move_cursor_to_end_line(t_env *env);
-void	process_page_keys(t_env *env, int key);
+void	handle_page_keys(t_env *env, int key);
 void	handle_position_keys(t_env *env, int key);
 void	handle_deletion_keys(t_env *env, int key);
 // ---------------------------------------------------- additional_handlers.c --

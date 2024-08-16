@@ -3,7 +3,7 @@
 /*   input_4.c                                                                */
 /*                                                                            */
 /*   Created: 2024/07/11 16:56:07 by cezelot                                  */
-/*   Updated: 2024/08/15 22:17:32 by alberrod                                 */
+/*   Updated: 2024/08/16 10:55:24 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -46,7 +46,7 @@ static void	change_page(t_env *env, int key)
 	}
 }
 
-void	process_page_keys(t_env *env, int key)
+void	handle_page_keys(t_env *env, int key)
 {
 	if (key == PAGE_UP)
 		env->cy = env->rowoff;

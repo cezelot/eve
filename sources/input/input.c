@@ -3,7 +3,7 @@
 /*   input.c - map keypresses to editor functions                             */
 /*                                                                            */
 /*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/07/27 16:30:28 by cezelot                                  */
+/*   Updated: 2024/08/16 11:19:48 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -101,7 +101,7 @@ void	move_cursor(t_env *env, int key)
 }
 
 /* Wait for a keypress, then handle it.  */
-void	process_keypress(t_env *env)
+void	handle_keypress(t_env *env)
 {
 	static int	quit_times = 1;
 	int			key;
@@ -130,7 +130,9 @@ void	process_keypress(t_env *env)
 		save(env);
 	else if (key == ('f' & 0x1f))
 		find(env);
+	else if (handle_special_keys(env, key))
+		return ;
 	else
-		process_esc_seq_keys(env, key);
+		insert_char(env, key);
 	quit_times = 1;
 }
