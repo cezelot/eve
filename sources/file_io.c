@@ -61,7 +61,7 @@ void	save(t_env *env)
 	int		fd;
 
 	if (env->filename == NULL && set_filename(env) == -1)
-		return;
+		return ;
 	buf = rows_to_string(env, &len);
 	fd = open_save_file(env, buf);
 	if (fd == -1)

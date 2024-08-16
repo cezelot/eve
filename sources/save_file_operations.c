@@ -29,7 +29,8 @@
 void	cleanup(int fd, char *buf)
 {
 	if (fd != -1) close(fd);
-	if (buf != NULL) {
+	if (buf != NULL)
+	{
 		free(buf);
 		buf = NULL;
 	}
@@ -48,10 +49,9 @@ int	set_filename(t_env *env)
 
 int	open_save_file(t_env *env, char *buf)
 {
-	int fd = open(env->filename, O_RDWR | O_CREAT, 0644);	
+	int fd = open(env->filename, O_RDWR | O_CREAT, 0644);
 	if (fd == -1)
 	{
-
 		set_status_message(env, "Unable to save: %s", strerror(errno));
 		cleanup(fd, buf);
 	}

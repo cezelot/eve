@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
  - Fix `Complex Method` issue in input_3.c (#4).
+ - Fix `Bumpy Road` issue in file_io.c (#5).
 
 ## [0.4.0] - 2024-07-24
 

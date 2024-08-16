@@ -29,11 +29,11 @@
 /* Sort the keymap using the quicksort algorithm.  */
 static void quicksort_keymap(t_key_map *keymap, int start, int end)
 {
-	if (start >= end)	
+	if (start >= end)
 		return ;
 	int pivot = keymap[end].key;
 	int idx = start;
-	
+
 	for (int i = start; i < end; ++i) {
 		if (keymap[i].key < pivot) {
 			t_key_map tmp = keymap[i];
