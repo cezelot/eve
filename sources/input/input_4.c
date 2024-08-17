@@ -3,9 +3,9 @@
 /*   input_4.c                                                                */
 /*                                                                            */
 /*   Created: 2024/07/11 16:56:07 by cezelot                                  */
-/*   Updated: 2024/08/16 10:55:24 by cezelot                                  */
+/*   Updated: 2024/08/17 18:47:48 by alberrod                                 */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed                                       */
+/*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -32,7 +32,7 @@ void	move_cursor_to_end_line(t_env *env)
 		env->cx = env->row[env->cy].size;
 }
 
-static void	change_page(t_env *env, int key)
+void	change_page(t_env *env, int key)
 {
 	int	times;
 
@@ -46,30 +46,17 @@ static void	change_page(t_env *env, int key)
 	}
 }
 
-void	handle_page_keys(t_env *env, int key)
+void    quit_program(t_env *env)
 {
-	if (key == PAGE_UP)
-		env->cy = env->rowoff;
-	else
-	{
-		env->cy = env->rowoff + env->screenrows - 1;
-		if (env->cy > env->numrows)
-			env->cy = env->numrows;
-	}
-	change_page(env, key);
-}
-
-void	handle_position_keys(t_env *env, int key)
-{
-	if (key == HOME_KEY)
-		env->cx = 0;
-	if (key == END_KEY)
-		move_cursor_to_end_line(env);
-}
-
-void	handle_deletion_keys(t_env *env, int key)
-{
-	if (key == DEL_KEY)
-		move_cursor(env, ARROW_RIGHT);
-	delete_char(env);
+    if (env->dirty && env->quit_times > 0)
+    {
+        set_status_message(env, \
+        "File has unsaved changes! Press 'Ctrl-Q' one more time to quit");
+        --env->quit_times;
+        return ;
+    }
+    write(STDOUT_FILENO, "\x1b[2J", 4);
+    write(STDOUT_FILENO, "\x1b[H", 3);
+    close_editor(env);
+    exit(0);
 }

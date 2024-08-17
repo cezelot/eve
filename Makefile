@@ -33,6 +33,7 @@ SRC_FILES := main.c \
              input/input_2.c \
              input/input_3.c \
              input/input_4.c \
+             input/key_handlers.c \
              input/additional_handlers.c \
              output/output.c \
              output/output_2.c \
