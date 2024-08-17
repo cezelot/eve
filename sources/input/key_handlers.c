@@ -1,11 +1,11 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   eve - simple terminal-based text editor                                  */
+/*   key_handlers.c                                                           */
 /*                                                                            */
-/*   Created: 2023/11/26 12:20:29 by cezelot                                  */
-/*   Updated: 2024/08/16 11:23:14 by cezelot                                  */
+/*   Created: 2024/08/17 16:56:07 by cezelot                                  */
+/*   Created: 2024/08/17 16:56:07 by alberrod                                 */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed                                       */
+/*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -24,74 +24,43 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eve.h"
+#include "../../includes/eve.h"
 
-/* Report an error and exit.  */
-void	die(const char *format, ...)
-{
-	va_list	ap;
-
-	write(STDOUT_FILENO, "\x1b[2J", 4);
-	write(STDOUT_FILENO, "\x1b[H", 3);
-	va_start(ap, format);
-	vfprintf(stderr, format, ap);
-	va_end(ap);
-	exit(1);
+void handle_page_keys(t_env *env, int key) {
+  if (key == PAGE_UP)
+    env->cy = env->rowoff;
+  else {
+    env->cy = env->rowoff + env->screenrows - 1;
+    if (env->cy > env->numrows)
+      env->cy = env->numrows;
+  }
+  change_page(env, key);
 }
 
-/* Deallocate memories in the editor state.  */
-void	close_editor(t_env *env)
-{
-	int	i;
-
-	i = 0;
-	free(env->filename);
-	while (i < env->numrows)
-	{
-		free(env->row[i].chars);
-		free(env->row[i++].render);
-	}
-	free(env->row);
+void handle_position_keys(t_env *env, int key) {
+  if (key == HOME_KEY)
+    env->cx = 0;
+  if (key == END_KEY)
+    move_cursor_to_end_line(env);
 }
 
-/* Initialize the variables in the editor state.  */
-static void	init_editor(t_env *env)
-{
-	env->cx = 0;
-	env->cy = 0;
-	env->rx = 0;
-	env->rowoff = 0;
-	env->coloff = 0;
-	env->numrows = 0;
-	env->row = NULL;
-	env->filename = NULL;
-	env->dirty = 0;
-    env->quit_times = 1;
-	env->statusmsg[0] = '\0';
-	env->statusmsg_time = 0;
-	if (get_window_size(&env->screenrows, \
-	&env->screencols) == -1)
-		die("%s:%d: unable to get terminal size: %s", \
-			__FILE__, __LINE__, strerror(errno));
-	env->screenrows -= 2;
+void handle_deletion_keys(t_env *env, int key) {
+  if (key == DEL_KEY)
+    move_cursor(env, ARROW_RIGHT);
+  delete_char(env);
 }
 
-int	main(int ac, char **av)
-{
-	t_env	env;
-	int		option_index = 0;
+void handle_insertion_keys(t_env *env, int key) {
+  if (key == NEWLINE_KEY)
+    insert_newline(env);
+  return;
+}
 
-	parse_options(ac, av, &option_index);
-	enable_raw_mode();
-	init_editor(&env);
-	if (option_index < ac)
-		open_file(&env, av[option_index]);
-	set_status_message(&env, \
-		"Help: Ctrl-S = save | Ctrl-Q = quit | Ctrl-F = find");
-	while (1)
-	{
-		refresh_screen(&env);
-		handle_keypress(&env);
-	}
-	return (0);
+void handle_signals(t_env *env, int key) {
+  if (key == CTRL_Q)
+    quit_program(env);
+  if (key == CTRL_S)
+    save(env);
+  if (key == CTRL_F)
+    find(env);
 }

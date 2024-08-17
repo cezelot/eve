@@ -3,7 +3,7 @@
 /*   input_3.c                                                                */
 /*                                                                            */
 /*   Created: 2024/05/30 17:10:05 by cezelot                                  */
-/*   Updated: 2024/08/16 11:16:55 by cezelot                                  */
+/*   Updated: 2024/08/17 18:47:48 by alberrod                                 */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
@@ -74,9 +74,12 @@ static int run_key(t_key_map *keymap, int size, t_env *env, int key)
 int	handle_special_keys(t_env *env, int key)
 {
 	static t_key_map keymap[] = {
-		{CTRL_H, handle_deletion_keys},
+        {CTRL_S, handle_signals},
+        {CTRL_F, handle_signals},
+        {CTRL_Q, handle_signals},
 		{CTRL_L, pending_to_handle},
 		{ESC, pending_to_handle},
+		{CTRL_H, handle_deletion_keys},
 		{BACKSPACE, handle_deletion_keys},
 		{DEL_KEY, handle_deletion_keys},
 		{HOME_KEY, handle_position_keys},

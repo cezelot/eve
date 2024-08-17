@@ -51,6 +51,13 @@
 
 enum e_editor_key
 {
+    // new keys
+    NEWLINE_KEY = '\r',
+    CTRL_Q = ('q' & 0x1f),
+    CTRL_S = ('s' & 0x1f),
+    CTRL_F = ('f' & 0x1f),
+
+    // old keys
 	CTRL_L = ('l' & 0x1f),
 	CTRL_H = ('h' & 0x1f),
 	ESC = '\x1b',
@@ -87,6 +94,7 @@ typedef struct s_editor_config
 	t_erow	*row;
 	char	*filename;
 	int		dirty;
+    int     quit_times;
 	char	statusmsg[80];
 	time_t	statusmsg_time;
 }			t_env;
@@ -143,9 +151,14 @@ void	snap_cursor_to_end_line(t_env *env, t_erow *row, int rowlen);
 int		handle_special_keys(t_env *env, int key);
 // ---------------------------------------------------------------- input_4.c --
 void	move_cursor_to_end_line(t_env *env);
+void	change_page(t_env *env, int key);
+void    quit_program(t_env *env);
+// ----------------------------------------------------------- key_handlers.c --
 void	handle_page_keys(t_env *env, int key);
 void	handle_position_keys(t_env *env, int key);
 void	handle_deletion_keys(t_env *env, int key);
+void    handle_insertion_keys(t_env *env, int key);
+void    handle_signals(t_env *env, int key);
 // ---------------------------------------------------- additional_handlers.c --
 void	pending_to_handle(t_env *env, int key);
 // ----------------------------------------------------------------- output.c --

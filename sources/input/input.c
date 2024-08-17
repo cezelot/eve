@@ -3,9 +3,9 @@
 /*   input.c - map keypresses to editor functions                             */
 /*                                                                            */
 /*   Created: 2023/11/27 18:32:33 by cezelot                                  */
-/*   Updated: 2024/08/16 11:19:48 by cezelot                                  */
+/*   Updated: 2024/08/17 18:47:48 by alberrod                                 */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed                                       */
+/*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -103,7 +103,6 @@ void	move_cursor(t_env *env, int key)
 /* Wait for a keypress, then handle it.  */
 void	handle_keypress(t_env *env)
 {
-	static int	quit_times = 1;
 	int			key;
 
 	key = read_key();
@@ -112,27 +111,7 @@ void	handle_keypress(t_env *env)
 		insert_newline(env);
 		return ;
 	}
-	if (key == ('q' & 0x1f))
-	{
-		if (env->dirty && quit_times > 0)
-		{
-			set_status_message(env, \
-			"File has unsaved changes! Press 'Ctrl-Q' one more time to quit");
-			--quit_times;
-			return ;
-		}
-		write(STDOUT_FILENO, "\x1b[2J", 4);
-		write(STDOUT_FILENO, "\x1b[H", 3);
-		close_editor(env);
-		exit(0);
-	}
-	if (key == ('s' & 0x1f))
-		save(env);
-	else if (key == ('f' & 0x1f))
-		find(env);
-	else if (handle_special_keys(env, key))
-		return ;
-	else
-		insert_char(env, key);
-	quit_times = 1;
+    if (handle_special_keys(env, key)) return ;
+	insert_char(env, key);
+	env->quit_times = 1;
 }
