@@ -1,11 +1,11 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   input_4.c                                                                */
+/*   terminal_3.c                                                             */
 /*                                                                            */
-/*   Created: 2024/07/11 16:56:07 by cezelot                                  */
-/*   Updated: 2024/08/17 18:47:48 by alberrod                                 */
+/*   Created: 2024/05/31 12:49:14 by cezelot                                  */
+/*   Updated: 2024/05/31 13:35:27 by cezelot                                  */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
+/*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -24,39 +24,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/eve.h"
+#include "../eve.h"
 
-void	move_cursor_to_end_line(t_env *env)
+int
+get_nav_key(char *seq)
 {
-	if (env->cy < env->numrows)
-		env->cx = env->row[env->cy].size;
-}
-
-void	change_page(t_env *env, int key)
-{
-	int	times;
-
-	times = env->screenrows;
-	while (times--)
-	{
-		if (key == PAGE_UP)
-			move_cursor(env, ARROW_UP);
-		else
-			move_cursor(env, ARROW_DOWN);
+	if (seq[1] == '1' || seq[1] == '7') {
+		return (HOME_KEY);
+	} else if (seq[1] == '3') {
+		return (DEL_KEY);
+	} else if (seq[1] == '4' || seq[1] == '8') {
+		return (END_KEY);
+	} else if (seq[1] == '5') {
+		return (PAGE_UP);
+	} else if (seq[1] == '6') {
+		return (PAGE_DOWN);
 	}
-}
-
-void    quit_program(t_env *env)
-{
-    if (env->dirty && env->quit_times > 0)
-    {
-        set_status_message(env, \
-        "File has unsaved changes! Press 'Ctrl-Q' one more time to quit");
-        --env->quit_times;
-        return ;
-    }
-    write(STDOUT_FILENO, "\x1b[2J", 4);
-    write(STDOUT_FILENO, "\x1b[H", 3);
-    close_editor(env);
-    exit(0);
+	return (0);
 }

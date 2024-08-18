@@ -7,14 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## Added
+## [0.5.0] - 2024-08-18
+
+### Added
 
  - Use `Ctrl-F` to search for strings.
 
 ### Fixed
 
- - Fix `Complex Method` issue in input_3.c (#4).
- - Fix `Bumpy Road` issue in file_io.c (#5).
+ - Fix `Complex Method` code health issue in input_3.c (#4).
+ - Fix `Bumpy Road` code health issue in file_io.c (#5).
 
 ## [0.4.0] - 2024-07-24
 
@@ -43,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
- - Fix `Complex Method` issue in input.c (#1).
+ - Fix `Complex Method` code health issue in input.c (#1).
 
 ## [0.2.0] - 2024-07-12
 
@@ -73,7 +75,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Display a status bar and a status message.
  - Take `--help` and `--version` command-line options.
 
-[unreleased]: https://github.com/cezelot/eve/compare/v0.4.0...HEAD
+[unreleased]: https://github.com/cezelot/eve/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/cezelot/eve/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/cezelot/eve/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/cezelot/eve/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/cezelot/eve/compare/v0.1.0...v0.2.0

@@ -24,28 +24,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eve.h"
+#include "../eve.h"
 
 /* Convert ROW structs into a single string.
    Its length will be assigned to BUFLEN.
    Return the string.  */
-static char	*rows_to_string(t_env *env, int *buflen)
+static char *
+rows_to_string(t_env *env, int *buflen)
 {
 	char	*buf;
 	char	*p;
-	int		len = 0;
-	int		i = 0;
+	int	len = 0;
+	int	i = 0;
 
-	while (i < env->numrows)
+	while (i < env->numrows) {
 		len += env->row[i++].size + 1;
+	}
 	*buflen = len;
 	buf = malloc(len * sizeof(*buf));
-	if (buf == NULL)
+	if (buf == NULL) {
 		die("%s:%d: %s", __FILE__, __LINE__, strerror(errno));
+	}
 	p = buf;
 	i = 0;
-	while (i < env->numrows)
-	{
+	while (i < env->numrows) {
 		memcpy(p, env->row[i].chars, env->row[i].size);
 		p += env->row[i++].size;
 		*p++ = '\n';
@@ -54,22 +56,27 @@ static char	*rows_to_string(t_env *env, int *buflen)
 }
 
 /* Write the current text buffer to disk.  */
-void	save(t_env *env)
+void
+save(t_env *env)
 {
 	char	*buf;
-	int		len = 0;
-	int		fd;
+	int	len = 0;
+	int	fd;
 
-	if (env->filename == NULL && set_filename(env) == -1)
+	if (env->filename == NULL && set_filename(env) == -1) {
 		return ;
+	}
 	buf = rows_to_string(env, &len);
 	fd = open_save_file(env, buf);
-	if (fd == -1)
+	if (fd == -1) {
 		return ;
-	if (truncate_file(fd, len, buf, env) == -1)
+	}
+	if (truncate_file(fd, len, buf, env) == -1) {
 		return ;
-	if (write_file(fd, len, buf, env) == -1)
+	}
+	if (write_file(fd, len, buf, env) == -1) {
 		return ;
+	}
 	set_status_message(env, "%d bytes written", len);
 	cleanup(fd, buf);
 	env->dirty = 0;
@@ -77,13 +84,15 @@ void	save(t_env *env)
 
 /* Return true if LINE has a newline or a carriage return,
    otherwise return false.  */
-static int	has_newline_or_carriage_return(char *line, ssize_t linelen)
+static int
+has_newline_or_carriage_return(char *line, ssize_t linelen)
 {
 	return (line[linelen - 1] == '\n' || line[linelen - 1] == '\r');
 }
 
 /* Open and read FILENAME.  */
-void	open_file(t_env *env, char *filename)
+void
+open_file(t_env *env, char *filename)
 {
 	FILE	*fp;
 	char	*line;
@@ -93,21 +102,23 @@ void	open_file(t_env *env, char *filename)
 	free(env->filename);
 	env->filename = strdup(filename);
 	fp = fopen(filename, "r");
-	if (!fp)
-	{
+	if (!fp) {
 		free(env->filename);
-		die("%s:%d: unable to open file %s: %s", \
+		die("%s:%d: unable to open file %s: %s",
 			__FILE__, __LINE__, filename, strerror(errno));
 	}
 	line = NULL;
 	linecap = 0;
-	while (1)
-	{
+	while (1) {
 		linelen = getline(&line, &linecap, fp);
-		if (linelen == -1)
+		if (linelen == -1) {
 			break ;
-		while (linelen > 0 && has_newline_or_carriage_return(line, linelen))
+		}
+		while (linelen > 0
+				&& has_newline_or_carriage_return(line,
+					linelen)) {
 			--linelen;
+		}
 		insert_row(env, line, linelen, env->numrows);
 	}
 	free(line);

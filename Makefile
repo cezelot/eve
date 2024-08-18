@@ -20,21 +20,20 @@ NAME      := eve
 CC        := gcc
 FLAGS     := -Wall -Werror -Wextra -pedantic -std=c99
 
-SRC_DIR   := ./sources
+SRC_DIR   := src
 
 SRC_FILES := main.c \
              append_buffer.c \
              editor_operations.c \
-             file_io.c \
-             save_file_operations.c \
              find.c \
              options.c \
+             file/file_io.c \
+             file/save_file_operations.c \
              input/input.c \
              input/input_2.c \
              input/input_3.c \
              input/input_4.c \
              input/key_handlers.c \
-             input/additional_handlers.c \
              output/output.c \
              output/output_2.c \
              row_operations/row_operations.c \
@@ -43,7 +42,7 @@ SRC_FILES := main.c \
              terminal/terminal_2.c \
              terminal/terminal_3.c
 
-OBJ_DIR   := ./objects
+OBJ_DIR   := objs
 
 OBJS      := $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 

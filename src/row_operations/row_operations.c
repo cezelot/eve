@@ -24,43 +24,47 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/eve.h"
+#include "../eve.h"
 
 /* Converts a chars index into a render index,
    and return the render index.  */
-int	row_cx_to_rx(t_erow *row, int cx)
+int
+row_cx_to_rx(t_erow *row, int cx)
 {
 	int	rx = 0;
 	int	i = 0;
 
-	while (i < cx)
-	{
-		if (row->chars[i++] == '\t')
+	while (i < cx) {
+		if (row->chars[i++] == '\t') {
 			rx += (TAB_STOP - 1) - (rx % TAB_STOP);
+		}
 		++rx;
 	}
 	return (rx);
 }
 
 /* Update RENDER and RSIZE according to CHARS.  */
-void	update_row(t_erow *row)
+void
+update_row(t_erow *row)
 {
 	int	i = 0;
 	int	n = 0;
 	int	tabs = 0;
 
-	while (n < row->size)
-		if (row->chars[n++] == '\t')
+	while (n < row->size) {
+		if (row->chars[n++] == '\t') {
 			++tabs;
+		}
+	}
 	free(row->render);
 	row->render = malloc(row->size + tabs * (TAB_STOP - 1) + 1);
 	n = 0;
-	while (n < row->size)
-	{
-		if (row->chars[n] == '\t')
+	while (n < row->size) {
+		if (row->chars[n] == '\t') {
 			render_tab(row->render, &i);
-		else
+		} else {
 			row->render[i++] = row->chars[n];
+		}
 		++n;
 	}
 	row->render[i] = '\0';
@@ -69,10 +73,12 @@ void	update_row(t_erow *row)
 
 /* Insert the character C into CHARS, at position INDEX,
    and update the other variables in row.  */
-void	row_insert_char(t_erow *row, int c, int index)
+void
+row_insert_char(t_erow *row, int c, int index)
 {
-	if (index < 0 || index > row->size)
+	if (index < 0 || index > row->size) {
 		index = row->size;
+	}
 	row->chars = realloc(row->chars, row->size + 2);
 	memmove(&row->chars[index + 1], &row->chars[index], row->size - index + 1);
 	row->size++;
@@ -81,13 +87,15 @@ void	row_insert_char(t_erow *row, int c, int index)
 }
 
 /* Copy STR to a new row, then insert the row at INDEX.  */
-void	insert_row(t_env *env, char *str, size_t len, int index)
+void
+insert_row(t_env *env, char *str, size_t len, int index)
 {
-	if (index < 0 || index > env->numrows)
+	if (index < 0 || index > env->numrows) {
 		return ;
+	}
 	env->row = realloc(env->row, (env->numrows + 1) * sizeof(t_erow));
-	memmove(&env->row[index + 1], &env->row[index], (env->numrows - index) \
-			* sizeof(t_erow));
+	memmove(&env->row[index + 1], &env->row[index],
+		(env->numrows - index) * sizeof(t_erow));
 	env->row = realloc(env->row, (env->numrows + 1) * sizeof(t_erow));
 	env->row[index].size = len;
 	env->row[index].chars = malloc(len + 1);
@@ -101,10 +109,12 @@ void	insert_row(t_env *env, char *str, size_t len, int index)
 }
 
 /* Delete the character at INDEX in ROW, then increment DIRTY.  */
-void	row_delete_char(t_erow *row, int index, int *dirty)
+void
+row_delete_char(t_erow *row, int index, int *dirty)
 {
-	if (index < 0 || index >= row->size)
+	if (index < 0 || index >= row->size) {
 		return ;
+	}
 	memmove(&row->chars[index], &row->chars[index + 1], row->size - index);
 	row->size--;
 	update_row(row);

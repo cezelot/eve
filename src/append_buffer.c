@@ -1,11 +1,11 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   save_file_operations.c - file saving-related helper operations           */
+/*   append_buffer.c - dynamic string routines                                */
 /*                                                                            */
-/*   Created: 2024/08/16 17:00:27 by alberrod                                 */
-/*   Updated: 2024/08/16 17:00:27 by alberrod                                 */
+/*   Created: 2023/12/18 14:16:44 by cezelot                                  */
+/*   Updated: 2024/06/20 11:02:16 by cezelot                                  */
 /*                                                                            */
-/*   Copyright (C) 2024 Alberto Rodriguez                                     */
+/*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -24,58 +24,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eve.h"
+#include "eve.h"
 
-void	cleanup(int fd, char *buf)
+/* Add STR to the content of the dynamic string ABUF.  */
+void
+abuf_append(t_abuf *abuf, const char *str, int len)
 {
-	if (fd != -1) close(fd);
-	if (buf != NULL)
-	{
-		free(buf);
-		buf = NULL;
+	char	*new_buf;
+
+	new_buf = realloc(abuf->buf, abuf->len + len);
+	if (new_buf == NULL) {
+		return ;
 	}
+	memcpy(&new_buf[abuf->len], str, len);
+	abuf->buf = new_buf;
+	abuf->len += len;
 }
 
-int	set_filename(t_env *env)
+void
+abuf_free(t_abuf *abuf)
 {
-	env->filename = prompt(env, "Save as: %s", NULL);
-	if (env->filename == NULL)
-	{
-		set_status_message(env, "Save aborted");
-		return -1;
-	}
-	return 0;
-}
-
-int	open_save_file(t_env *env, char *buf)
-{
-	int fd = open(env->filename, O_RDWR | O_CREAT, 0644);
-	if (fd == -1)
-	{
-		set_status_message(env, "Unable to save: %s", strerror(errno));
-		cleanup(fd, buf);
-	}
-	return fd;
-}
-
-int	truncate_file(int fd, int len, char *buf, t_env *env)
-{
-	if (ftruncate(fd, len) == -1)
-	{
-		set_status_message(env, "Unable to truncate file: %s", strerror(errno));
-		cleanup(fd, buf);
-		return -1;
-	}
-	return 0;
-}
-
-int	write_file(int fd, int len, char *buf, t_env *env)
-{
-	if (write(fd, buf, len) != len)
-	{
-		set_status_message(env, "Unable to write file: %s", strerror(errno));
-		cleanup(fd, buf);
-		return -1;
-	}
-	return 0;
+	free(abuf->buf);
 }

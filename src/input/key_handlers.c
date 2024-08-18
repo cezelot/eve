@@ -1,11 +1,11 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   append_buffer.c - dynamic string routines                                */
+/*   key_handlers.c                                                           */
 /*                                                                            */
-/*   Created: 2023/12/18 14:16:44 by cezelot                                  */
-/*   Updated: 2024/06/20 11:02:16 by cezelot                                  */
+/*   Created: 2024/08/17 16:56:07 by alberrod                                 */
+/*   Updated: 2024/08/17 17:47:00 by alberrod                                 */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed                                       */
+/*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -24,22 +24,52 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eve.h"
+#include "../eve.h"
 
-/* Add STR to the content of the dynamic string ABUF.  */
-void	abuf_append(t_abuf *abuf, const char *str, int len)
+void
+handle_page_keys(t_env *env, int key)
 {
-	char	*new_buf;
-
-	new_buf = realloc(abuf->buf, abuf->len + len);
-	if (new_buf == NULL)
-		return ;
-	memcpy(&new_buf[abuf->len], str, len);
-	abuf->buf = new_buf;
-	abuf->len += len;
+	if (key == PAGE_UP) {
+		env->cy = env->rowoff;
+	} else {
+		env->cy = env->rowoff + env->screenrows - 1;
+		if (env->cy > env->numrows) {
+			env->cy = env->numrows;
+		}
+	}
+	change_page(env, key);
 }
 
-void	abuf_free(t_abuf *abuf)
+void
+handle_position_keys(t_env *env, int key)
 {
-	free(abuf->buf);
+	if (key == HOME_KEY) {
+		env->cx = 0;
+	}
+	if (key == END_KEY) {
+		move_cursor_to_end_line(env);
+	}
+}
+
+void
+handle_deletion_keys(t_env *env, int key)
+{
+	if (key == DEL_KEY) {
+		move_cursor(env, ARROW_RIGHT);
+	}
+	delete_char(env);
+}
+
+void
+handle_signals(t_env *env, int key)
+{
+	if (key == CTRL_Q) {
+		quit_program(env);
+	}
+	if (key == CTRL_S) {
+		save(env);
+	}
+	if (key == CTRL_F) {
+		find(env);
+	}
 }

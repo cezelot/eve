@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   row_operations_2.c                                                       */
+/*   editor_operations.c - functions called from process_keypress()           */
 /*                                                                            */
-/*   Created: 2024/07/22 11:34:50 by cezelot                                  */
-/*   Updated: 2024/07/27 14:50:42 by cezelot                                  */
+/*   Created: 2024/07/22 11:54:00 by cezelot                                  */
+/*   Updated: 2024/07/23 19:33:24 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -24,61 +24,64 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/eve.h"
+#include "eve.h"
 
-/* Converts a render index into a chars index,
-   and return the chars index.  */
-int	row_rx_to_cx(t_erow *row, int rx)
+/* Insert the character C at the current position of the cursor,
+   then move the cursor forward.  */
+void
+insert_char(t_env *env, int c)
 {
-	int	cur_rx = 0;
-	int	cx = 0;
-
-	while (cx < row->size)
-	{
-		if (row->chars[cx] == '\t')
-			cur_rx += (TAB_STOP - 1) - (cur_rx % TAB_STOP);
-		++cur_rx;
-		if (cur_rx > rx)
-			return (cx);
-		++cx;
+	if (env->cy == env->numrows) {
+		insert_row(env, "", 0, env->numrows);
 	}
-	return (cx);
-}
-
-/* Replace a tab by TAB_STOP spaces characters.  */
-void	render_tab(char *render, int *index)
-{
-	render[(*index)++] = ' ';
-	while (*index % TAB_STOP)
-		render[(*index)++] = ' ';
-}
-
-/* Append S to the end of ROW.  */
-void	row_append_string(t_erow *row, char *s, size_t len, int *dirty)
-{
-	row->chars = realloc(row->chars, row->size + len + 1);
-	memcpy(&row->chars[row->size], s, len);
-	row->size += len;
-	row->chars[row->size] = '\0';
-	update_row(row);
-	++*dirty;
-}
-
-/* Deallocate memories in ROW.  */
-static void	free_row(t_erow *row)
-{
-	free(row->render);
-	free(row->chars);
-}
-
-/* Delete ROW at INDEX.  */
-void	delete_row(t_env *env, int index)
-{
-	if (index < 0 || index >= env->numrows)
-		return ;
-	free_row(&env->row[index]);
-	memmove(&env->row[index], &env->row[index + 1], \
-			(env->numrows - index - 1) * sizeof(t_erow));
-	env->numrows--;
+	row_insert_char(&env->row[env->cy], c, env->cx);
+	env->cx++;
 	env->dirty++;
+}
+
+/* Insert a new line at the current position of the cursor,
+   then move the cursor to the beginning of that line.  */
+void
+insert_newline(t_env *env)
+{
+	t_erow	*row;
+
+	row = &env->row[env->cy];
+	if (env->cx != 0) {
+		insert_row(env, &row->chars[env->cx],
+			row->size - env->cx, env->cy + 1);
+		row = &env->row[env->cy];
+		row->size = env->cx;
+		row->chars[row->size] = '\0';
+		update_row(row);
+	} else {
+		insert_row(env, "", 0, env->cy);
+	}
+	env->cy++;
+	env->cx = 0;
+}
+
+/* Delete the character that is to the left of the cursor.  */
+void
+delete_char(t_env *env)
+{
+	t_erow	*row;
+
+	if (env->cy == env->numrows) {
+		return ;
+	}
+	if (env->cy == 0 && env->cx == 0) {
+		return ;
+	}
+	row = &env->row[env->cy];
+	if (env->cx > 0) {
+		row_delete_char(row, env->cx - 1, &env->dirty);
+		env->cx--;
+	} else {
+		env->cx = env->row[env->cy - 1].size;
+		row_append_string(&env->row[env->cy - 1], row->chars,
+			row->size, &env->dirty);
+		delete_row(env, env->cy);
+		env->cy--;
+	}
 }

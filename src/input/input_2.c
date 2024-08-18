@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   terminal_2.c                                                             */
+/*   input_2.c                                                                */
 /*                                                                            */
-/*   Created: 2023/12/18 10:35:43 by cezelot                                  */
-/*   Updated: 2024/05/31 13:39:45 by cezelot                                  */
+/*   Created: 2024/05/28 10:13:12 by cezelot                                  */
+/*   Updated: 2024/05/30 21:00:44 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -24,88 +24,60 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/eve.h"
+#include "../eve.h"
 
-static int	get_home_or_end_key(char *seq)
+void
+snap_cursor_to_end_line(t_env *env, t_erow *row, int rowlen)
 {
-	if (seq[1] == 'H')
-		return (HOME_KEY);
-	else if (seq[1] == 'F')
-		return (END_KEY);
-	return (0);
-}
-
-static int	get_arrow_key(char *seq)
-{
-	if (seq[1] == 'A')
-		return (ARROW_UP);
-	else if (seq[1] == 'B')
-		return (ARROW_DOWN);
-	else if (seq[1] == 'C')
-		return (ARROW_RIGHT);
-	else if (seq[1] == 'D')
-		return (ARROW_LEFT);
-	return (0);
-}
-
-static int	get_navigation_key(char *seq)
-{
-	if (seq[1] >= '0' && seq[1] <= '9')
-	{
-		if (read(STDIN_FILENO, &seq[2], 1) != 1)
-			return ('\x1b');
-		if (seq[2] == '~')
-			return (get_nav_key(seq));
+	if (env->cy >= env->numrows) {
+		row = NULL;
+	} else {
+		row = &env->row[env->cy];
 	}
-	return (0);
+	if (row) {
+		rowlen = row->size;
+	} else {
+		row = 0;
+	}
+	if (env->cx > rowlen) {
+		env->cx = rowlen;
+	}
 }
 
-int	read_escape_sequences(void)
+void
+move_cursor_down(t_env *env)
 {
-	int		key;
-	char	seq[3];
-
-	if (read(STDIN_FILENO, &seq[0], 1) != 1)
-		return ('\x1b');
-	if (read(STDIN_FILENO, &seq[1], 1) != 1)
-		return ('\x1b');
-	if (seq[0] == '[')
-	{
-		key = get_navigation_key(seq);
-		if (key)
-			return (key);
-		key = get_arrow_key(seq);
-		if (key)
-			return (key);
-		key = get_home_or_end_key(seq);
-		if (key)
-			return (key);
+	if (env->cy < env->numrows) {
+		env->cy++;
 	}
-	else if (seq[0] == 'O')
-		return (get_home_or_end_key(seq));
-	return ('\x1b');
 }
 
-int	get_cursor_position(int *rows, int *cols)
+void
+move_cursor_up(t_env *env)
 {
-	char			buf[32];
-	unsigned int	i;
-
-	i = 0;
-	if (write(STDOUT_FILENO, "\x1b[6n", 4) != 4)
-		return (-1);
-	while (i < sizeof(buf) - 1)
-	{
-		if (read(STDIN_FILENO, &buf[i], 1) != 1)
-			break ;
-		if (buf[i] == 'R')
-			break ;
-		i++;
+	if (env->cy != 0) {
+		env->cy--;
 	}
-	buf[i] = '\0';
-	if (buf[0] != '\x1b' || buf[1] != '[')
-		return (-1);
-	if (sscanf(&buf[2], "%d;%d", rows, cols) != 2)
-		return (-1);
-	return (0);
+}
+
+void
+move_cursor_right(t_env *env, t_erow *row)
+{
+	if (row && env->cx < row->size) {
+		env->cx++;
+	} else if (row && env->cx == row->size) {
+		env->cy++;
+		env->cx = 0;
+	}
+}
+
+void
+move_cursor_left(t_env *env)
+{
+	if (env->cx != 0) {
+		env->cx--;
+	} else if (env->cy > 0) {
+		env->cy--;
+		env->cx = env->row[env->cy].size;
+	}
 }

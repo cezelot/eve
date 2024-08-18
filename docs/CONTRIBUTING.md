@@ -64,14 +64,7 @@ If you don't find one:
 
 ### Coding Style Guidelines
 
-See the file [STANDARD.md](STANDARD.md) for details on the coding standard
-used by this project.
-
-Please follow this style to make eve easy to read, maintain and develop.
-
-These coding rules are open for discussion, if you think another standard’s specifications
-makes eve better overall in an objective sense or anything else, please feel free to implement it,
-or you can [start a new discussion](https://github.com/cezelot/eve/discussions/new?category=standard).
+*...*
 
 ### Commit Message Guidelines
 

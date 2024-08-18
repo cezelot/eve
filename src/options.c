@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   eve - simple terminal-based text editor                                  */
+/*   options.c - parse command-line options                                   */
 /*                                                                            */
-/*   Created: 2023/11/26 12:20:29 by cezelot                                  */
-/*   Updated: 2024/08/16 11:23:14 by cezelot                                  */
+/*   Created: 2024/06/29 14:34:26 by cezelot                                  */
+/*   Updated: 2024/07/02 18:33:47 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -24,74 +24,65 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eve.h"
+#include "eve.h"
 
-/* Report an error and exit.  */
-void	die(const char *format, ...)
+/* Display usage information.  */
+static void
+show_help(void)
 {
-	va_list	ap;
-
-	write(STDOUT_FILENO, "\x1b[2J", 4);
-	write(STDOUT_FILENO, "\x1b[H", 3);
-	va_start(ap, format);
-	vfprintf(stderr, format, ap);
-	va_end(ap);
-	exit(1);
+	printf("Usage: %s [options] [file]\n", PROGRAM_NAME);
+	puts("\nOptions:\n"
+		"  -h, --help                 display this help and exit\n"
+		"  -v, --version              output version information and "
+		"exit");
 }
 
-/* Deallocate memories in the editor state.  */
-void	close_editor(t_env *env)
+/* Display the version and license.  */
+static void
+show_version(void)
 {
-	int	i;
+	printf("%s %s\n", PROGRAM_NAME, VERSION);
+	puts("Copyright (C) 2024 Ismael B. Hamed");
+	puts("License GPLv3+: GNU GPL version 3 or later "
+		"<https://gnu.org/licenses/gpl.html>\n"
+		"This is free software: you are free to change and "
+		"redistribute it.\n"
+		"There is NO WARRANTY, to the extent permitted by law.");
+}
 
-	i = 0;
-	free(env->filename);
-	while (i < env->numrows)
-	{
-		free(env->row[i].chars);
-		free(env->row[i++].render);
+/* Map the command-line option C and exit.  */
+static void
+scan_option(int c)
+{
+	if (c == 'h') {
+		show_help();
+		exit(0);
+	} else if (c == 'v') {
+		show_version();
+		exit(0);
+	} else if (c == '?') {
+		printf("Try '%s --help' for more information.\n", PROGRAM_NAME);
+		exit(1);
 	}
-	free(env->row);
 }
 
-/* Initialize the variables in the editor state.  */
-static void	init_editor(t_env *env)
+void
+parse_options(int ac, char **av, int *option_index)
 {
-	env->cx = 0;
-	env->cy = 0;
-	env->rx = 0;
-	env->rowoff = 0;
-	env->coloff = 0;
-	env->numrows = 0;
-	env->row = NULL;
-	env->filename = NULL;
-	env->dirty = 0;
-    env->quit_times = 1;
-	env->statusmsg[0] = '\0';
-	env->statusmsg_time = 0;
-	if (get_window_size(&env->screenrows, \
-	&env->screencols) == -1)
-		die("%s:%d: unable to get terminal size: %s", \
-			__FILE__, __LINE__, strerror(errno));
-	env->screenrows -= 2;
-}
+	int			c = '\0';
+	static struct option	long_options[] = {
+		{"help", no_argument, 0, 'h'},
+		{"version", no_argument, 0, 'v'},
+		{0, 0, 0, 0}
+	};
 
-int	main(int ac, char **av)
-{
-	t_env	env;
-	int		option_index = 0;
-
-	parse_options(ac, av, &option_index);
-	enable_raw_mode();
-	init_editor(&env);
-	if (option_index < ac)
-		open_file(&env, av[option_index]);
-	set_status_message(&env, \
-		"Help: Ctrl-S = save | Ctrl-Q = quit | Ctrl-F = find");
-	while (1)
-	{
-		refresh_screen(&env);
-		handle_keypress(&env);
+	while (1) {
+		*option_index = 0;
+		c = getopt_long(ac, av, "hv", long_options, option_index);
+		if (c == -1) {
+			break ;
+		}
+		scan_option(c);
 	}
-	return (0);
+	*option_index = optind;
 }

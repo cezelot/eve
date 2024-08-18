@@ -1,11 +1,11 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   key_handlers.c                                                           */
+/*   output_2.c                                                               */
 /*                                                                            */
-/*   Created: 2024/08/17 16:56:07 by cezelot                                  */
-/*   Created: 2024/08/17 16:56:07 by alberrod                                 */
+/*   Created: 2024/05/29 10:19:15 by cezelot                                  */
+/*   Updated: 2024/05/30 18:25:02 by cezelot                                  */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
+/*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -24,43 +24,65 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/eve.h"
+#include "../eve.h"
 
-void handle_page_keys(t_env *env, int key) {
-  if (key == PAGE_UP)
-    env->cy = env->rowoff;
-  else {
-    env->cy = env->rowoff + env->screenrows - 1;
-    if (env->cy > env->numrows)
-      env->cy = env->numrows;
-  }
-  change_page(env, key);
+void
+set_status_message(t_env *env, const char *format, ...)
+{
+	va_list	ap;
+
+	va_start(ap, format);
+	vsnprintf(env->statusmsg, sizeof(env->statusmsg), format, ap);
+	va_end(ap);
+	env->statusmsg_time = time(NULL);
 }
 
-void handle_position_keys(t_env *env, int key) {
-  if (key == HOME_KEY)
-    env->cx = 0;
-  if (key == END_KEY)
-    move_cursor_to_end_line(env);
+void
+display_text_buffer(t_env *env, t_abuf *abuf, int filerow)
+{
+	int	len;
+
+	len = env->row[filerow].rsize - env->coloff;
+	if (len < 0) {
+		len = 0;
+	}
+	if (len > env->screencols) {
+		len = env->screencols;
+	}
+	abuf_append(abuf, &env->row[filerow].render[env->coloff], len);
 }
 
-void handle_deletion_keys(t_env *env, int key) {
-  if (key == DEL_KEY)
-    move_cursor(env, ARROW_RIGHT);
-  delete_char(env);
+void
+display_welcome_message(t_env *env, t_abuf *abuf)
+{
+	char	welcome[80];
+	int	welcomelen;
+	int	padding;
+
+	welcomelen = snprintf(welcome, sizeof(welcome),
+		"eve editor -- version %s", VERSION);
+	if (welcomelen > env->screencols) {
+		welcomelen = env->screencols;
+	}
+	padding = (env->screencols - welcomelen) / 2;
+	if (padding) {
+		abuf_append(abuf, "~", 1);
+		--padding;
+	}
+	while (padding--) {
+		abuf_append(abuf, " ", 1);
+	}
+	abuf_append(abuf, welcome, welcomelen);
 }
 
-void handle_insertion_keys(t_env *env, int key) {
-  if (key == NEWLINE_KEY)
-    insert_newline(env);
-  return;
-}
-
-void handle_signals(t_env *env, int key) {
-  if (key == CTRL_Q)
-    quit_program(env);
-  if (key == CTRL_S)
-    save(env);
-  if (key == CTRL_F)
-    find(env);
+void
+display_tilde(t_env *env, t_abuf *abuf, int n)
+{
+	if (env->numrows == 0 && n == env->screenrows / 3) {
+		if (n == env->screenrows / 3) {
+			display_welcome_message(env, abuf);
+		}
+	} else {
+		abuf_append(abuf, "~", 1);
+	}
 }

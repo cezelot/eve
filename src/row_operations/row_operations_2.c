@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   output_2.c                                                               */
+/*   row_operations_2.c                                                       */
 /*                                                                            */
-/*   Created: 2024/05/29 10:19:15 by cezelot                                  */
-/*   Updated: 2024/05/30 18:25:02 by cezelot                                  */
+/*   Created: 2024/07/22 11:34:50 by cezelot                                  */
+/*   Updated: 2024/07/27 14:50:42 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -24,58 +24,69 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/eve.h"
+#include "../eve.h"
 
-void	set_status_message(t_env *env, const char *format, ...)
+/* Converts a render index into a chars index,
+   and return the chars index.  */
+int
+row_rx_to_cx(t_erow *row, int rx)
 {
-	va_list	ap;
+	int	cur_rx = 0;
+	int	cx = 0;
 
-	va_start(ap, format);
-	vsnprintf(env->statusmsg, sizeof(env->statusmsg), format, ap);
-	va_end(ap);
-	env->statusmsg_time = time(NULL);
-}
-
-void	display_text_buffer(t_env *env, t_abuf *abuf, int filerow)
-{
-	int	len;
-
-	len = env->row[filerow].rsize - env->coloff;
-	if (len < 0)
-		len = 0;
-	if (len > env->screencols)
-		len = env->screencols;
-	abuf_append(abuf, &env->row[filerow].render[env->coloff], len);
-}
-
-void	display_welcome_message(t_env *env, t_abuf *abuf)
-{
-	char	welcome[80];
-	int		welcomelen;
-	int		padding;
-
-	welcomelen = snprintf(welcome, sizeof(welcome), \
-		"eve editor -- version %s", VERSION);
-	if (welcomelen > env->screencols)
-		welcomelen = env->screencols;
-	padding = (env->screencols - welcomelen) / 2;
-	if (padding)
-	{
-		abuf_append(abuf, "~", 1);
-		--padding;
+	while (cx < row->size) {
+		if (row->chars[cx] == '\t') {
+			cur_rx += (TAB_STOP - 1) - (cur_rx % TAB_STOP);
+		}
+		++cur_rx;
+		if (cur_rx > rx) {
+			return (cx);
+		}
+		++cx;
 	}
-	while (padding--)
-		abuf_append(abuf, " ", 1);
-	abuf_append(abuf, welcome, welcomelen);
+	return (cx);
 }
 
-void	display_tilde(t_env *env, t_abuf *abuf, int n)
+/* Replace a tab by TAB_STOP spaces characters.  */
+void
+render_tab(char *render, int *index)
 {
-	if (env->numrows == 0 && n == env->screenrows / 3)
-	{
-		if (n == env->screenrows / 3)
-			display_welcome_message(env, abuf);
+	render[(*index)++] = ' ';
+	while (*index % TAB_STOP) {
+		render[(*index)++] = ' ';
 	}
-	else
-		abuf_append(abuf, "~", 1);
+}
+
+/* Append S to the end of ROW.  */
+void
+row_append_string(t_erow *row, char *s, size_t len, int *dirty)
+{
+	row->chars = realloc(row->chars, row->size + len + 1);
+	memcpy(&row->chars[row->size], s, len);
+	row->size += len;
+	row->chars[row->size] = '\0';
+	update_row(row);
+	++*dirty;
+}
+
+/* Deallocate memories in ROW.  */
+static void
+free_row(t_erow *row)
+{
+	free(row->render);
+	free(row->chars);
+}
+
+/* Delete ROW at INDEX.  */
+void
+delete_row(t_env *env, int index)
+{
+	if (index < 0 || index >= env->numrows) {
+		return ;
+	}
+	free_row(&env->row[index]);
+	memmove(&env->row[index], &env->row[index + 1],
+		(env->numrows - index - 1) * sizeof(t_erow));
+	env->numrows--;
+	env->dirty++;
 }

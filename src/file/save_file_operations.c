@@ -1,11 +1,11 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   options.c - parse command-line options                                   */
+/*   save_file_operations.c - file saving-related helper operations           */
 /*                                                                            */
-/*   Created: 2024/06/29 14:34:26 by cezelot                                  */
-/*   Updated: 2024/07/02 18:33:47 by cezelot                                  */
+/*   Created: 2024/08/16 17:00:27 by alberrod                                 */
+/*   Updated: 2024/08/16 17:00:27 by alberrod                                 */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed                                       */
+/*   Copyright (C) 2024 Alberto Rodriguez                                     */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -24,65 +24,64 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eve.h"
+#include "../eve.h"
 
-/* Display usage information.  */
-static void	show_help(void)
+void
+cleanup(int fd, char *buf)
 {
-	printf("Usage: %s [options] [file]\n", PROGRAM_NAME);
-	puts("\nOptions:\n"
-		"  -h, --help                 display this help and exit\n"
-		"  -v, --version              output version information and exit");
-}
-
-/* Display the version and license.  */
-static void	show_version(void)
-{
-	printf("%s %s\n", PROGRAM_NAME, VERSION);
-	puts("Copyright (C) 2024 Ismael B. Hamed");
-	puts("License GPLv3+: GNU GPL version 3 or later "
-		"<https://gnu.org/licenses/gpl.html>\n"
-		"This is free software: you are free to change and redistribute it.\n"
-		"There is NO WARRANTY, to the extent permitted by law.");
-}
-
-/* Map the command-line option C and exit.  */
-static void	scan_option(int c)
-{
-	if (c == 'h')
-	{
-		show_help();
-		exit(0);
+	if (fd != -1) {
+		close(fd);
 	}
-	else if (c == 'v')
-	{
-		show_version();
-		exit(0);
-	}
-	else if (c == '?')
-	{
-		printf("Try '%s --help' for more information.\n", PROGRAM_NAME);
-		exit(1);
+	if (buf != NULL) {
+		free(buf);
+		buf = NULL;
 	}
 }
 
-void	parse_options(int ac, char **av, int *option_index)
+int
+set_filename(t_env *env)
 {
-	int						c;
-	static struct option	long_options[] = {
-	{"help", no_argument, 0, 'h'},
-	{"version", no_argument, 0, 'v'},
-	{0, 0, 0, 0}
-	};
-
-	c = '\0';
-	while (1)
-	{
-		*option_index = 0;
-		c = getopt_long(ac, av, "hv", long_options, option_index);
-		if (c == -1)
-			break ;
-		scan_option(c);
+	env->filename = prompt(env, "Save as: %s", NULL);
+	if (env->filename == NULL) {
+		set_status_message(env, "Save aborted");
+		return (-1);
 	}
-	*option_index = optind;
+	return (0);
+}
+
+int
+open_save_file(t_env *env, char *buf)
+{
+	int	fd;
+
+	fd = open(env->filename, O_RDWR | O_CREAT, 0644);
+	if (fd == -1) {
+		set_status_message(env, "Unable to save: %s", strerror(errno));
+		cleanup(fd, buf);
+	}
+	return (fd);
+}
+
+int
+truncate_file(int fd, int len, char *buf, t_env *env)
+{
+	if (ftruncate(fd, len) == -1) {
+		set_status_message(env, "Unable to truncate file: %s",
+			strerror(errno));
+		cleanup(fd, buf);
+		return (-1);
+	}
+	return (0);
+}
+
+int
+write_file(int fd, int len, char *buf, t_env *env)
+{
+	if (write(fd, buf, len) != len) {
+		set_status_message(env, "Unable to write file: %s",
+			strerror(errno));
+		cleanup(fd, buf);
+		return (-1);
+	}
+	return (0);
 }

@@ -3,7 +3,7 @@
 /*   terminal.c - low-level terminal input handling                           */
 /*                                                                            */
 /*   Created: 2023/11/27 18:25:14 by cezelot                                  */
-/*   Updated: 2024/07/02 12:23:09 by cezelot                                  */
+/*   Updated: 2024/08/18 17:27:00 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -24,7 +24,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/eve.h"
+#include "../eve.h"
 
 /* The original terminal attributes.  */
 static struct termios	g_orig_termios;
@@ -33,19 +33,18 @@ static struct termios	g_orig_termios;
    of the terminal into WS, position the cursor at the bottom-right
    of the screen, then get the position of the cursor.
    On success return 0, otherwise return -1.  */
-int	get_window_size(int *rows, int *cols)
+int
+get_window_size(int *rows, int *cols)
 {
 	struct winsize	ws;
 
-	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1 \
-								|| ws.ws_col == 0)
-	{
-		if (write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12)
+	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1
+			|| ws.ws_col == 0) {
+		if (write(STDOUT_FILENO, "\x1b[999C\x1b[999B", 12) != 12) {
 			return (-1);
+		}
 		return (get_cursor_position(rows, cols));
-	}
-	else
-	{
+	} else {
 		*rows = ws.ws_row;
 		*cols = ws.ws_col;
 		return (0);
@@ -53,24 +52,28 @@ int	get_window_size(int *rows, int *cols)
 }
 
 /* Restore the terminal to canonical mode.  */
-static void	disable_raw_mode(void)
+static void
+disable_raw_mode(void)
 {
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &g_orig_termios) == -1)
-		die("%s:%d: unable to restore terminal’s original attributes: %s", \
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &g_orig_termios) == -1) {
+		die("%s:%d: unable to restore terminal’s original attributes: %s",
 			__FILE__, __LINE__, strerror(errno));
+	}
 }
 
 /* Set the terminal to raw mode.  By default the terminal starts
    in canonical mode, keyboard input is only sent to the program when
    the user presses Enter.  Raw mode sets up the terminal to pass every
    character to the program as it is typed.  */
-void	enable_raw_mode(void)
+void
+enable_raw_mode(void)
 {
 	struct termios	s_raw;
 
-	if (tcgetattr(STDIN_FILENO, &g_orig_termios) == -1)
-		die("%s:%d: unable to get terminal attributes: %s", \
+	if (tcgetattr(STDIN_FILENO, &g_orig_termios) == -1) {
+		die("%s:%d: unable to get terminal attributes: %s",
 			__FILE__, __LINE__, strerror(errno));
+	}
 	atexit(disable_raw_mode);
 	s_raw = g_orig_termios;
 	s_raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
@@ -79,28 +82,32 @@ void	enable_raw_mode(void)
 	s_raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
 	s_raw.c_cc[VMIN] = 0;
 	s_raw.c_cc[VTIME] = 1;
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &s_raw) == -1)
-		die("%s:%d: unable to set terminal attributes: %s", \
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &s_raw) == -1) {
+		die("%s:%d: unable to set terminal attributes: %s",
 			__FILE__, __LINE__, strerror(errno));
+	}
 }
 
 /* Wait for a keypress and return it.  */
-int	read_key(void)
+int
+read_key(void)
 {
 	ssize_t	nbytes_read;
 	char	c;
 
-	while (1)
-	{
+	while (1) {
 		nbytes_read = read(STDIN_FILENO, &c, 1);
-		if (nbytes_read == 1)
+		if (nbytes_read == 1) {
 			break ;
-		if (nbytes_read == -1 && errno != EAGAIN)
-			die("%s:%d: unable to read key pressed: %s", \
+		}
+		if (nbytes_read == -1 && errno != EAGAIN) {
+			die("%s:%d: unable to read key pressed: %s",
 				__FILE__, __LINE__, strerror(errno));
+		}
 	}
-	if (c == '\x1b')
+	if (c == ESC) {
 		return (read_escape_sequences());
-	else
+	} else {
 		return (c);
+	}
 }

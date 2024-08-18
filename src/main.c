@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   editor_operations.c - functions called from process_keypress()           */
+/*   eve - simple terminal-based text editor                                  */
 /*                                                                            */
-/*   Created: 2024/07/22 11:54:00 by cezelot                                  */
-/*   Updated: 2024/07/23 19:33:24 by cezelot                                  */
+/*   Created: 2023/11/26 12:20:29 by cezelot                                  */
+/*   Updated: 2024/08/17 18:47:42 by alberrod                                 */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed                                       */
 /*                                                                            */
@@ -24,61 +24,77 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/eve.h"
+#include "eve.h"
 
-/* Insert the character C at the current position of the cursor,
-   then move the cursor forward.  */
-void	insert_char(t_env *env, int c)
+/* Report an error and exit.  */
+void
+die(const char *format, ...)
 {
-	if (env->cy == env->numrows)
-		insert_row(env, "", 0, env->numrows);
-	row_insert_char(&env->row[env->cy], c, env->cx);
-	env->cx++;
-	env->dirty++;
+	va_list ap;
+
+	write(STDOUT_FILENO, "\x1b[2J", 4);
+	write(STDOUT_FILENO, "\x1b[H", 3);
+	va_start(ap, format);
+	vfprintf(stderr, format, ap);
+	va_end(ap);
+	exit(1);
 }
 
-/* Insert a new line at the current position of the cursor,
-   then move the cursor to the beginning of that line.  */
-void	insert_newline(t_env *env)
+/* Deallocate memories in the editor state.  */
+void
+close_editor(t_env *env)
 {
-	t_erow	*row;
+	int	i = 0;
 
-	row = &env->row[env->cy];
-	if (env->cx != 0)
-	{
-		insert_row(env, &row->chars[env->cx], row->size - env->cx, env->cy + 1);
-		row = &env->row[env->cy];
-		row->size = env->cx;
-		row->chars[row->size] = '\0';
-		update_row(row);
+	free(env->filename);
+	while (i < env->numrows) {
+		free(env->row[i].chars);
+		free(env->row[i++].render);
 	}
-	else
-		insert_row(env, "", 0, env->cy);
-	env->cy++;
+	free(env->row);
+}
+
+/* Initialize the variables in the editor state.  */
+static void
+init_editor(t_env *env)
+{
 	env->cx = 0;
+	env->cy = 0;
+	env->rx = 0;
+	env->rowoff = 0;
+	env->coloff = 0;
+	env->numrows = 0;
+	env->row = NULL;
+	env->filename = NULL;
+	env->dirty = 0;
+	env->quit_times = 1;
+	env->statusmsg[0] = '\0';
+	env->statusmsg_time = 0;
+	if (get_window_size(&env->screenrows,
+			&env->screencols) == -1) {
+		die("%s:%d: unable to get terminal size: %s",
+			__FILE__, __LINE__, strerror(errno));
+	}
+	env->screenrows -= 2;
 }
 
-/* Delete the character that is to the left of the cursor.  */
-void	delete_char(t_env *env)
+int
+main(int ac, char **av)
 {
-	t_erow	*row;
+	t_env	env;
+	int	option_index = 0;
 
-	if (env->cy == env->numrows)
-		return ;
-	if (env->cy == 0 && env->cx == 0)
-		return ;
-	row = &env->row[env->cy];
-	if (env->cx > 0)
-	{
-		row_delete_char(row, env->cx - 1, &env->dirty);
-		env->cx--;
+	parse_options(ac, av, &option_index);
+	enable_raw_mode();
+	init_editor(&env);
+	if (option_index < ac) {
+		open_file(&env, av[option_index]);
 	}
-	else
-	{
-		env->cx = env->row[env->cy - 1].size;
-		row_append_string(&env->row[env->cy - 1], row->chars, \
-						row->size, &env->dirty);
-		delete_row(env, env->cy);
-		env->cy--;
+	set_status_message(&env, "Help: Ctrl-S = save | Ctrl-Q = quit "
+		"| Ctrl-F = find");
+	while (1) {
+		refresh_screen(&env);
+		handle_keypress(&env);
 	}
+	return (0);
 }

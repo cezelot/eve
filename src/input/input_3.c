@@ -24,15 +24,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/eve.h"
+#include "../eve.h"
+
+static void
+pending_to_handle(t_env *env, int key)
+{
+	(void)key;
+	(void)env;
+}
 
 /* Sort the keymap using the quicksort algorithm.  */
-static void quicksort_keymap(t_key_map *keymap, int start, int end)
+static void
+quicksort_keymap(t_key_map *keymap, int start, int end)
 {
-	if (start >= end)
+	if (start >= end) {
 		return ;
-	int pivot = keymap[end].key;
-	int idx = start;
+	}
+	int	pivot = keymap[end].key;
+	int	idx = start;
 
 	for (int i = start; i < end; ++i) {
 		if (keymap[i].key < pivot) {
@@ -49,34 +58,37 @@ static void quicksort_keymap(t_key_map *keymap, int start, int end)
 	quicksort_keymap(keymap, idx + 1, end);
 }
 
-
 /* Run the handler for the given key if it exists in the keymap.  */
-static int run_key(t_key_map *keymap, int size, t_env *env, int key)
+static int
+run_key(t_key_map *keymap, int size, t_env *env, int key)
 {
-	int mid, low = 0, high = size - 1;
+	int	mid;
+	int	low = 0;
+	int	high = size - 1;
 
-    while (low <= high) {
-        mid = low + (high - low) / 2;
-        if (keymap[mid].key > key)
-            high = mid - 1;
-        else if (keymap[mid].key < key)
-            low = mid + 1;
-        else {
-            keymap[mid].handler(env, key);
-            return (1);
-        }
-    }
+	while (low <= high) {
+		mid = low + (high - low) / 2;
+		if (keymap[mid].key > key) {
+			high = mid - 1;
+		} else if (keymap[mid].key < key) {
+			low = mid + 1;
+		} else {
+			keymap[mid].handler(env, key);
+			return (1);
+		}
+	}
 	return (0);
 }
 
 /* Builds a static keymap, sorts it, and tries to execute the given key.
    Return 1 if success and 0 if the key was not found.  */
-int	handle_special_keys(t_env *env, int key)
+int
+handle_special_keys(t_env *env, int key)
 {
 	static t_key_map keymap[] = {
-        {CTRL_S, handle_signals},
-        {CTRL_F, handle_signals},
-        {CTRL_Q, handle_signals},
+		{CTRL_S, handle_signals},
+		{CTRL_F, handle_signals},
+		{CTRL_Q, handle_signals},
 		{CTRL_L, pending_to_handle},
 		{ESC, pending_to_handle},
 		{CTRL_H, handle_deletion_keys},
@@ -91,13 +103,12 @@ int	handle_special_keys(t_env *env, int key)
 		{ARROW_LEFT, move_cursor},
 		{ARROW_RIGHT, move_cursor},
 	};
-	static int is_map_sorted = 0;
+	static int	is_map_sorted = 0;
+	int		size = sizeof(keymap) / sizeof(t_key_map);
 
-	int size = sizeof(keymap) / sizeof(t_key_map);
-	if (!is_map_sorted)
-	{
+	if (!is_map_sorted) {
 		quicksort_keymap(keymap, 0, size - 1);
 		is_map_sorted = 1;
 	}
-	return run_key(keymap, size, env, key);
+	return (run_key(keymap, size, env, key));
 }
