@@ -95,8 +95,9 @@ draw_status_bar(t_env *env, t_abuf *abuf)
 }
 
 /* If the the program was run without a file, draw a column of tildes
-   on the left hand side of the screen.  Otherwise, draw a tilde at
-   the beginning of any lines that come after the end of the file.  */
+   on the left hand side of the screen.  Otherwise, draw the text
+   buffer and add a tilde at the beginning of the line that come after
+   the end of the file.  */
 static void
 draw_rows(t_env *env, t_abuf *abuf)
 {

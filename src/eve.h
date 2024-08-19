@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/08/17 18:42:00 by alberrod                                 */
+/*   Updated: 2024/08/19 18:13:42 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
 /*                                                                            */
@@ -34,7 +34,7 @@
 
 # define PROGRAM_NAME "eve"
 # define VERSION "0.5.0"
-# define TAB_STOP 4
+# define TAB_STOP 8
 
 # include <ctype.h>
 # include <errno.h>
