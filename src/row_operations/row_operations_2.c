@@ -62,6 +62,9 @@ void
 row_append_string(t_erow *row, char *s, size_t len, int *dirty)
 {
 	row->chars = realloc(row->chars, row->size + len + 1);
+	if (row->chars == NULL) {
+		return ;
+	}
 	memcpy(&row->chars[row->size], s, len);
 	row->size += len;
 	row->chars[row->size] = '\0';

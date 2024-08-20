@@ -56,7 +56,7 @@ static void
 disable_raw_mode(void)
 {
 	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &g_orig_termios) == -1) {
-		die("%s:%d: unable to restore terminal’s original attributes: %s",
+		die("%s:%d: ohoh... things are not looking good: %s",
 			__FILE__, __LINE__, strerror(errno));
 	}
 }
@@ -68,21 +68,21 @@ disable_raw_mode(void)
 void
 enable_raw_mode(void)
 {
-	struct termios	s_raw;
+	struct termios	raw;
 
 	if (tcgetattr(STDIN_FILENO, &g_orig_termios) == -1) {
 		die("%s:%d: unable to get terminal attributes: %s",
 			__FILE__, __LINE__, strerror(errno));
 	}
 	atexit(disable_raw_mode);
-	s_raw = g_orig_termios;
-	s_raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-	s_raw.c_oflag &= ~(OPOST);
-	s_raw.c_cflag |= (CS8);
-	s_raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-	s_raw.c_cc[VMIN] = 0;
-	s_raw.c_cc[VTIME] = 1;
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &s_raw) == -1) {
+	raw = g_orig_termios;
+	raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+	raw.c_oflag &= ~(OPOST);
+	raw.c_cflag |= (CS8);
+	raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+	raw.c_cc[VMIN] = 0;
+	raw.c_cc[VTIME] = 1;
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) {
 		die("%s:%d: unable to set terminal attributes: %s",
 			__FILE__, __LINE__, strerror(errno));
 	}

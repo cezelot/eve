@@ -43,7 +43,8 @@ rows_to_string(t_env *env, int *buflen)
 	*buflen = len;
 	buf = malloc(len * sizeof(*buf));
 	if (buf == NULL) {
-		die("%s:%d: %s", __FILE__, __LINE__, strerror(errno));
+		die("%s:%d: not enough memory with which to do jack",
+			__FILE__, __LINE__);
 	}
 	p = buf;
 	i = 0;

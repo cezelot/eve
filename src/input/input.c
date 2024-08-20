@@ -37,14 +37,14 @@ prompt(t_env *env, char *message,
 
 	buf = malloc(bufsize * sizeof(*buf));
 	if (buf == NULL) {
-		die("%s:%d: %s", __FILE__, __LINE__, strerror(errno));
+		return (NULL);
 	}
 	buf[0] = '\0';
 	while (1) {
 		set_status_message(env, message, buf);
 		refresh_screen(env);
 		c = read_key();
-		if (c == '\x1b') {
+		if (c == ESC) {
 			set_status_message(env, "");
 			if (callback) {
 				callback(env, buf, c);
@@ -65,6 +65,9 @@ prompt(t_env *env, char *message,
 			if (buflen == bufsize - 1) {
 				bufsize *= 2;
 				buf = realloc(buf, bufsize);
+				if (buf == NULL) {
+					return (NULL);
+				}
 			}
 			buf[buflen++] = c;
 			buf[buflen] = '\0';

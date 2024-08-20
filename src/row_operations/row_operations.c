@@ -58,6 +58,11 @@ update_row(t_erow *row)
 	}
 	free(row->render);
 	row->render = malloc(row->size + tabs * (TAB_STOP - 1) + 1);
+	if (row->render == NULL) {
+		die("%s:%d: %s: please go buy a RAM upgrade "
+			"from your local plug",
+			__FILE__, __LINE__, strerror(errno));
+	}
 	n = 0;
 	while (n < row->size) {
 		if (row->chars[n] == '\t') {
@@ -80,6 +85,9 @@ row_insert_char(t_erow *row, int c, int index)
 		index = row->size;
 	}
 	row->chars = realloc(row->chars, row->size + 2);
+	if (row->chars == NULL) {
+		return ;
+	}
 	memmove(&row->chars[index + 1], &row->chars[index], row->size - index + 1);
 	row->size++;
 	row->chars[index] = c;
@@ -94,11 +102,20 @@ insert_row(t_env *env, char *str, size_t len, int index)
 		return ;
 	}
 	env->row = realloc(env->row, (env->numrows + 1) * sizeof(t_erow));
+	if (env->row == NULL) {
+		return ;
+	}
 	memmove(&env->row[index + 1], &env->row[index],
 		(env->numrows - index) * sizeof(t_erow));
 	env->row = realloc(env->row, (env->numrows + 1) * sizeof(t_erow));
+	if (env->row == NULL) {
+		return ;
+	}
 	env->row[index].size = len;
 	env->row[index].chars = malloc(len + 1);
+	if (env->row[index].chars == NULL) {
+		die("%s:%d: Hot Damn! You need more ram!", __FILE__, __LINE__);
+	}
 	memcpy(env->row[index].chars, str, len);
 	env->row[index].chars[len] = '\0';
 	env->row[index].rsize = 0;
