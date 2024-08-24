@@ -1,33 +1,35 @@
 eve
 ===
 
-[![Build Status](https://github.com/cezelot/eve/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/cezelot/eve/actions/workflows/build.yml)
-[![CodeQL](https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql)
-[![CodeScene Code Health](https://codescene.io/projects/51883/status-badges/code-health)](https://drive.proton.me/urls/5SKHRBA710#yz0WZNGdkCAk)
-![Code Size](https://img.shields.io/github/languages/code-size/cezelot/eve)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg?style=flat-square)](https://makeapullrequest.com)
+[![Build Status][build-svg]][build]
+[![CodeQL][codeql-svg]][codeql]
+[![CodeScene Code Health][codescene-svg]][codescene-report]
+![Code Size][code-size]
+[![PRs Welcome][makeapr-svg]][makeapr]
 
-> A user-friendly command-line text editor.
+> A simple command-line text editor.
 
-eve is a lightweight, user-friendly text editor for the terminal that aims to be simple and intuitive,
-while also taking advantage of the capabilities of advanced text editor like Vim or Emacs.
+eve is a lightweight, user-friendly text editor for the terminal that aims to be
+simple and intuitive, while also taking advantage of the capabilities of
+advanced text editors.
 
-The project is in alpha stage and will provides essential and powerful editing features (see [Roadmap](#roadmap)),
-making it ideal for editing configuration files, creating scripts or witing source codes
-from the command-line.
+The project is in alpha stage and will provides essential and powerful editing
+features (see [Roadmap](#roadmap)), making it ideal for editing configuration
+files, creating scripts or witing source codes from the command-line.
 
 ## Getting Started
 
 ### Prerequisites
 
-- A Unix-like operating system: Linux, BSD, macOS.
-  On Windows, you can use [WSL2](https://learn.microsoft.com/windows/wsl/install) or [Cygwin](https://cygwin.com), etc.
+- A Unix-like operating system: GNU/Linux, BSD, macOS, etc.
+  On Windows, you can use [WSL2](https://learn.microsoft.com/windows/wsl/install)
+  or [Cygwin](https://cygwin.com).
   On Android, use [Termux](https://termux.dev).
-- Tools for building the binary:
+- Tools for building the executable:
   - `make`
   - `gcc`
 
-You can install all the required tools on Linux with this command:
+You can install all the required tools on Linux (Debian-based) with this command:
 
 ```bash
 sudo apt install make gcc
@@ -38,7 +40,6 @@ sudo apt install make gcc
 If you haven't already clone the repository:
 
 ```bash
-sudo apt install git
 git clone https://github.com/cezelot/eve.git
 ```
 
@@ -49,9 +50,20 @@ cd eve
 make
 ```
 
-It'll build a binary named `eve`.
+It'll build an executable named `eve`.
 
-If you want to install `eve`, copy the compiled binary into `~/.local/bin`:
+#### Make rules
+
+Command       |  Description
+:-------------|:-------------
+`make`        | Compile `eve` executable.
+`make clean`  | Remove objects files.
+`make fclean` | Remove objects files and `eve` executable.
+`make re`     | Re-compile `eve` executable.
+
+### Installation
+
+To install `eve`, copy the executable into `~/.local/bin`:
 
 ```bash
 cp eve ~/.local/bin
@@ -63,29 +75,28 @@ Or into `/usr/local/bin`, note that you must have adequate privileges:
 sudo cp eve /usr/local/bin
 ```
 
-#### Make rules
-
-Command       |  Description
-:-------------|:-------------
-`make`        | Compile `eve`.
-`make clean`  | Remove objects files.
-`make fclean` | Remove objects files and `eve`.
-`make re`     | Re-compile `eve`.
-
 ### Usage
 
-To open and edit a file, remove `./` if you have installed the binary:
+To open and edit a file:
 
 ```bash
-./eve <filename>
+eve <filename>
 ```
+
+To create a new file:
+
+```bash
+eve
+```
+
+Then use `Ctrl-S` to create and save the new file.
 
 ## Roadmap
 
 List of features planned for version 1.0.0:
 
- - [x] Display text files
- - [x] Edit text files
+ - [x] Text viewer
+ - [x] Text editor
  - [x] Search feature
  - [ ] Syntax highlighting and filetype detection
  - [ ] Line number
@@ -104,15 +115,27 @@ List of features planned for version 1.0.0:
 Pull requests are welcome. For reporting a bug or suggesting an enhancement,
 feel free to open an issue.
 
-Please make sure to read the [contributing guidelines](docs/CONTRIBUTING.md) before.
+Please make sure to read the [contributing guidelines](docs/CONTRIBUTING.md)
+before.
 
 ## Authors
 
-**Ismael Benjara** - @cezelot - [contact](mailto:cezelot@proton.me)
+Ismaël Benjara <ib@cezelot.me>
 
-See also the list of [contributors](https://github.com/cezelot/eve/graphs/contributors)
-who participated in this project.
+See also the list of [contributors] who participated in this project.
 
 ## License
 
-eve is free software distributed under the GNU Public License, for details see [COPYING](COPYING).
+eve is free software distributed under the GNU Public License,
+for details see [COPYING](COPYING).
+
+[build-svg]: https://github.com/cezelot/eve/actions/workflows/build.yml/badge.svg?event=push
+[build]: https://github.com/cezelot/eve/actions/workflows/build.yml
+[codeql-svg]: https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql/badge.svg
+[codeql]: https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql
+[codescene-svg]: https://codescene.io/projects/51883/status-badges/code-health
+[codescene-report]: https://drive.proton.me/urls/5SKHRBA710#yz0WZNGdkCAk
+[code-size]: https://img.shields.io/github/languages/code-size/cezelot/eve
+[makeapr-svg]: https://img.shields.io/badge/PRs-welcome-green.svg?style=flat-square
+[makeapr]: https://img.shields.io/badge/PRs-welcome-green.svg?style=flat-square
+[contributors]: https://github.com/cezelot/eve/graphs/contributors
