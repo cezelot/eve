@@ -33,7 +33,7 @@
 # endif
 
 # define PROGRAM_NAME "eve"
-# define VERSION "0.5.0"
+# define VERSION "0.5.1"
 # define TAB_STOP 8
 
 # include <ctype.h>
