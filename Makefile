@@ -1,4 +1,4 @@
-# Copyright (C) 2024 Ismael B. Hamed
+# Copyright (C) 2024 Ismael Benjara
 #
 # This file is part of eve.
 #

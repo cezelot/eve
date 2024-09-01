@@ -5,7 +5,7 @@
 /*   Created: 2024/08/17 16:56:07 by alberrod                                 */
 /*   Updated: 2024/08/17 17:47:00 by alberrod                                 */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed, Alberto Rodriguez                    */
+/*   Copyright (C) 2024 Ismael Benjara, Alberto Rodriguez                     */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */

@@ -5,7 +5,7 @@
 /*   Created: 2023/12/06 18:08:14 by cezelot                                  */
 /*   Updated: 2024/07/23 19:50:43 by cezelot                                  */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed                                       */
+/*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */

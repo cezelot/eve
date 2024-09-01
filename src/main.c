@@ -5,7 +5,7 @@
 /*   Created: 2023/11/26 12:20:29 by cezelot                                  */
 /*   Updated: 2024/08/17 18:47:42 by alberrod                                 */
 /*                                                                            */
-/*   Copyright (C) 2024 Ismael B. Hamed                                       */
+/*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
 /*   This file is part of eve.                                                */
 /*                                                                            */
@@ -30,7 +30,7 @@
 void
 die(const char *format, ...)
 {
-	va_list ap;
+	va_list	ap;
 
 	write(STDOUT_FILENO, "\x1b[2J", 4);
 	write(STDOUT_FILENO, "\x1b[H", 3);
