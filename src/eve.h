@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/09/05 08:07:47 by cezelot                                  */
+/*   Updated: 2024/09/05 14:06:01 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara, Alberto Rodriguez                     */
 /*                                                                            */
@@ -71,7 +71,8 @@ enum e_editor_key {
 
 enum e_editor_highlight {
 	HL_NORMAL = 0,
-	HL_NUMBER
+	HL_NUMBER,
+	HL_MATCH
 };
 
 typedef struct s_editor_row {

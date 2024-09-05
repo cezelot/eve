@@ -3,7 +3,7 @@
 /*   syntax_highlighting.c                                                    */
 /*                                                                            */
 /*   Created: 2024/09/01 15:58:19 by cezelot                                  */
-/*   Updated: 2024/09/01 16:17:10 by cezelot                                  */
+/*   Updated: 2024/09/05 14:13:44 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -48,8 +48,12 @@ update_syntax(t_erow *row)
 int
 syntax_to_color(int hl)
 {
-	if (hl == HL_NUMBER) {
+	switch (hl) {
+	case HL_NUMBER:
 		return (31);
+	case HL_MATCH:
+		return (34);
+	default:
+		return (37);
 	}
-	return (37);
 }

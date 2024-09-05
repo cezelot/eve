@@ -3,7 +3,7 @@
 /*   find.c - search routines                                                 */
 /*                                                                            */
 /*   Created: 2024/07/27 14:14:36 by cezelot                                  */
-/*   Updated: 2024/07/28 21:20:48 by cezelot                                  */
+/*   Updated: 2024/09/05 14:41:07 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -43,12 +43,20 @@ find_callback(t_env *env, char *query, int key)
 	static int	direction = 1;
 	/* Index of the current row we are searching.  */
 	int		current;
+	static int	saved_hl_line;
+	static char	*saved_hl = NULL;
 
+	if (saved_hl) {
+		memcpy(env->row[saved_hl_line].hl, saved_hl,
+			env->row[saved_hl_line].rsize);
+		free(saved_hl);
+		saved_hl = NULL;
+	}
 	if (key == ARROW_RIGHT || key == ARROW_DOWN) {
 		direction = 1;
 	} else if (key == ARROW_LEFT || key == ARROW_UP) {
 		direction = -1;
-	} else if (key == '\r' || key == '\x1b') {
+	} else if (key == NEWLINE_KEY || key == ESC) {
 		/* Reset LAST_MATCH and DIRECTION to their initial values
 		   to get ready for the next search operation.  */
 		last_match = -1;
@@ -78,6 +86,11 @@ find_callback(t_env *env, char *query, int key)
 			env->cy = current;
 			env->cx = row_rx_to_cx(row, match - row->render);
 			env->rowoff = env->numrows;
+			saved_hl_line = current;
+			saved_hl = malloc(row->rsize);
+			memcpy(saved_hl, row->hl, row->rsize);
+			memset(&row->hl[match - row->render],
+				HL_MATCH, strlen(query));
 			break ;
 		}
 		++i;

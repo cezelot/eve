@@ -3,7 +3,7 @@
 /*   output_2.c                                                               */
 /*                                                                            */
 /*   Created: 2024/05/29 10:19:15 by cezelot                                  */
-/*   Updated: 2024/09/05 10:25:30 by cezelot                                  */
+/*   Updated: 2024/09/05 12:57:05 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -71,15 +71,14 @@ display_text_buffer(t_env *env, t_abuf *abuf, int filerow)
 				abuf_append(abuf, "\x1b[39m", 5);
 				current_color = -1;
 			}
-			abuf_append(abuf, &s[i], 1);
 		} else {
 			color = syntax_to_color(hl[i]);
 			if (color != current_color) {
 				current_color = color;
 				print_color_escape_sequence(abuf, current_color);
 			}
-			abuf_append(abuf, &s[i], 1);
 		}
+		abuf_append(abuf, &s[i], 1);
 	}
 	abuf_append(abuf, "\x1b[39m", 5);
 }
