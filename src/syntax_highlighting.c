@@ -3,7 +3,7 @@
 /*   syntax_highlighting.c                                                    */
 /*                                                                            */
 /*   Created: 2024/09/01 15:58:19 by cezelot                                  */
-/*   Updated: 2024/09/05 14:13:44 by cezelot                                  */
+/*   Updated: 2024/09/05 16:56:43 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -26,20 +26,41 @@
 
 #include "eve.h"
 
+static int
+is_separator(int c)
+{
+	return (isspace(c) || c == '\0'
+		|| strchr(",.()+-/*=~%<>[];", c) != NULL);
+}
+
 /* Highlight the characters of ROW.  */
 void
 update_syntax(t_erow *row)
 {
-	int	i = 0;
+	char		c;
+	unsigned char	prev_hl;
+	int		prev_sep = 0;
+	int		i = 0;
 
 	row->hl = realloc(row->hl, row->rsize);
 	if (row->hl == NULL)
 		return ;
 	memset(row->hl, HL_NORMAL, row->rsize);
 	while (i < row->rsize) {
-		if (isdigit(row->render[i])) {
-			row->hl[i] = HL_NUMBER;
+		c = row->render[i];
+		if (i > 0) {
+			prev_hl = row->hl[i - 1];
+		} else {
+			prev_hl = HL_NORMAL;
 		}
+		if ((isdigit(c) && (prev_sep || prev_hl == HL_NUMBER))
+				|| (c == '.' && prev_hl == HL_NUMBER)) {
+			row->hl[i] = HL_NUMBER;
+			++i;
+			prev_sep = 0;
+			continue ;
+		}
+		prev_sep = is_separator(c);
 		++i;
 	}
 }
