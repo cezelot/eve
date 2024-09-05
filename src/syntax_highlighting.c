@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   row_operations_2.c                                                       */
+/*   syntax_highlighting.c                                                    */
 /*                                                                            */
-/*   Created: 2024/07/22 11:34:50 by cezelot                                  */
-/*   Updated: 2024/09/01 10:20:29 by cezelot                                  */
+/*   Created: 2024/09/01 15:58:19 by cezelot                                  */
+/*   Updated: 2024/09/01 16:17:10 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -24,73 +24,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../eve.h"
+#include "eve.h"
 
-/* Converts a render index into a chars index,
-   and return the chars index.  */
+/* Highlight the characters of ROW.  */
+void
+update_syntax(t_erow *row)
+{
+	int	i = 0;
+
+	row->hl = realloc(row->hl, row->rsize);
+	if (row->hl == NULL)
+		return ;
+	memset(row->hl, HL_NORMAL, row->rsize);
+	while (i < row->rsize) {
+		if (isdigit(row->render[i])) {
+			row->hl[i] = HL_NUMBER;
+		}
+		++i;
+	}
+}
+
+/* Map values in hl to ANSI color codes.  */
 int
-row_rx_to_cx(t_erow *row, int rx)
+syntax_to_color(int hl)
 {
-	int	cur_rx = 0;
-	int	cx = 0;
-
-	while (cx < row->size) {
-		if (row->chars[cx] == '\t') {
-			cur_rx += (TAB_STOP - 1) - (cur_rx % TAB_STOP);
-		}
-		++cur_rx;
-		if (cur_rx > rx) {
-			return (cx);
-		}
-		++cx;
+	if (hl == HL_NUMBER) {
+		return (31);
 	}
-	return (cx);
-}
-
-/* Replace a tab by TAB_STOP spaces characters.  */
-void
-render_tab(char *render, int *index)
-{
-	render[(*index)++] = ' ';
-	while (*index % TAB_STOP) {
-		render[(*index)++] = ' ';
-	}
-}
-
-/* Append S to the end of ROW.  */
-void
-row_append_string(t_erow *row, char *s, size_t len, int *dirty)
-{
-	row->chars = realloc(row->chars, row->size + len + 1);
-	if (row->chars == NULL) {
-		return ;
-	}
-	memcpy(&row->chars[row->size], s, len);
-	row->size += len;
-	row->chars[row->size] = '\0';
-	update_row(row);
-	++*dirty;
-}
-
-/* Deallocate memories in ROW.  */
-static void
-free_row(t_erow *row)
-{
-	free(row->render);
-	free(row->chars);
-	free(row->hl);
-}
-
-/* Delete ROW at INDEX.  */
-void
-delete_row(t_env *env, int index)
-{
-	if (index < 0 || index >= env->numrows) {
-		return ;
-	}
-	free_row(&env->row[index]);
-	memmove(&env->row[index], &env->row[index + 1],
-		(env->numrows - index - 1) * sizeof(t_erow));
-	env->numrows--;
-	env->dirty++;
+	return (37);
 }

@@ -3,7 +3,7 @@
 /*   output_2.c                                                               */
 /*                                                                            */
 /*   Created: 2024/05/29 10:19:15 by cezelot                                  */
-/*   Updated: 2024/05/30 18:25:02 by cezelot                                  */
+/*   Updated: 2024/09/05 10:25:30 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -37,11 +37,27 @@ set_status_message(t_env *env, const char *format, ...)
 	env->statusmsg_time = time(NULL);
 }
 
+static void
+print_color_escape_sequence(t_abuf *abuf, int color)
+{
+	char buf[16];
+	int clen;
+
+	clen = snprintf(buf, sizeof(buf), "\x1b[%dm", color);
+	abuf_append(abuf, buf, clen);
+}
+
 void
 display_text_buffer(t_env *env, t_abuf *abuf, int filerow)
 {
-	int	len;
+	unsigned char	*hl;
+	char		*s;
+	int		len;
+	int		color = 0;
+	int		current_color = -1;
 
+	hl = &env->row[filerow].hl[env->coloff];
+	s = &env->row[filerow].render[env->coloff];
 	len = env->row[filerow].rsize - env->coloff;
 	if (len < 0) {
 		len = 0;
@@ -49,7 +65,23 @@ display_text_buffer(t_env *env, t_abuf *abuf, int filerow)
 	if (len > env->screencols) {
 		len = env->screencols;
 	}
-	abuf_append(abuf, &env->row[filerow].render[env->coloff], len);
+	for (int i = 0; i < len; ++i) {
+		if (hl[i] == HL_NORMAL) {
+			if (current_color != -1) {
+				abuf_append(abuf, "\x1b[39m", 5);
+				current_color = -1;
+			}
+			abuf_append(abuf, &s[i], 1);
+		} else {
+			color = syntax_to_color(hl[i]);
+			if (color != current_color) {
+				current_color = color;
+				print_color_escape_sequence(abuf, current_color);
+			}
+			abuf_append(abuf, &s[i], 1);
+		}
+	}
+	abuf_append(abuf, "\x1b[39m", 5);
 }
 
 void
@@ -60,7 +92,7 @@ display_welcome_message(t_env *env, t_abuf *abuf)
 	int	padding;
 
 	welcomelen = snprintf(welcome, sizeof(welcome),
-		"eve editor -- version %s", VERSION);
+		"eve - version %s", VERSION);
 	if (welcomelen > env->screencols) {
 		welcomelen = env->screencols;
 	}

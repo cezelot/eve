@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/08/19 18:13:42 by cezelot                                  */
+/*   Updated: 2024/09/05 08:07:47 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara, Alberto Rodriguez                     */
 /*                                                                            */
@@ -69,11 +69,17 @@ enum e_editor_key {
 	PAGE_DOWN
 };
 
+enum e_editor_highlight {
+	HL_NORMAL = 0,
+	HL_NUMBER
+};
+
 typedef struct s_editor_row {
-	char	*chars;
-	char	*render;
-	int	size;
-	int	rsize;
+	int		size;
+	int		rsize;
+	char		*chars;
+	char		*render;
+	unsigned char	*hl;
 }	t_erow;
 
 typedef struct s_editor_config {
@@ -128,6 +134,9 @@ int	write_file(int fd, int len, char *buf, t_env *env);
 void	find(t_env *env);
 // ---------------------------------------------------------------- options.c --
 void	parse_options(int ac, char **av, int *option_index);
+// ---------------------------------------------------- syntax_highlighting.c --
+int	syntax_to_color(int hl);
+void	update_syntax(t_erow *row);
 // ------------------------------------------------------------------ input.c --
 void	move_cursor(t_env *env, int key);
 void	handle_keypress(t_env *env);

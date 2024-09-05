@@ -3,7 +3,7 @@
 /*   row_operations.c                                                         */
 /*                                                                            */
 /*   Created: 2023/12/31 18:08:27 by cezelot                                  */
-/*   Updated: 2024/07/23 19:07:08 by cezelot                                  */
+/*   Updated: 2024/09/01 16:06:43 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -74,6 +74,7 @@ update_row(t_erow *row)
 	}
 	row->render[i] = '\0';
 	row->rsize = i;
+	update_syntax(row);
 }
 
 /* Insert the character C into CHARS, at position INDEX,
@@ -120,6 +121,7 @@ insert_row(t_env *env, char *str, size_t len, int index)
 	env->row[index].chars[len] = '\0';
 	env->row[index].rsize = 0;
 	env->row[index].render = NULL;
+	env->row[index].hl = NULL;
 	update_row(&env->row[index]);
 	env->numrows++;
 	env->dirty++;

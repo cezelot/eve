@@ -27,6 +27,7 @@ SRC_FILES := main.c \
              editor_operations.c \
              find.c \
              options.c \
+             syntax_highlighting.c \
              file/file_io.c \
              file/save_file_operations.c \
              input/input.c \

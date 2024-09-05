@@ -3,7 +3,7 @@
 /*   eve - simple terminal-based text editor                                  */
 /*                                                                            */
 /*   Created: 2023/11/26 12:20:29 by cezelot                                  */
-/*   Updated: 2024/08/17 18:47:42 by alberrod                                 */
+/*   Updated: 2024/09/05 08:50:15 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -49,7 +49,8 @@ close_editor(t_env *env)
 	free(env->filename);
 	while (i < env->numrows) {
 		free(env->row[i].chars);
-		free(env->row[i++].render);
+		free(env->row[i].render);
+		free(env->row[i++].hl);
 	}
 	free(env->row);
 }
