@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/09/05 14:06:01 by cezelot                                  */
+/*   Updated: 2024/09/07 21:43:38 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara, Alberto Rodriguez                     */
 /*                                                                            */
@@ -69,11 +69,21 @@ enum e_editor_key {
 	PAGE_DOWN
 };
 
-enum e_editor_highlight {
+enum e_highlight_flags {
+	HL_HIGHLIGHT_NUMBERS = (1 << 0)
+};
+
+enum e_highlight {
 	HL_NORMAL = 0,
 	HL_NUMBER,
 	HL_MATCH
 };
+
+typedef struct s_syntax {
+	char	*filetype;
+	char	**filematch;
+	int	flags;
+}	t_syntax;
 
 typedef struct s_editor_row {
 	int		size;
@@ -84,20 +94,21 @@ typedef struct s_editor_row {
 }	t_erow;
 
 typedef struct s_editor_config {
-	int	cx;
-	int	cy;
-	int	rx;
-	int	rowoff;
-	int	coloff;
-	int	screenrows;
-	int	screencols;
-	int	numrows;
-	t_erow	*row;
-	char	*filename;
-	int	dirty;
-	int	quit_times;
-	char	statusmsg[80];
-	time_t	statusmsg_time;
+	int		cx;
+	int		cy;
+	int		rx;
+	int		rowoff;
+	int		coloff;
+	int		screenrows;
+	int		screencols;
+	int		numrows;
+	t_erow		*row;
+	char		*filename;
+	int		dirty;
+	int		quit_times;
+	char		statusmsg[80];
+	time_t		statusmsg_time;
+	t_syntax	*syntax;
 }	t_env;
 
 typedef struct s_append_buffer {
@@ -136,8 +147,12 @@ void	find(t_env *env);
 // ---------------------------------------------------------------- options.c --
 void	parse_options(int ac, char **av, int *option_index);
 // ---------------------------------------------------- syntax_highlighting.c --
+void	select_syntax_highlight(t_env *env);
 int	syntax_to_color(int hl);
-void	update_syntax(t_erow *row);
+void	update_syntax(t_env *env, t_erow *row);
+// -------------------------------------------------- syntax_highlighting_2.c --
+int	is_separator(int c);
+int	match_extension(t_env *env, char *ext, t_syntax *syntax);
 // ------------------------------------------------------------------ input.c --
 void	move_cursor(t_env *env, int key);
 void	handle_keypress(t_env *env);
@@ -171,13 +186,13 @@ void	set_status_message(t_env *env, const char *format, ...);
 // --------------------------------------------------------- row_operations.c --
 void	insert_row(t_env *env, char *str, size_t len, int index);
 int	row_cx_to_rx(t_erow *row, int cx);
-void	row_delete_char(t_erow *row, int index, int *dirty);
-void	row_insert_char(t_erow *row, int c, int index);
-void	update_row(t_erow *row);
+void	row_delete_char(t_env *env, t_erow *row);
+void	row_insert_char(t_env *env, t_erow *row, int c);
+void	update_row(t_env *env, t_erow *row);
 // ------------------------------------------------------- row_operations_2.c --
 void	delete_row(t_env *env, int index);
 void	render_tab(char *render, int *index);
-void	row_append_string(t_erow *row, char *s, size_t len, int *dirty);
+void	row_append_string(t_env *env, char *s, size_t len);
 int	row_rx_to_cx(t_erow *row, int rx);
 // --------------------------------------------------------------- terminal.c --
 void	enable_raw_mode(void);

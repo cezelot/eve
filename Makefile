@@ -27,7 +27,6 @@ SRC_FILES := main.c \
              editor_operations.c \
              find.c \
              options.c \
-             syntax_highlighting.c \
              file/file_io.c \
              file/save_file_operations.c \
              input/input.c \
@@ -39,6 +38,8 @@ SRC_FILES := main.c \
              output/output_2.c \
              row_operations/row_operations.c \
              row_operations/row_operations_2.c \
+             syntax_highlighting/syntax_highlighting.c \
+             syntax_highlighting/syntax_highlighting_2.c \
              terminal/terminal.c \
              terminal/terminal_2.c \
              terminal/terminal_3.c

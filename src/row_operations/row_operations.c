@@ -3,7 +3,7 @@
 /*   row_operations.c                                                         */
 /*                                                                            */
 /*   Created: 2023/12/31 18:08:27 by cezelot                                  */
-/*   Updated: 2024/09/01 16:06:43 by cezelot                                  */
+/*   Updated: 2024/09/07 18:27:44 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -45,7 +45,7 @@ row_cx_to_rx(t_erow *row, int cx)
 
 /* Update RENDER and RSIZE according to CHARS.  */
 void
-update_row(t_erow *row)
+update_row(t_env *env, t_erow *row)
 {
 	int	i = 0;
 	int	n = 0;
@@ -74,14 +74,16 @@ update_row(t_erow *row)
 	}
 	row->render[i] = '\0';
 	row->rsize = i;
-	update_syntax(row);
+	update_syntax(env, row);
 }
 
 /* Insert the character C into CHARS, at position INDEX,
    and update the other variables in row.  */
 void
-row_insert_char(t_erow *row, int c, int index)
+row_insert_char(t_env *env, t_erow *row, int c)
 {
+	int	index = env->cx;
+
 	if (index < 0 || index > row->size) {
 		index = row->size;
 	}
@@ -92,7 +94,7 @@ row_insert_char(t_erow *row, int c, int index)
 	memmove(&row->chars[index + 1], &row->chars[index], row->size - index + 1);
 	row->size++;
 	row->chars[index] = c;
-	update_row(row);
+	update_row(env, row);
 }
 
 /* Copy STR to a new row, then insert the row at INDEX.  */
@@ -122,20 +124,22 @@ insert_row(t_env *env, char *str, size_t len, int index)
 	env->row[index].rsize = 0;
 	env->row[index].render = NULL;
 	env->row[index].hl = NULL;
-	update_row(&env->row[index]);
+	update_row(env, &env->row[index]);
 	env->numrows++;
 	env->dirty++;
 }
 
 /* Delete the character at INDEX in ROW, then increment DIRTY.  */
 void
-row_delete_char(t_erow *row, int index, int *dirty)
+row_delete_char(t_env *env, t_erow *row)
 {
+	int	index = env->cx - 1;
+
 	if (index < 0 || index >= row->size) {
 		return ;
 	}
 	memmove(&row->chars[index], &row->chars[index + 1], row->size - index);
 	row->size--;
-	update_row(row);
-	++*dirty;
+	update_row(env, row);
+	env->dirty++;
 }

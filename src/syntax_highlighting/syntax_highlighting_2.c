@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   syntax_highlighting.c                                                    */
+/*   syntax_highlighting_2.c                                                  */
 /*                                                                            */
-/*   Created: 2024/09/01 15:58:19 by cezelot                                  */
-/*   Updated: 2024/09/05 16:56:43 by cezelot                                  */
+/*   Created: 2024/09/07 21:39:22 by cezelot                                  */
+/*   Updated: 2024/09/07 21:41:57 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -24,57 +24,42 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "eve.h"
+#include "../eve.h"
 
-static int
+int
 is_separator(int c)
 {
 	return (isspace(c) || c == '\0'
 		|| strchr(",.()+-/*=~%<>[];", c) != NULL);
 }
 
-/* Highlight the characters of ROW.  */
-void
-update_syntax(t_erow *row)
+static void
+rehighlight_buffer(t_env *env)
 {
-	char		c;
-	unsigned char	prev_hl;
-	int		prev_sep = 0;
-	int		i = 0;
+	int	filerow = 0;
 
-	row->hl = realloc(row->hl, row->rsize);
-	if (row->hl == NULL)
-		return ;
-	memset(row->hl, HL_NORMAL, row->rsize);
-	while (i < row->rsize) {
-		c = row->render[i];
-		if (i > 0) {
-			prev_hl = row->hl[i - 1];
-		} else {
-			prev_hl = HL_NORMAL;
-		}
-		if ((isdigit(c) && (prev_sep || prev_hl == HL_NUMBER))
-				|| (c == '.' && prev_hl == HL_NUMBER)) {
-			row->hl[i] = HL_NUMBER;
-			++i;
-			prev_sep = 0;
-			continue ;
-		}
-		prev_sep = is_separator(c);
-		++i;
+	while (filerow < env->numrows) {
+		update_syntax(env, &env->row[filerow++]);
 	}
 }
 
-/* Map values in hl to ANSI color codes.  */
 int
-syntax_to_color(int hl)
+match_extension(t_env *env, char *ext, t_syntax *syntax)
 {
-	switch (hl) {
-	case HL_NUMBER:
-		return (31);
-	case HL_MATCH:
-		return (34);
-	default:
-		return (37);
+	size_t	i = 0;
+	int	is_ext = 0;
+
+	while (syntax->filematch[i]) {
+		is_ext = (syntax->filematch[i][0] == '.');
+		if ((is_ext && ext && !strcmp(ext, syntax->filematch[i]))
+				|| (!is_ext && strstr(env->filename,
+					syntax->filematch[i]))) {
+			env->syntax = syntax;
+			rehighlight_buffer(env);
+			return (1);
+		}
+		++i;
 	}
+	return (0);
+
 }

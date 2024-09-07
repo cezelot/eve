@@ -3,7 +3,7 @@
 /*   editor_operations.c - functions called from process_keypress()           */
 /*                                                                            */
 /*   Created: 2024/07/22 11:54:00 by cezelot                                  */
-/*   Updated: 2024/07/23 19:33:24 by cezelot                                  */
+/*   Updated: 2024/09/07 18:36:33 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -34,7 +34,7 @@ insert_char(t_env *env, int c)
 	if (env->cy == env->numrows) {
 		insert_row(env, "", 0, env->numrows);
 	}
-	row_insert_char(&env->row[env->cy], c, env->cx);
+	row_insert_char(env, &env->row[env->cy], c);
 	env->cx++;
 	env->dirty++;
 }
@@ -53,7 +53,7 @@ insert_newline(t_env *env)
 		row = &env->row[env->cy];
 		row->size = env->cx;
 		row->chars[row->size] = '\0';
-		update_row(row);
+		update_row(env, row);
 	} else {
 		insert_row(env, "", 0, env->cy);
 	}
@@ -75,12 +75,11 @@ delete_char(t_env *env)
 	}
 	row = &env->row[env->cy];
 	if (env->cx > 0) {
-		row_delete_char(row, env->cx - 1, &env->dirty);
+		row_delete_char(env, row);
 		env->cx--;
 	} else {
 		env->cx = env->row[env->cy - 1].size;
-		row_append_string(&env->row[env->cy - 1], row->chars,
-			row->size, &env->dirty);
+		row_append_string(env, row->chars, row->size);
 		delete_row(env, env->cy);
 		env->cy--;
 	}

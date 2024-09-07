@@ -3,7 +3,7 @@
 /*   file_io.c - file input/output routines                                   */
 /*                                                                            */
 /*   Created: 2023/12/29 16:01:01 by cezelot                                  */
-/*   Updated: 2024/08/16 17:00:27 by alberrod                                 */
+/*   Updated: 2024/09/07 17:29:27 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara, Alberto Rodriguez                     */
 /*                                                                            */
@@ -102,6 +102,7 @@ open_file(t_env *env, char *filename)
 
 	free(env->filename);
 	env->filename = strdup(filename);
+	select_syntax_highlight(env);
 	fp = fopen(filename, "r");
 	if (!fp) {
 		free(env->filename);

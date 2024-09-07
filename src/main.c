@@ -3,7 +3,7 @@
 /*   eve - simple terminal-based text editor                                  */
 /*                                                                            */
 /*   Created: 2023/11/26 12:20:29 by cezelot                                  */
-/*   Updated: 2024/09/05 08:50:15 by cezelot                                  */
+/*   Updated: 2024/09/06 09:27:16 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -71,6 +71,7 @@ init_editor(t_env *env)
 	env->quit_times = 1;
 	env->statusmsg[0] = '\0';
 	env->statusmsg_time = 0;
+	env->syntax = NULL;
 	if (get_window_size(&env->screenrows,
 			&env->screencols) == -1) {
 		die("%s:%d: unable to get terminal size: %s",

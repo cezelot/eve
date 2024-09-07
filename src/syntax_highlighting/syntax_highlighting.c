@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   row_operations_2.c                                                       */
+/*   syntax_highlighting.c                                                    */
 /*                                                                            */
-/*   Created: 2024/07/22 11:34:50 by cezelot                                  */
-/*   Updated: 2024/09/07 18:37:48 by cezelot                                  */
+/*   Created: 2024/09/01 15:58:19 by cezelot                                  */
+/*   Updated: 2024/09/07 21:44:08 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -26,73 +26,82 @@
 
 #include "../eve.h"
 
-/* Converts a render index into a chars index,
-   and return the chars index.  */
+/* Highlight the characters of ROW.  */
+void
+update_syntax(t_env *env, t_erow *row)
+{
+	char		c;
+	unsigned char	prev_hl;
+	int		prev_sep = 0;
+	int		i = 0;
+
+	row->hl = realloc(row->hl, row->rsize);
+	if (row->hl == NULL)
+		return ;
+	memset(row->hl, HL_NORMAL, row->rsize);
+	if (env->syntax == NULL)
+		return ;
+	while (i < row->rsize) {
+		c = row->render[i];
+		if (i > 0) {
+			prev_hl = row->hl[i - 1];
+		} else {
+			prev_hl = HL_NORMAL;
+		}
+		if (env->syntax->flags & HL_HIGHLIGHT_NUMBERS) {
+			if ((isdigit(c) && (prev_sep || prev_hl == HL_NUMBER))
+					|| (c == '.' && prev_hl == HL_NUMBER)) {
+				row->hl[i] = HL_NUMBER;
+				++i;
+				prev_sep = 0;
+				continue ;
+			}
+		}
+		prev_sep = is_separator(c);
+		++i;
+	}
+}
+
+/* Map values in hl to ANSI color codes.  */
 int
-row_rx_to_cx(t_erow *row, int rx)
+syntax_to_color(int hl)
 {
-	int	cur_rx = 0;
-	int	cx = 0;
+	switch (hl) {
+	case HL_NUMBER:
+		return (31);
+	case HL_MATCH:
+		return (34);
+	default:
+		return (37);
+	}
+}
 
-	while (cx < row->size) {
-		if (row->chars[cx] == '\t') {
-			cur_rx += (TAB_STOP - 1) - (cur_rx % TAB_STOP);
+void
+select_syntax_highlight(t_env *env)
+{
+	static char	*c_extensions[] = {
+		".c",
+		".h",
+		".cpp",
+		NULL
+	};
+	static t_syntax	hldb[] = {
+		{
+			"c",
+			c_extensions,
+			HL_HIGHLIGHT_NUMBERS
+		},
+	};
+	t_syntax	*syntax = NULL;
+	char		*ext;
+	size_t		i = 0;
+
+	env->syntax = NULL;
+	ext = strrchr(env->filename, '.');
+	while (i < (sizeof(hldb) / sizeof(hldb[0]))) {
+		syntax = &hldb[i++];
+		if (match_extension(env, ext, syntax)) {
+			return ;
 		}
-		++cur_rx;
-		if (cur_rx > rx) {
-			return (cx);
-		}
-		++cx;
 	}
-	return (cx);
-}
-
-/* Replace a tab by TAB_STOP spaces characters.  */
-void
-render_tab(char *render, int *index)
-{
-	render[(*index)++] = ' ';
-	while (*index % TAB_STOP) {
-		render[(*index)++] = ' ';
-	}
-}
-
-/* Append S to the end of ROW.  */
-void
-row_append_string(t_env *env, char *s, size_t len)
-{
-	t_erow	*row = &env->row[env->cy -1];
-
-	row->chars = realloc(row->chars, row->size + len + 1);
-	if (row->chars == NULL) {
-		return ;
-	}
-	memcpy(&row->chars[row->size], s, len);
-	row->size += len;
-	row->chars[row->size] = '\0';
-	update_row(env, row);
-	env->dirty++;
-}
-
-/* Deallocate memories in ROW.  */
-static void
-free_row(t_erow *row)
-{
-	free(row->render);
-	free(row->chars);
-	free(row->hl);
-}
-
-/* Delete ROW at INDEX.  */
-void
-delete_row(t_env *env, int index)
-{
-	if (index < 0 || index >= env->numrows) {
-		return ;
-	}
-	free_row(&env->row[index]);
-	memmove(&env->row[index], &env->row[index + 1],
-		(env->numrows - index - 1) * sizeof(t_erow));
-	env->numrows--;
-	env->dirty++;
 }

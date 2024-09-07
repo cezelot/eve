@@ -3,7 +3,7 @@
 /*   output.c - standard output routines                                      */
 /*                                                                            */
 /*   Created: 2023/12/06 18:08:14 by cezelot                                  */
-/*   Updated: 2024/07/23 19:50:43 by cezelot                                  */
+/*   Updated: 2024/09/06 09:44:05 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -74,7 +74,8 @@ draw_status_bar(t_env *env, t_abuf *abuf)
 	len = snprintf(status, sizeof(status), "%.20s - %d lines %s",
 		env->filename ? env->filename : "[No Name]", env->numrows,
 		env->dirty ? "(modified)" : "");
-	rlen = snprintf(rstatus, sizeof(rstatus), "%d,%d", env->cy + 1,
+	rlen = snprintf(rstatus, sizeof(rstatus), "%s | %d,%d",
+		env->syntax ? env->syntax->filetype : "unknown", env->cy + 1,
 		env->cx + 1);
 	abuf_append(abuf, "\x1b[7m", 4);
 	if (len > env->screencols) {

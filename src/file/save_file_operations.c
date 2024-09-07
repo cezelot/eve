@@ -3,7 +3,7 @@
 /*   save_file_operations.c - file saving-related helper operations           */
 /*                                                                            */
 /*   Created: 2024/08/16 17:00:27 by alberrod                                 */
-/*   Updated: 2024/08/16 17:00:27 by alberrod                                 */
+/*   Updated: 2024/09/07 18:01:48 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Alberto Rodriguez                                     */
 /*                                                                            */
@@ -46,6 +46,7 @@ set_filename(t_env *env)
 		set_status_message(env, "Save aborted");
 		return (-1);
 	}
+	select_syntax_highlight(env);
 	return (0);
 }
 
