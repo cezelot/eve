@@ -2,7 +2,6 @@ eve
 ===
 
 [![Build Status][build-svg]][build]
-[![CodeQL][codeql-svg]][codeql]
 [![CodeScene Code Health][codescene-svg]][codescene-report]
 ![Code Size][code-size]
 [![PRs Welcome][makeapr-svg]][makeapr]
@@ -131,8 +130,6 @@ for details see [COPYING](COPYING).
 
 [build-svg]: https://github.com/cezelot/eve/actions/workflows/build.yml/badge.svg?event=push
 [build]: https://github.com/cezelot/eve/actions/workflows/build.yml
-[codeql-svg]: https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql/badge.svg
-[codeql]: https://github.com/cezelot/eve/actions/workflows/github-code-scanning/codeql
 [codescene-svg]: https://codescene.io/projects/51883/status-badges/code-health
 [codescene-report]: https://drive.proton.me/urls/5SKHRBA710#yz0WZNGdkCAk
 [code-size]: https://img.shields.io/github/languages/code-size/cezelot/eve
