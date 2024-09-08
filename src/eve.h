@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/09/07 21:43:38 by cezelot                                  */
+/*   Updated: 2024/09/08 15:51:18 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara, Alberto Rodriguez                     */
 /*                                                                            */
@@ -70,11 +70,13 @@ enum e_editor_key {
 };
 
 enum e_highlight_flags {
-	HL_HIGHLIGHT_NUMBERS = (1 << 0)
+	HL_HIGHLIGHT_NUMBERS = (1 << 0),
+	HL_HIGHLIGHT_STRINGS = (1 << 1)
 };
 
 enum e_highlight {
 	HL_NORMAL = 0,
+	HL_STRING,
 	HL_NUMBER,
 	HL_MATCH
 };
@@ -153,6 +155,10 @@ void	update_syntax(t_env *env, t_erow *row);
 // -------------------------------------------------- syntax_highlighting_2.c --
 int	is_separator(int c);
 int	match_extension(t_env *env, char *ext, t_syntax *syntax);
+// -------------------------------------------------- syntax_highlighting_3.c --
+int	highlight_number(t_erow *row, int *i,
+		int *prev_sep, unsigned char prev_hl);
+int	highlight_string(t_erow *row, int *i, int *prev_sep, int *in_string);
 // ------------------------------------------------------------------ input.c --
 void	move_cursor(t_env *env, int key);
 void	handle_keypress(t_env *env);

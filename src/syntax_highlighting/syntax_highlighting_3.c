@@ -1,9 +1,9 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*   syntax_highlighting.c                                                    */
+/*   syntax_highlighting_3.c                                                  */
 /*                                                                            */
-/*   Created: 2024/09/01 15:58:19 by cezelot                                  */
-/*   Updated: 2024/09/08 16:13:49 by cezelot                                  */
+/*   Created: 2024/09/08 10:58:46 by cezelot                                  */
+/*   Updated: 2024/09/08 15:38:45 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -26,88 +26,44 @@
 
 #include "../eve.h"
 
-/* Highlight the characters of ROW.  */
-void
-update_syntax(t_env *env, t_erow *row)
-{
-	unsigned char	prev_hl;
-	int		prev_sep = 1;
-	int		in_string = 0;
-	int		i = 0;
-
-	row->hl = realloc(row->hl, row->rsize);
-	if (row->hl == NULL)
-		return ;
-	memset(row->hl, HL_NORMAL, row->rsize);
-	if (env->syntax == NULL)
-		return ;
-	while (i < row->rsize) {
-		if (i > 0) {
-			prev_hl = row->hl[i - 1];
-		} else {
-			prev_hl = HL_NORMAL;
-		}
-		if (env->syntax->flags & HL_HIGHLIGHT_STRINGS) {
-			if (highlight_string(row, &i, &prev_sep, &in_string)) {
-				continue ;
-			}
-		}
-		if (env->syntax->flags & HL_HIGHLIGHT_NUMBERS) {
-			if (highlight_number(row, &i, &prev_sep, prev_hl)) {
-				continue ;
-			}
-		}
-		prev_sep = is_separator(row->render[i]);
-		++i;
-	}
-}
-
-void
-select_syntax_highlight(t_env *env)
-{
-	static char	*c_extensions[] = {
-		".c",
-		".h",
-		".cpp",
-		NULL
-	};
-	static t_syntax	hldb[] = {
-		{
-			"c",
-			c_extensions,
-			HL_HIGHLIGHT_NUMBERS | HL_HIGHLIGHT_STRINGS
-		}
-	};
-	t_syntax	*syntax = NULL;
-	char		*ext;
-	size_t		i = 0;
-
-	env->syntax = NULL;
-	ext = strrchr(env->filename, '.');
-	while (i < (sizeof(hldb) / sizeof(hldb[0]))) {
-		syntax = &hldb[i++];
-		if (match_extension(env, ext, syntax)) {
-			return ;
-		}
-	}
-}
-
-/* Map values in hl to ANSI color codes.  */
 int
-syntax_to_color(int hl)
+highlight_string(t_erow *row, int *i, int *prev_sep, int *in_string)
 {
-	switch (hl) {
-	case HL_STRING:
-		/* foreground cyan */
-		return (36);
-	case HL_NUMBER:
-		/* foreground light red */
-		return (91);
-	case HL_MATCH:
-		/* foreground light blue */
-		return (94);
-	default:
-		/* default foreground color */
-		return (39);
+	char	c = row->render[*i];
+
+	if (*in_string) {
+		row->hl[*i] = HL_STRING;
+		if (c == '\\' && (*i + 1 < row->rsize)) {
+			row->hl[*i + 1] = HL_STRING;
+			*i += 2;
+			return (1);
+		}
+		if (c == *in_string) {
+			*in_string = 0;
+		}
+		++*i;
+		*prev_sep = 1;
+		return (1);
+	} else if (c == '"' || c == '\'') {
+		*in_string = c;
+		row->hl[*i] = HL_STRING;
+		++*i;
+		return (1);
 	}
+	return (0);
+}
+
+int
+highlight_number(t_erow *row, int *i, int *prev_sep, unsigned char prev_hl)
+{
+	char	c = row->render[*i];
+
+	if ((isdigit(c) && (*prev_sep || prev_hl == HL_NUMBER))
+			|| (c == '.' && prev_hl == HL_NUMBER)) {
+		row->hl[*i] = HL_NUMBER;
+		++*i;
+		*prev_sep = 0;
+		return (1);
+	}
+	return (0);
 }
