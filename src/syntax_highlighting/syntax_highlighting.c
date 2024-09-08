@@ -3,7 +3,7 @@
 /*   syntax_highlighting.c                                                    */
 /*                                                                            */
 /*   Created: 2024/09/01 15:58:19 by cezelot                                  */
-/*   Updated: 2024/09/07 21:44:08 by cezelot                                  */
+/*   Updated: 2024/09/08 11:39:56 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -68,11 +68,14 @@ syntax_to_color(int hl)
 {
 	switch (hl) {
 	case HL_NUMBER:
-		return (31);
+		/* foreground light red */
+		return (91);
 	case HL_MATCH:
-		return (34);
+		/* foreground light blue */
+		return (94);
 	default:
-		return (37);
+		/* default foreground color */
+		return (39);
 	}
 }
 

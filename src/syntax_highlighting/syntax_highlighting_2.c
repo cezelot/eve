@@ -3,7 +3,7 @@
 /*   syntax_highlighting_2.c                                                  */
 /*                                                                            */
 /*   Created: 2024/09/07 21:39:22 by cezelot                                  */
-/*   Updated: 2024/09/07 21:41:57 by cezelot                                  */
+/*   Updated: 2024/09/08 00:49:13 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -30,7 +30,7 @@ int
 is_separator(int c)
 {
 	return (isspace(c) || c == '\0'
-		|| strchr(",.()+-/*=~%<>[];", c) != NULL);
+		|| strchr(",.()+-/*=~%<>[]:;", c) != NULL);
 }
 
 static void
