@@ -3,7 +3,7 @@
 /*   syntax_highlighting.c                                                    */
 /*                                                                            */
 /*   Created: 2024/09/01 15:58:19 by cezelot                                  */
-/*   Updated: 2024/09/08 16:13:49 by cezelot                                  */
+/*   Updated: 2024/09/08 22:44:55 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -30,22 +30,38 @@
 void
 update_syntax(t_env *env, t_erow *row)
 {
+	char		*scs;
 	unsigned char	prev_hl;
 	int		prev_sep = 1;
 	int		in_string = 0;
+	int		scs_len;
 	int		i = 0;
 
 	row->hl = realloc(row->hl, row->rsize);
-	if (row->hl == NULL)
+	if (row->hl == NULL) {
 		return ;
+	}
 	memset(row->hl, HL_NORMAL, row->rsize);
-	if (env->syntax == NULL)
+	if (env->syntax == NULL) {
 		return ;
+	}
+	scs = env->syntax->singleline_comment_start;
+	if (scs) {
+		scs_len = strlen(scs);
+	} else {
+		scs_len = 0;
+	}
 	while (i < row->rsize) {
 		if (i > 0) {
 			prev_hl = row->hl[i - 1];
 		} else {
 			prev_hl = HL_NORMAL;
+		}
+		if (scs_len && !in_string) {
+			if (!strncmp(&row->render[i], scs, scs_len)) {
+				memset(&row->hl[i], HL_COMMENT, row->rsize - i);
+				break ;
+			}
 		}
 		if (env->syntax->flags & HL_HIGHLIGHT_STRINGS) {
 			if (highlight_string(row, &i, &prev_sep, &in_string)) {
@@ -75,6 +91,7 @@ select_syntax_highlight(t_env *env)
 		{
 			"c",
 			c_extensions,
+			"//",
 			HL_HIGHLIGHT_NUMBERS | HL_HIGHLIGHT_STRINGS
 		}
 	};
@@ -97,6 +114,9 @@ int
 syntax_to_color(int hl)
 {
 	switch (hl) {
+	case HL_COMMENT:
+		/* foreground dark gray */
+		return (37);
 	case HL_STRING:
 		/* foreground cyan */
 		return (36);

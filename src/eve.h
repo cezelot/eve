@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/09/08 15:51:18 by cezelot                                  */
+/*   Updated: 2024/09/08 22:03:23 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara, Alberto Rodriguez                     */
 /*                                                                            */
@@ -76,6 +76,7 @@ enum e_highlight_flags {
 
 enum e_highlight {
 	HL_NORMAL = 0,
+	HL_COMMENT,
 	HL_STRING,
 	HL_NUMBER,
 	HL_MATCH
@@ -84,6 +85,7 @@ enum e_highlight {
 typedef struct s_syntax {
 	char	*filetype;
 	char	**filematch;
+	char	*singleline_comment_start;
 	int	flags;
 }	t_syntax;
 
