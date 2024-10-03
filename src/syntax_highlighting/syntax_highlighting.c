@@ -3,7 +3,7 @@
 /*   syntax_highlighting.c                                                    */
 /*                                                                            */
 /*   Created: 2024/09/01 15:58:19 by cezelot                                  */
-/*   Updated: 2024/09/08 22:44:55 by cezelot                                  */
+/*   Updated: 2024/10/03 19:16:39 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -73,6 +73,12 @@ update_syntax(t_env *env, t_erow *row)
 				continue ;
 			}
 		}
+		if (prev_sep) {
+			if (highlight_keyword(row, env->syntax->keywords, &i,
+					&prev_sep)) {
+				continue ;
+			}
+		}
 		prev_sep = is_separator(row->render[i]);
 		++i;
 	}
@@ -87,10 +93,18 @@ select_syntax_highlight(t_env *env)
 		".cpp",
 		NULL
 	};
+	static char	*c_keywords[] = {
+		"char", "short", "int", "long", "double", "float", "signed",
+		"unsigned", "void", "const", "static", "extern", "if", "else",
+		"while", "for", "switch", "case", "break", "continue", "return",
+
+		"struct|", "union|", "typedef|", "enum|", "class|", NULL
+	};
 	static t_syntax	hldb[] = {
 		{
 			"c",
 			c_extensions,
+			c_keywords,
 			"//",
 			HL_HIGHLIGHT_NUMBERS | HL_HIGHLIGHT_STRINGS
 		}
@@ -117,15 +131,19 @@ syntax_to_color(int hl)
 	case HL_COMMENT:
 		/* foreground dark gray */
 		return (37);
+	case HL_MATCH:
+	case HL_KEYWORD1:
+		/* foreground light blue */
+		return (94);
+	case HL_KEYWORD2:
+		/* foreground green */
+		return (32);
 	case HL_STRING:
 		/* foreground cyan */
 		return (36);
 	case HL_NUMBER:
 		/* foreground light red */
 		return (91);
-	case HL_MATCH:
-		/* foreground light blue */
-		return (94);
 	default:
 		/* default foreground color */
 		return (39);

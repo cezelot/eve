@@ -3,7 +3,7 @@
 /*   syntax_highlighting_3.c                                                  */
 /*                                                                            */
 /*   Created: 2024/09/08 10:58:46 by cezelot                                  */
-/*   Updated: 2024/09/08 15:38:45 by cezelot                                  */
+/*   Updated: 2024/10/01 08:42:49 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara                                        */
 /*                                                                            */
@@ -25,6 +25,35 @@
 /* ************************************************************************** */
 
 #include "../eve.h"
+
+int
+highlight_keyword(t_erow *row, char **keywords, int *i, int *prev_sep)
+{
+	size_t	n = 0;
+	size_t	len;
+	size_t	kw2;
+
+	while (keywords[n]) {
+		len = strlen(keywords[n]);
+		kw2 = keywords[n][len - 1] == '|';
+		if (kw2) {
+			--len;
+		}
+		if (!strncmp(&row->render[*i], keywords[n], len)
+				&& is_separator(row->render[*i + len])) {
+			memset(&row->hl[*i], kw2 ? HL_KEYWORD2 : HL_KEYWORD1,
+				len);
+			*i += len;
+			break ;
+		}
+		++n;
+	}
+	if (keywords[n] != NULL) {
+		*prev_sep = 0;
+		return (1);
+	}
+	return (0);
+}
 
 int
 highlight_string(t_erow *row, int *i, int *prev_sep, int *in_string)

@@ -3,7 +3,7 @@
 /*   eve.h                                                                    */
 /*                                                                            */
 /*   Created: 2023/11/27 17:17:10 by cezelot                                  */
-/*   Updated: 2024/09/08 22:03:23 by cezelot                                  */
+/*   Updated: 2024/10/01 08:39:14 by cezelot                                  */
 /*                                                                            */
 /*   Copyright (C) 2024 Ismael Benjara, Alberto Rodriguez                     */
 /*                                                                            */
@@ -77,6 +77,8 @@ enum e_highlight_flags {
 enum e_highlight {
 	HL_NORMAL = 0,
 	HL_COMMENT,
+	HL_KEYWORD1,
+	HL_KEYWORD2,
 	HL_STRING,
 	HL_NUMBER,
 	HL_MATCH
@@ -85,6 +87,7 @@ enum e_highlight {
 typedef struct s_syntax {
 	char	*filetype;
 	char	**filematch;
+	char	**keywords;
 	char	*singleline_comment_start;
 	int	flags;
 }	t_syntax;
@@ -158,6 +161,7 @@ void	update_syntax(t_env *env, t_erow *row);
 int	is_separator(int c);
 int	match_extension(t_env *env, char *ext, t_syntax *syntax);
 // -------------------------------------------------- syntax_highlighting_3.c --
+int	highlight_keyword(t_erow *row, char **keywords, int *i, int *prev_sep);
 int	highlight_number(t_erow *row, int *i,
 		int *prev_sep, unsigned char prev_hl);
 int	highlight_string(t_erow *row, int *i, int *prev_sep, int *in_string);
